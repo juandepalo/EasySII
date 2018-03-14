@@ -688,16 +688,24 @@ namespace EasySII.Business
 					{
 
                         // Operación exenta
-                        if (sujeta.Exenta == null)
-							sujeta.Exenta = new Exenta();
+                        Exenta exenta = new Exenta();
 
-						int causaIn = -Convert.ToInt32(taxOut.Key);
-						CausaExencion causaExencion = (CausaExencion)causaIn;
+                        int causaIn = -Convert.ToInt32(taxOut.Key);
+                        CausaExencion causaExencion = (CausaExencion)causaIn;
 
-						sujeta.Exenta.CausaExencion = CausaExencion.ToString();
-						sujeta.Exenta.BaseImponible = SIIParser.FromDecimal(taxOut.Value[0]);
+                        exenta.CausaExencion = CausaExencion.ToString();
+                        exenta.BaseImponible = SIIParser.FromDecimal(taxOut.Value[0]);
 
-					}
+                        // Operación exenta
+                        if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
+                            sujeta.Exenta = exenta;
+                        else
+                            sujeta.DetalleExenta = new List<Exenta>()
+                            {
+                                exenta
+                            };
+
+                    }
 					else if (taxOut.Key == 0)
 					{
                         string TipoSujeta = Sujeta.ToString();
@@ -730,11 +738,18 @@ namespace EasySII.Business
                         else
                         {
                             // Operación exenta (exención por defecto E1)
-                            if (sujeta.Exenta == null)
-                                sujeta.Exenta = new Exenta();
+                            Exenta exenta = new Exenta();
 
-                            sujeta.Exenta.CausaExencion = CausaExencion.E1.ToString();
-                            sujeta.Exenta.BaseImponible = SIIParser.FromDecimal(taxOut.Value[0]);
+                            exenta.CausaExencion = CausaExencion.E1.ToString();
+                            exenta.BaseImponible = SIIParser.FromDecimal(taxOut.Value[0]);
+
+                            if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
+                                sujeta.Exenta = exenta;
+                            else
+                                sujeta.DetalleExenta = new List<Exenta>()
+                            {
+                                exenta
+                            };
                         }
                     }
 				}
@@ -776,12 +791,20 @@ namespace EasySII.Business
 				// Anulo inicialización por defecto.
 				sujeta.NoExenta = null;
 
-				sujeta.Exenta = new Exenta();
-                sujeta.Exenta.CausaExencion = CausaExencion.ToString();
-                sujeta.Exenta.BaseImponible = SIIParser.FromDecimal(GrossAmount);
+                Exenta exenta = new Exenta();
+
+                exenta.CausaExencion = CausaExencion.ToString();
+                exenta.BaseImponible = SIIParser.FromDecimal(GrossAmount);
+
+                if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
+                    sujeta.Exenta = exenta;
+                else
+                    sujeta.DetalleExenta = new List<Exenta>()
+                    {
+                        exenta
+                    };
 
             }
-
 
             return sujeta;
         }

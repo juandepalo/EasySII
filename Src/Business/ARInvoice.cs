@@ -320,6 +320,11 @@ namespace EasySII.Business
                 ((int)ClaveRegimenEspecialOTrascendencia).ToString().PadLeft(2, '0');
 
             siiInvoice.FacturaExpedida.ImporteTotal = SIIParser.FromDecimal(GrossAmount);
+
+            if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0) 
+                if (GrossAmount > 0)
+                    siiInvoice.FacturaExpedida.Macrodato = "S";
+
             siiInvoice.FacturaExpedida.DescripcionOperacion = InvoiceText;
 
             if (InvoiceType == InvoiceType.R1 ||
@@ -650,25 +655,40 @@ namespace EasySII.Business
                     // Primero debe ir siempre el bloque de exenta
                     if (taxOut.Key < 0)
                     {
+
                         // Operación exenta
-                        if (sujeta.Exenta == null)
-                            sujeta.Exenta = new Exenta();
+                        Exenta exenta = new Exenta();
 
                         int causaIn = -Convert.ToInt32(taxOut.Key);
                         CausaExencion causaExencion = (CausaExencion)causaIn;
 
-                        sujeta.Exenta.CausaExencion = CausaExencion.ToString();
-                        sujeta.Exenta.BaseImponible = SIIParser.FromDecimal(taxOut.Value[0]);
+                        exenta.CausaExencion = CausaExencion.ToString();
+                        exenta.BaseImponible = SIIParser.FromDecimal(taxOut.Value[0]);
+                        
+                        if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
+                            sujeta.Exenta = exenta;
+                        else
+                            sujeta.DetalleExenta = new List<Exenta>()
+                            {
+                                exenta
+                            };               
 
                     }
                     else if (taxOut.Key == 0)
                     {
                         // Operación exenta (exención por defecto E1)
-                        if (sujeta.Exenta == null)
-                            sujeta.Exenta = new Exenta();
+                        Exenta exenta = new Exenta();
 
-                        sujeta.Exenta.CausaExencion = CausaExencion.E1.ToString();
-                        sujeta.Exenta.BaseImponible = SIIParser.FromDecimal(taxOut.Value[0]);
+                        exenta.CausaExencion = CausaExencion.E1.ToString();
+                        exenta.BaseImponible = SIIParser.FromDecimal(taxOut.Value[0]);
+
+                        if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
+                            sujeta.Exenta = exenta;
+                        else
+                            sujeta.DetalleExenta = new List<Exenta>()
+                            {
+                                exenta
+                            };
                     }
                 }
 
@@ -709,9 +729,18 @@ namespace EasySII.Business
                 // Anulo inicialización por defecto.
                 sujeta.NoExenta = null;
 
-                sujeta.Exenta = new Exenta();
-                sujeta.Exenta.CausaExencion = CausaExencion.ToString();
-                sujeta.Exenta.BaseImponible = SIIParser.FromDecimal(GrossAmount);
+                Exenta exenta = new Exenta();
+
+                exenta.CausaExencion = CausaExencion.ToString();
+                exenta.BaseImponible = SIIParser.FromDecimal(GrossAmount);
+
+                if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
+                    sujeta.Exenta = exenta;
+                else
+                    sujeta.DetalleExenta = new List<Exenta>()
+                            {
+                                exenta
+                            };
 
             }
 

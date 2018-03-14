@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace EasySII.Xml.Sii
 {
@@ -14,10 +15,16 @@ namespace EasySII.Xml.Sii
 		[XmlElement("Exenta", Namespace = Settings.NamespaceSii)]
 		public Exenta Exenta { get; set; }
 
-		/// <summary>
-		/// No exenta
-		/// </summary>
-		[XmlElement("NoExenta", Namespace = Settings.NamespaceSii)]
+        /// <summary>
+        /// Exenta a partir de la versión 1.1
+        /// </summary>
+        [XmlElement("Exenta", Namespace = Settings.NamespaceSii)]
+        public List<Exenta> DetalleExenta { get; set; }
+
+        /// <summary>
+        /// No exenta
+        /// </summary>
+        [XmlElement("NoExenta", Namespace = Settings.NamespaceSii)]
         public NoExenta NoExenta { get; set; }
  
 

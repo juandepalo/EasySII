@@ -71,44 +71,93 @@ namespace EasySII.Xml.Silr
         [XmlElement("ClaveRegimenEspecialOTrascendencia", Namespace = Settings.NamespaceSii)]
         public string ClaveRegimenEspecialOTrascendencia { get; set; }
 
-		/// <summary>
-		/// Clave que identificará el tipo de operación o el régimen 
-		/// especial con transcendencia tributaria. Alfanumérico(2). Lista L3.1.
-		/// </summary>
-		[XmlElement("ClaveRegimenEspecialOTrascendencia1", Namespace = Settings.NamespaceSii)]
-		public string ClaveRegimenEspecialOTrascendencia1 { get; set; }
+        /// <summary>
+        /// Clave adicional que
+        /// identificará el tipo de régimen del IVA o 
+        /// una operación con trascendencia tributaria. 
+        /// Alfanumérico(2). Lista L3.1.
+        /// </summary>
+        [XmlElement("ClaveRegimenEspecialOTrascendenciaAdicional1", Namespace = Settings.NamespaceSii)]
+		public string ClaveRegimenEspecialOTrascendenciaAdicional1 { get; set; }
 
-		/// <summary>
-		/// Clave que identificará el tipo de operación o el régimen 
-		/// especial con transcendencia tributaria. Alfanumérico(2). Lista L3.1.
-		/// </summary>
-		[XmlElement("ClaveRegimenEspecialOTrascendencia2", Namespace = Settings.NamespaceSii)]
-		public string ClaveRegimenEspecialOTrascendencia2 { get; set; }
 
-		/// <summary>
-		/// Número de registro obtenido al enviar el 
-		/// acuerdo de facturación correspondiente.
-		/// </summary>
-		[XmlElement("NumRegistroAcuerdoFacturacion", Namespace = Settings.NamespaceSii)]
+        /// <summary>
+        /// Clave adicional que
+        /// identificará el tipo de régimen del IVA o 
+        /// una operación con trascendencia tributaria. 
+        /// Alfanumérico(2). Lista L3.1.
+        /// </summary>
+        [XmlElement("ClaveRegimenEspecialOTrascendenciaAdicional2", Namespace = Settings.NamespaceSii)]
+		public string ClaveRegimenEspecialOTrascendenciaAdicional2 { get; set; }
+
+        /// <summary>
+        /// Número de registro obtenido al enviar la 
+        /// autorización en materia de facturación o de 
+        /// libros registro. Alfanumérico(15)
+        /// </summary>
+        [XmlElement("NumRegistroAcuerdoFacturacion", Namespace = Settings.NamespaceSii)]
 		public string NumRegistroAcuerdoFacturacion { get; set; }
 
-		/// <summary>
-		/// Importe total de la factura.
-		/// </summary>
-		[XmlElement("ImporteTotal", Namespace = Settings.NamespaceSii)]
+        /// <summary>
+        /// Importe total de la factura. Decimal(12,2).
+        /// </summary>
+        [XmlElement("ImporteTotal", Namespace = Settings.NamespaceSii)]
         public string ImporteTotal { get; set; }
 
         /// <summary>
-        /// Base Imponible a Coste de la factura.
+        /// Base Imponible a Coste de la factura. Decimal(12,2)
         /// </summary>
         [XmlElement("BaseImponibleACoste", Namespace = Settings.NamespaceSii)]
         public string BaseImponibleACoste { get; set; }
 
         /// <summary>
-        /// Texto breve de la operación.
+        /// Texto breve de la operación. Alfanumérico(500).
         /// </summary>
         [XmlElement("DescripcionOperacion", Namespace = Settings.NamespaceSii)]
         public string DescripcionOperacion { get; set; }
+
+        /// <summary>
+        /// Referencia Externa. Dato adicional de contenido 
+        /// libre enviado por algunas aplicaciones clientes 
+        /// (asiento contable, etc). Alfanumérico(60).
+        /// </summary>
+        [XmlElement("RefExterna", Namespace = Settings.NamespaceSii)]
+        public string RefExterna { get; set; }
+
+        /// <summary>
+        /// Factura simplificada Articulo 7,2 Y 7,3 RD 1619/2012. 
+        /// Si no se informa este campo se entenderá que tiene valor “N". 
+        /// L27 ('S', 'N').
+        /// </summary>
+        [XmlElement("FacturaSimplificadaArticulos7.2_7.3", Namespace = Settings.NamespaceSii)]
+        public string FacturaSimplificadaArticulos72_73 { get; set; }
+
+        /// <summary>
+        /// NombreRazon + NIF de la entidad sucedida como 
+        /// consecuencia de una operación de reestructuración.
+        /// </summary>
+        [XmlElement("EntidadSucedida", Namespace = Settings.NamespaceSii)]
+        public Parte EntidadSucedida { get; set; }
+
+        /// <summary>
+        /// Identificador que especifica aquellos registros de 
+        /// facturación con dificultades para enviarse en plazo 
+        /// por no tener constancia del cambio de condición a
+        /// GGEE, de la inclusión en REDEME o de un cambio 
+        /// en la competencia inspectora. L29 ('S', 'N').
+        /// Alfanumérico(1).
+        /// </summary>
+        [XmlElement("RegPrevioGGEEoREDEMEoCompetencia", Namespace = Settings.NamespaceSii)]
+        public string RegPrevioGGEEoREDEMEoCompetencia{ get; set; }
+
+        /// <summary>
+        /// Identificador que especifica aquellas facturas con importe 
+        /// de la factura superior a un umbral de 100.000 euros. Si no se informa este
+        /// campo se entenderá que tiene valor “N”. L30 ('S', 'N').
+        /// Alfanumérico(1).
+        /// </summary>
+        [XmlElement("Macrodato", Namespace = Settings.NamespaceSii)]
+        public string Macrodato { get; set; }
 
         /// <summary>
         ///Datos Inmueble.
@@ -150,6 +199,48 @@ namespace EasySII.Xml.Silr
         /// </summary>
         [XmlElement("EmitidaPorTercerosODestinatario", Namespace = Settings.NamespaceSii)]
         public string EmitidaPorTercerosODestinatario { get; set; }
+
+        /// <summary>
+        /// Identificador que especifica si la factura ha sido 
+        /// emitida por un tercero de acuerdo a una exigencia normativa 
+        /// (disposición adicional tercera y sexta Reglamento por el 
+        /// que se regulan las obligaciones de facturación y del Mercado 
+        /// Organizado del Gas). Si no se informa este campo se entenderá 
+        /// que tiene valor “N”. L25 ('S', 'N').
+        /// Alfanumérico(1).
+        /// </summary>
+        [XmlElement("FacturacionDispAdicionalTerceraYsextayDelMercadoOrganizadoDelGas", Namespace = Settings.NamespaceSii)]
+        public string FacturacionDispAdicionalTerceraYsextayDelMercadoOrganizadoDelGas { get; set; }
+
+        /// <summary>
+        /// Identificador que especifica si la factura tiene varios 
+        /// destinatarios. Si no se informa este campo se entenderá que 
+        /// tiene valor “N”. L20 ('S', 'N').
+        /// Alfanumérico(1).
+        /// </summary>
+        [XmlElement("VariosDestinatarios", Namespace = Settings.NamespaceSii)]
+        public string VariosDestinatarios { get; set; }
+
+        /// <summary>
+        /// Identificador que especifica si la factura tipo 
+        /// R1, R5 o F4 tiene minoración de la base imponible por 
+        /// la concesión de cupones, bonificaciones o descuentos 
+        /// cuando solo se expide el original de la factura. 
+        /// Si no se informa este campo se entenderá 
+        /// que tiene valor “N”. L22 ('S', 'N').
+        /// Alfanumérico(1).
+        /// </summary>
+        [XmlElement("Cupon", Namespace = Settings.NamespaceSii)]
+        public string Cupon { get; set; }
+
+        /// <summary>
+        /// Factura sin identificación destinatario artículo 6.1.d) 
+        /// RD 1619/2012 Si no se informa este campo se entenderá 
+        /// que tiene valor “N”. L28 ('S', 'N').
+        /// Alfanumérico(1).
+        /// </summary>
+        [XmlElement("FacturaSinIdentifDestinatarioAritculo6.1.d", Namespace = Settings.NamespaceSii)]
+        public string FacturaSinIdentifDestinatarioAritculo61d { get; set; }
 
         /// <summary>
         /// Comprador.
