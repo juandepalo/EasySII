@@ -45,11 +45,11 @@ using System.Xml.Serialization;
 namespace EasySII.Xml.Silr
 {
     /// <summary>
-    /// Libro de registro de Bienes inversión.
+    /// Libro de registro de Agecnias Viajes.
     /// </summary>
     [Serializable]
-    [XmlRoot("SuministroLRBienesInversion")]
-    public class SuministroLRBienesInversion
+    [XmlRoot("BajaLRAgenciasViajes")]
+    public class BajaLRAgenciasViajes
     {
 
         /// <summary>
@@ -59,18 +59,18 @@ namespace EasySII.Xml.Silr
         public Cabecera Cabecera { get; set; }
 
         /// <summary>
-        /// Lista de facturas con un límite de 10.000.
+        /// Filtro consulta.
         /// </summary>
-        [XmlElement("RegistroLRBienesInversion")]
-        public List<RegistroLRBienesInversion> RegistroLRBienesInversion { get; set; }
+        [XmlElement("RegistroLROperacionesSeguros")]
+        public List<RegistroLROpTrascendTribu> RegistroLRAgenciasViajes { get; set; }
 
         /// <summary>
-        /// Constructor de la clase SuministroLRFacturasEmitidas.
+        /// Constructor de la clase BajaLRFacturasRecibidas.
         /// </summary>
-        public SuministroLRBienesInversion()
+        public BajaLRAgenciasViajes()
         {
             Cabecera = new Cabecera();
-            RegistroLRBienesInversion = new List<RegistroLRBienesInversion>();
+            RegistroLRAgenciasViajes = new List<RegistroLROpTrascendTribu>();
         }
     }
 }

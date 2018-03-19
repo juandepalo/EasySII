@@ -1,4 +1,43 @@
-﻿using EasySII.Xml.SiiR;
+﻿/*
+    This file is part of the EasySII (R) project.
+    Copyright (c) 2017-2018 Irene Solutions SL
+    Authors: Irene Solutions SL.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License version 3
+    as published by the Free Software Foundation with the addition of the
+    following permission added to Section 15 as permitted in Section 7(a):
+    FOR ANY PART OF THE COVERED WORK IN WHICH THE COPYRIGHT IS OWNED BY
+    IRENE SOLUTIONS SL. IRENE SOLUTIONS SL DISCLAIMS THE WARRANTY OF NON INFRINGEMENT
+    OF THIRD PARTY RIGHTS
+    
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+    or FITNESS FOR A PARTICULAR PURPOSE.
+    See the GNU Affero General Public License for more details.
+    You should have received a copy of the GNU Affero General Public License
+    along with this program; if not, see http://www.gnu.org/licenses or write to
+    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+    Boston, MA, 02110-1301 USA, or download the license from the following URL:
+        http://www.irenesolutions.com/terms-of-use.pdf
+    
+    The interactive user interfaces in modified source and object code versions
+    of this program must display Appropriate Legal Notices, as required under
+    Section 5 of the GNU Affero General Public License.
+    
+    You can be released from the requirements of the license by purchasing
+    a commercial license. Buying such a license is mandatory as soon as you
+    develop commercial activities involving the EasySII software without
+    disclosing the source code of your own applications.
+    These activities include: offering paid services to customers as an ASP,
+    serving extract PDFs data on the fly in a web application, shipping EasySII
+    with a closed source product.
+    
+    For more information, please contact Irene Solutions SL. at this
+    address: info@irenesolutions.com
+ */
+
+using EasySII.Xml.SiiR;
 using EasySII.Xml.Silr;
 using System;
 using System.Xml.Serialization;
@@ -49,6 +88,12 @@ namespace EasySII.Xml.Soap
         /// </summary>
         [XmlElement("SuministroLROperacionesSeguros", Namespace = Settings.NamespaceSiiLR)]
         public SuministroLROperacionesSeguros SuministroLROperacionesSeguros { get; set; }
+
+        /// <summary>
+        /// Suministro de información al SII de Agencias de Viajes.
+        /// </summary>
+        [XmlElement("SuministroLRAgenciasViajes", Namespace = Settings.NamespaceSiiLR)]
+        public SuministroLRAgenciasViajes SuministroLRAgenciasViajes { get; set; }
 
         /// <summary>
         /// Suministro de información al SII de Operaciones Intracomunitarias.
@@ -143,6 +188,12 @@ namespace EasySII.Xml.Soap
         public BajaLROperacionesSeguros BajaLROperacionesSeguros { get; set; }
 
         /// <summary>
+        /// Baja de Agencias Viajes enviadas al SII.
+        /// </summary>
+        [XmlElement("BajaLRAgenciasViajes", Namespace = Settings.NamespaceSiiLR)]
+        public BajaLRAgenciasViajes BajaLRAgenciasViajes { get; set; }
+
+        /// <summary>
         /// Baja de Cobros en Metálico enviados al SII.
         /// </summary>
         [XmlElement("BajaLRCobrosMetalico", Namespace = Settings.NamespaceSiiLR)]
@@ -208,6 +259,12 @@ namespace EasySII.Xml.Soap
         /// </summary>
         [XmlElement("RespuestaLROperacionesSeguros", Namespace = Settings.NamespaceSiiR)]
         public RespuestaLRF RespuestaLROperacionesSeguros { get; set; }
+
+        /// <summary>
+        /// Respuesta AEAT LRAgenciasViajes.
+        /// </summary>
+        [XmlElement("RespuestaLRAgenciasViajes", Namespace = Settings.NamespaceSiiR)]
+        public RespuestaLRF RespuestaLRAgenciasViajes { get; set; }
 
         /// <summary>
         /// Respuesta AEAT LRBajaCobrosMetalico.
@@ -308,6 +365,7 @@ namespace EasySII.Xml.Soap
                 ((SuministroLRFacturasRecibidas == null) ? 0 : 1) +
                 ((SuministroLRCobrosMetalico == null) ? 0 : 1) +
                 ((SuministroLROperacionesSeguros == null) ? 0 : 1) +
+                ((SuministroLRAgenciasViajes == null) ? 0 : 1) +
                 ((SuministroLRDetOperacionIntracomunitaria == null) ? 0 : 1) +
                 ((SuministroLRPagosRecibidas == null) ? 0 : 1) +
 
@@ -325,6 +383,7 @@ namespace EasySII.Xml.Soap
                 ((BajaLRFacturasRecibidas == null) ? 0 : 1) +
                 ((BajaLRCobrosMetalico == null) ? 0 : 1) +
                 ((BajaLROperacionesSeguros == null) ? 0 : 1) +
+                ((BajaLRAgenciasViajes == null) ? 0 : 1) +
                 ((BajaLRDetOperacionIntracomunitaria == null) ? 0 : 1);
         }
     }

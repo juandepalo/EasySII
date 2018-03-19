@@ -52,6 +52,9 @@
     <Compile Include="Src\Business\ARInvoiceAV.cs" />
     <Compile Include="Src\Business\ARInvoicesBatchAV.cs" />
     <Compile Include="Src\Business\Context.cs" />
+    <Compile Include="Src\Business\TravelAgencyDeleteBatch.cs" />
+    <Compile Include="Src\Business\TravelAgencyQuery.cs" />
+    <Compile Include="Src\Business\TravelAgencyBatch.cs" />
     <Compile Include="Src\Business\InvoiceRectified.cs" />
     <Compile Include="Src\Business\ITInvoicesDeleteBatch.cs" />
     <Compile Include="Src\Business\ITInvoicesQuery.cs" />
@@ -153,6 +156,7 @@
     <Compile Include="Src\Xml\Sii\TipoDesgloseLRRC.cs" />
     <Compile Include="Src\Xml\Sii\TipoDesglose.cs" />
     <Compile Include="Src\Xml\Silr\BajaLRBienesInversion.cs" />
+    <Compile Include="Src\Xml\Silr\BajaLRAgenciasViajes.cs" />
     <Compile Include="Src\Xml\Silr\ClavePaginacionOTT.cs" />
     <Compile Include="Src\Xml\Silr\ConsultaLRBienesInversion.cs" />
     <Compile Include="Src\Xml\Silr\FacturaExpedidaLRRC.cs" />
@@ -188,6 +192,7 @@
     <Compile Include="Src\Xml\Silr\BajaLRCobrosMetalico.cs" />
     <Compile Include="Src\Xml\Silr\RegistroLROpTrascendTribu.cs" />
     <Compile Include="Src\Xml\Silr\SuministroLRCobrosMetalico.cs" />
+    <Compile Include="Src\Xml\Silr\SuministroLRAgenciasViajes.cs" />
     <Compile Include="Src\Xml\Silr\SuministroLROperacionesSeguros.cs" />
     <Compile Include="Src\Xml\Silr\ConsultaPagos.cs" />
     <Compile Include="Src\Xml\Silr\RegistroLRPagos.cs" />

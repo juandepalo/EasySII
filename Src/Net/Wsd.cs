@@ -1,4 +1,43 @@
-﻿using EasySII.Business;
+﻿/*
+    This file is part of the EasySII (R) project.
+    Copyright (c) 2017-2018 Irene Solutions SL
+    Authors: Irene Solutions SL.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License version 3
+    as published by the Free Software Foundation with the addition of the
+    following permission added to Section 15 as permitted in Section 7(a):
+    FOR ANY PART OF THE COVERED WORK IN WHICH THE COPYRIGHT IS OWNED BY
+    IRENE SOLUTIONS SL. IRENE SOLUTIONS SL DISCLAIMS THE WARRANTY OF NON INFRINGEMENT
+    OF THIRD PARTY RIGHTS
+    
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+    or FITNESS FOR A PARTICULAR PURPOSE.
+    See the GNU Affero General Public License for more details.
+    You should have received a copy of the GNU Affero General Public License
+    along with this program; if not, see http://www.gnu.org/licenses or write to
+    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+    Boston, MA, 02110-1301 USA, or download the license from the following URL:
+        http://www.irenesolutions.com/terms-of-use.pdf
+    
+    The interactive user interfaces in modified source and object code versions
+    of this program must display Appropriate Legal Notices, as required under
+    Section 5 of the GNU Affero General Public License.
+    
+    You can be released from the requirements of the license by purchasing
+    a commercial license. Buying such a license is mandatory as soon as you
+    develop commercial activities involving the EasySII software without
+    disclosing the source code of your own applications.
+    These activities include: offering paid services to customers as an ASP,
+    serving extract PDFs data on the fly in a web application, shipping EasySII
+    with a closed source product.
+    
+    For more information, please contact Irene Solutions SL. at this
+    address: info@irenesolutions.com
+ */
+
+using EasySII.Business;
 using EasySII.Xml;
 using EasySII.Xml.Soap;
 using System;
@@ -93,6 +132,10 @@ namespace EasySII.Net
         private static string WsdSuministroLROperacionesSegurosAction = WsdSuministroLROperTributariasUrl + "?op=SuministroLROperacionesSeguros";
         private static string WsdConsultaLROperacionesSegurosAction = WsdSuministroLROperTributariasUrl + "?op=ConsultaLROperacionesSeguros";
         private static string WsdAnulacionLROperacionesSegurosAction = WsdSuministroLROperTributariasUrl + "?op=AnulacionLROperacionesSeguros";
+
+        private static string WsdSuministroLRAgenciasViajesAction = WsdSuministroLROperTributariasUrl + "?op=SuministroLRAgenciasViajes";
+        private static string WsdConsultaLRAgenciasViajesAction = WsdSuministroLROperTributariasUrl + "?op=ConsultaLRAgenciasViajes";
+        private static string WsdAnulacionLRAgenciasViajesAction = WsdSuministroLROperTributariasUrl + "?op=AnulacionLRAgenciasViajes";
 
         /// <summary>
         /// Constructor estático de la clase Wsd.
@@ -874,11 +917,11 @@ namespace EasySII.Net
         /// <param name="invoicesBatch"> Lote de operaciones seguros.</param>
         /// <returns>Devuelve el xml de respuesta de la AEAT a una
         /// petición de consulta de operaciones seguros.</returns>
-        public static string SendOperacionesSeguros(CashBatch invoicesBatch)
+        public static string SendOperacionesSeguros(InsurancesBatch invoicesBatch)
         {
 
-            if (invoicesBatch.CashReceipts.Count == 0)
-                throw new ArgumentException("Couldnt't send CashBatch without cash receipts.");
+            if (invoicesBatch.Insurances.Count == 0)
+                throw new ArgumentException("Couldnt't send InsurancesBatch without insureance operations.");
 
             string response = Wsd.Call(Wsd.WsdSuministroLROperTributariasUrl,
                 Wsd.WsdSuministroLROperacionesSegurosAction,
@@ -897,11 +940,11 @@ namespace EasySII.Net
         /// <param name="invoicesBatch"> Consulta de operaciones seguros.</param>
         /// <returns>Devuelve el xml de respuesta de la AEAT a una
         /// petición de consulta de operaciones seguros.</returns>
-        public static string GetOperacionesSeguros(CashQuery invoicesBatch)
+        public static string GetOperacionesSeguros(InsurancesQuery invoicesBatch)
         {
 
-            if (invoicesBatch.CashReceipts.IssueDate == null)
-                throw new ArgumentException("Couldnt't get CashQuery without invoice IssueDate.");
+            if (invoicesBatch.Insurance.IssueDate == null)
+                throw new ArgumentException("Couldnt't get InsurancesQuery without invoice IssueDate.");
 
             string response = Wsd.Call(Wsd.WsdSuministroLROperTributariasUrl,
                 Wsd.WsdConsultaLROperacionesSegurosAction,
@@ -919,14 +962,81 @@ namespace EasySII.Net
         /// <param name="invoicesBatch"> Lote de operaciones seguros.</param>
         /// <returns>Devuelve el xml de respuesta de la AEAT a una
         /// petición de borrado de un lote de operaciones seguros.</returns>
-        public static string DeleteOperacionesSeguros(CashDeleteBatch invoicesBatch)
+        public static string DeleteOperacionesSeguros(InsurancesDeleteBatch invoicesBatch)
         {
 
-            if (invoicesBatch.CashReceipts.Count == 0)
-                throw new ArgumentException("Couldnt't send CashDeleteBatch without cash receipts.");
+            if (invoicesBatch.Insurances.Count == 0)
+                throw new ArgumentException("Couldnt't send InsurancesDeleteBatch without insurance operations.");
 
             string response = Wsd.Call(Wsd.WsdSuministroLROperTributariasUrl,
                 Wsd.WsdAnulacionLROperacionesSegurosAction,
+                invoicesBatch.GetXml(Settings.Current.OutboxPath + invoicesBatch.GetSentFileName()));
+
+            File.WriteAllText(Settings.Current.InboxPath + invoicesBatch.GetReceivedFileName(), response);
+
+            return response;
+
+        }
+
+        /// <summary>
+        /// Envía un lote de operaciones seguros al SII.
+        /// </summary>
+        /// <param name="invoicesBatch"> Lote de agencias viajes.</param>
+        /// <returns>Devuelve el xml de respuesta de la AEAT a una
+        /// petición de consulta de operaciones de agencias viajes.</returns>
+        public static string SendAgenciasViajes(TravelAgencyBatch invoicesBatch)
+        {
+
+            if (invoicesBatch.TravelAgencyOperations.Count == 0)
+                throw new ArgumentException("Couldnt't send TravelAgencyBatch without TravelAgency operations.");
+
+            string response = Wsd.Call(Wsd.WsdSuministroLROperTributariasUrl,
+                Wsd.WsdSuministroLRAgenciasViajesAction,
+                invoicesBatch.GetXml(Settings.Current.OutboxPath + invoicesBatch.GetSentFileName()));
+
+            File.WriteAllText(Settings.Current.InboxPath + invoicesBatch.GetReceivedFileName(), response);
+
+            return response;
+        }
+
+        /// <summary>
+        /// Consulta de operaciones de seguros enviados al SII. Devuelve un string
+        /// con el xml de la AEAT en respuesta a una consulta de agencias viaje
+        /// según los criterios facilitados.
+        /// </summary>
+        /// <param name="invoicesBatch"> Consulta de operaciones seguros.</param>
+        /// <returns>Devuelve el xml de respuesta de la AEAT a una
+        /// petición de consulta de agencias viaje.</returns>
+        public static string GetAgenciasViajes(TravelAgencyQuery invoicesBatch)
+        {
+
+            if (invoicesBatch.TravelAgencyOperation.IssueDate == null)
+                throw new ArgumentException("Couldnt't get TravelAgencyQuery without invoice IssueDate.");
+
+            string response = Wsd.Call(Wsd.WsdSuministroLROperTributariasUrl,
+                Wsd.WsdConsultaLRAgenciasViajesAction,
+                invoicesBatch.GetXml(Settings.Current.OutboxPath + invoicesBatch.GetSentFileName()));
+
+            File.WriteAllText(Settings.Current.InboxPath + invoicesBatch.GetReceivedFileName(), response);
+
+            return response;
+
+        }
+
+        /// <summary>
+        /// Borrar un lote de operaciones seguros enviados al SII.
+        /// </summary>
+        /// <param name="invoicesBatch"> Lote de agencias viajes.</param>
+        /// <returns>Devuelve el xml de respuesta de la AEAT a una
+        /// petición de borrado de un lote de operaciones agencias de viajes.</returns>
+        public static string DeleteAgenciasViajes(TravelAgencyDeleteBatch invoicesBatch)
+        {
+
+            if (invoicesBatch.TravelAgencyOperations.Count == 0)
+                throw new ArgumentException("Couldnt't send TravelAgencyDeleteBatch without TravelAgency operations.");
+
+            string response = Wsd.Call(Wsd.WsdSuministroLROperTributariasUrl,
+                Wsd.WsdAnulacionLRAgenciasViajesAction,
                 invoicesBatch.GetXml(Settings.Current.OutboxPath + invoicesBatch.GetSentFileName()));
 
             File.WriteAllText(Settings.Current.InboxPath + invoicesBatch.GetReceivedFileName(), response);

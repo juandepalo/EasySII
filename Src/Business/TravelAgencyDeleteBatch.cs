@@ -48,54 +48,53 @@ using System.Xml;
 namespace EasySII.Business
 {
     /// <summary>
-    /// Lote de facturas recibidadas a eliminar (Accounts payable invoices batch).
+    /// Lote de Agencias Viajes a eliminar.
     /// </summary>
-    public class APInvoicesDeleteBatch
+    public class TravelAgencyDeleteBatch
     {
 
  
         /// <summary>
-        /// Titular del lote de facturas recibidas.
+        /// Titular del lote de Operaciones Seguros.
         /// </summary>
         public Party Titular { get; set; }
 
         /// <summary>
-        /// Colección de facturas recibidas incluidas en el lote.
+        /// Colección de agencias de viajes incluidas en el lote.
         /// </summary>
-        public List<APInvoice> APInvoices { get; private set; }
+        public List<OPTributaria> TravelAgencyOperations { get; private set; }
 
         /// <summary>
-        /// Constructor clase APInvoicesDeleteBatch.
+        /// Constructor clase IPInvoicesBatch.
         /// </summary>
-        public APInvoicesDeleteBatch()
+        public TravelAgencyDeleteBatch()
         {
-            APInvoices = new List<APInvoice>();
+            TravelAgencyOperations = new List<OPTributaria>();
         }
 
         /// <summary>
-        /// Devuelve el sobre soap del lote de facturas emitidas.
+        /// Devuelve el sobre soap del lote de agencias de viajes
         /// </summary>
         /// <returns>Devuelve un string con el xml del sobre SOAP
-        /// compuesto para el envío del mensaje de lote de facturas
-        /// emitidas.</returns>
+        /// compuesto para el envío del mensaje de lote de agencias de viajes.</returns>
         public Envelope GetEnvelope()
         {
             Envelope envelope = new Envelope();
 
-            envelope.Body.BajaLRFacturasRecibidas = new BajaLRFacturasRecibidas();
+            envelope.Body.BajaLRAgenciasViajes = new BajaLRAgenciasViajes();
 
-            envelope.Body.BajaLRFacturasRecibidas.Cabecera.Titular.NIF = Titular.TaxIdentificationNumber;
-            envelope.Body.BajaLRFacturasRecibidas.Cabecera.Titular.NombreRazon = Titular.PartyName;
+            envelope.Body.BajaLROperacionesSeguros.Cabecera.Titular.NIF = Titular.TaxIdentificationNumber;
+            envelope.Body.BajaLROperacionesSeguros.Cabecera.Titular.NombreRazon = Titular.PartyName;
 
-            foreach(APInvoice invoice in APInvoices)
-                envelope.Body.BajaLRFacturasRecibidas.RegistroLRBajaRecibidas.Add(
-                    invoice.ToRegistroLRBajaRecibidasSII());
+            foreach (OPTributaria invoice in TravelAgencyOperations)
+
+                envelope.Body.BajaLRAgenciasViajes.RegistroLRAgenciasViajes.Add(invoice.ToRegistroLRBajaOpTrascendTribuSII());
 
             return envelope;
         }
 
         /// <summary>
-        /// Devuelve el lote de facturas como un archivo xml para soap según las
+        /// Devuelve el lote de agencias de viajes como un archivo xml para soap según las
         /// especificaciones de la aeat.
         /// </summary>
         /// <param name="xmlPath">Ruta donde se guardará el archivo generado.</param>
@@ -107,27 +106,25 @@ namespace EasySII.Business
 
         /// <summary>
         /// Devuelve el nombre del archivo de envío para una instancia
-        /// determinda de lote de facturas.
+        /// determinda de lote de Operaciones Seguros.
         /// </summary>
-        /// <returns>Nombre del archivo de envío al SII 
-        /// del lote de facturas emitidas.</returns>
+        /// <returns>Nombre del archivo de envío al SII del lote de Operaciones Seguros.</returns>
         public string GetSentFileName()
         {
 
-            return GetFileName("DRFR.SENT.{0}.{1}.{2}.xml");
+            return GetFileName("DRAV.SENT.{0}.{1}.{2}.xml");
 
         }
 
         /// <summary>
-        /// Devuelve el nombre del archivo de respuesta recibido para una instancia
-        /// determinda de lote de facturas.
+        /// Devuelve el nombre del archivo de envío para una instancia
+        /// determinda de lote de Operaciones Seguros.
         /// </summary>
-        /// <returns>Nombre del archivo de respuesta del SII 
-        /// del lote de facturas emitidas.</returns>
+        /// <returns>Nombre del archivo de envío al SII del lote de Operaciones Seguros.</returns>
         public string GetReceivedFileName()
         {
 
-            return GetFileName("DRFR.RECEIVED.{0}.{1}.{2}.xml");
+            return GetFileName("DRAV.RECEIVED.{0}.{1}.{2}.xml");
 
         }
 
@@ -138,13 +135,12 @@ namespace EasySII.Business
         /// <param name="numFirstInvoiceNumber"> Número factura inicial.</param>
         /// <param name="numLastInvoiceNumber"> Número factura final.</param>
         /// <param name="taxIdentificationNumber"> NIF del titular.</param>
-        /// <returns>Nombre del archivo de respuesta del SII 
-        /// del lote de facturas emitidas.</returns>
+        /// <returns>Nombre del archivo de envío al SII del lote de Operaciones Seguros.</returns>
         public static string GetNameSent(string numFirstInvoiceNumber,
             string numLastInvoiceNumber, string taxIdentificationNumber)
         {
 
-            string template = "DRFR.SENT.{0}.{1}.{2}.xml";
+            string template = "DRAV.SENT.{0}.{1}.{2}.xml";
 
             return GetName(template, numFirstInvoiceNumber,
                 numLastInvoiceNumber, taxIdentificationNumber);
@@ -158,13 +154,12 @@ namespace EasySII.Business
         /// <param name="numFirstInvoiceNumber"> Número factura inicial.</param>
         /// <param name="numLastInvoiceNumber"> Número factura final.</param>
         /// <param name="taxIdentificationNumber"> NIF del titular.</param>        
-        /// <returns>Nombre del archivo de respuesta del SII 
-        /// del lote de facturas emitidas.</returns>
+        /// <returns>Nombre del archivo de envío al SII del lote de Operaciones Seguros.</returns>
         public static string GetNameReceived(string numFirstInvoiceNumber,
             string numLastInvoiceNumber, string taxIdentificationNumber)
         {
 
-            string template = "DRFR.RECEIVED.{0}.{1}.{2}.xml";
+            string template = "DRAV.RECEIVED.{0}.{1}.{2}.xml";
 
             return GetName(template, numFirstInvoiceNumber,
                 numLastInvoiceNumber, taxIdentificationNumber);
@@ -175,13 +170,12 @@ namespace EasySII.Business
         /// Devuelve un nombre del archivo de para la instancia
         /// basado en un plantilla de texto.
         /// </summary>
-        /// <returns>Nombre del archivo de respuesta del SII 
-        /// del lote de facturas emitidas.</returns>
+        /// <returns>Nombre del archivo de envío al SII del lote de Operaciones Seguros.</returns>
         private string GetFileName(string template)
         {
 
-            return GetName(template, APInvoices[0].InvoiceNumber,
-               APInvoices[APInvoices.Count - 1].InvoiceNumber,
+            return GetName(template, TravelAgencyOperations[0].IssueDate.ToString(),
+               TravelAgencyOperations[TravelAgencyOperations.Count - 1].IssueDate.ToString(),
                Titular.TaxIdentificationNumber);
 
         }
@@ -194,8 +188,7 @@ namespace EasySII.Business
         /// <param name="numFirstInvoiceNumber"> Número factura inicial.</param>
         /// <param name="numLastInvoiceNumber"> Número factura final.</param>
         /// <param name="taxIdentificationNumber"> NIF del titular.</param>        
-        /// <returns>Nombre del archivo de respuesta del SII 
-        /// del lote de facturas emitidas.</returns>
+        /// <returns>Nombre del archivo de envío al SII del lote de Operaciones Seguros.</returns>
         private static string GetName(string template, string numFirstInvoiceNumber,
             string numLastInvoiceNumber, string taxIdentificationNumber)
         {

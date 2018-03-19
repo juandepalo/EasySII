@@ -42,16 +42,19 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
+
 namespace EasySII.Xml.Silr
 {
     /// <summary>
-    /// Libro de registro de Bienes inversión.
+    /// Agencias de viajes (Prestaciones de servicios de transporte 
+    /// de viajeros y de sus equipajes por vía aérea que se documenten 
+    /// en facturas expedidas de acuerdo con la disposición adicional 
+    /// cuarta del Real Decreto 1619/2012, de 30 de noviembre)
     /// </summary>
     [Serializable]
-    [XmlRoot("SuministroLRBienesInversion")]
-    public class SuministroLRBienesInversion
+    [XmlRoot("SuministroLRAgenciasViajes")]
+    public class SuministroLRAgenciasViajes
     {
-
         /// <summary>
         /// Datos de cabecera.
         /// </summary>
@@ -59,18 +62,18 @@ namespace EasySII.Xml.Silr
         public Cabecera Cabecera { get; set; }
 
         /// <summary>
-        /// Lista de facturas con un límite de 10.000.
+        /// Lista de Operaciones de Seguros con un límite de 10.000.
         /// </summary>
-        [XmlElement("RegistroLRBienesInversion")]
-        public List<RegistroLRBienesInversion> RegistroLRBienesInversion { get; set; }
+        [XmlElement("RegistroLRAgenciasViajes")]
+        public List<RegistroLROpTrascendTribu> RegistroLRAgenciasViajes { get; set; }
 
         /// <summary>
-        /// Constructor de la clase SuministroLRFacturasEmitidas.
+        /// Constructor de la clase SuministroLRAgenciasViajes.
         /// </summary>
-        public SuministroLRBienesInversion()
+        public SuministroLRAgenciasViajes()
         {
             Cabecera = new Cabecera();
-            RegistroLRBienesInversion = new List<RegistroLRBienesInversion>();
+            RegistroLRAgenciasViajes = new List<RegistroLROpTrascendTribu>();
         }
     }
 }

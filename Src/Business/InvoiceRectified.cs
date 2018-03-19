@@ -1,8 +1,4 @@
-﻿using EasySII.Xml.Sii;
-using EasySII.Xml.Silr;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System;
 
 namespace EasySII.Business
 {
