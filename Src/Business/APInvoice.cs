@@ -37,6 +37,7 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
 using EasySII.Tax;
 using EasySII.Xml;
 using EasySII.Xml.Sii;
@@ -49,7 +50,7 @@ namespace EasySII.Business
     /// <summary>
     /// Factura recibida.
     /// </summary>
-    public class APInvoice : Invoice
+    public class APInvoice : Invoice,  IBatchItem
     {
 
         /// <summary>
@@ -930,6 +931,32 @@ namespace EasySII.Business
 
             return siiDelete;
 
+        }
+
+        /// <summary>
+        /// Obtiene un objeto RegistroLRFacturasRecibidas, este objeto se utiliza
+        /// para la serialización xml.
+        /// </summary>
+        /// <param name="batchActionKey">Tipo de lote.</param>
+        /// <param name="updateInnerSII">Si es true, actualiza el objeto SII subyacente
+        /// con el valor calculado.</param>
+        /// <param name="skipErrors">Indica si hay que omitir las excepciones.</param>
+        /// <returns>Nueva instancia del objeto para serialización 
+        /// xml RegistroLRFacturasEmitidas.</returns>
+        public object ToSIIBatchItem(BatchActionKeys batchActionKey,
+            bool updateInnerSII = false, bool skipErrors = false)
+        {
+            switch (batchActionKey)
+            {
+                case BatchActionKeys.LR:
+                    return ToSII(updateInnerSII, skipErrors);
+                case BatchActionKeys.DR:
+                    return ToRegistroLRBajaRecibidasSII();
+                case BatchActionKeys.PG:
+                    return ToPaymentsSII();
+            }
+
+            throw new Exception($"Unknown BatchActionKey: {batchActionKey}");
         }
 
     }

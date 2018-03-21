@@ -37,41 +37,33 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Business.Batches;
-using EasySII.Xml.Sii;
-using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-
-namespace EasySII.Xml.Silr
+namespace EasySII.Business.Batches
 {
+
     /// <summary>
-    /// Libro de registro de Facturas expedidas.
+    /// Representa un elemento de un lote.
     /// </summary>
-    [Serializable]
-    [XmlRoot("ConsultaLRFacturasEmitidas")]
-    public class BajaLRFacturasEmitidas : ISiiLote
+    public interface IBatchItem
     {
 
         /// <summary>
-        /// Datos de cabecera.
+        /// Obtiene un objeto RegistroLRFacturasRecibidas, este objeto se utiliza
+        /// para la serialización xml.
         /// </summary>
-        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
-        public Cabecera Cabecera { get; set; }
+        /// <param name="batchActionKey">Tipo de lote.</param>
+        /// <param name="updateInnerSII">Si es true, actualiza el objeto SII subyacente
+        /// con el valor calculado.</param>
+        /// <param name="skipErrors">Indica si hay que omitir las excepciones.</param>
+        /// <returns>Nueva instancia del objeto para serialización 
+        /// xml RegistroLRFacturasEmitidas.</returns>
+        object ToSIIBatchItem(BatchActionKeys batchActionKey, 
+            bool updateInnerSII = false, bool skipErrors = false);
+
 
         /// <summary>
-        /// Filtro consulta.
+        /// Devuelve un identificador para la instancia de item: InvoiceNumber...
         /// </summary>
-        [XmlElement("RegistroLRBajaExpedidas", Order = 2)]
-        public List<RegistroLRBajaExpedidas> RegistroLRBajaExpedidas { get; set; }
+        string GetItemKey();
 
-        /// <summary>
-        /// Constructor de la clase SuministroLRFacturasEmitidas.
-        /// </summary>
-        public BajaLRFacturasEmitidas()
-        {
-            Cabecera = new Cabecera();
-            RegistroLRBajaExpedidas = new List<RegistroLRBajaExpedidas>();
-        }
     }
 }

@@ -37,14 +37,15 @@
     address: info@irenesolutions.com
  */
 
- using System;
+using EasySII.Business.Batches;
+using System;
 
 namespace EasySII.Business
 {
     /// <summary>
     /// Cobro/Pago de factura.
     /// </summary>
-    public class InvoicePayment
+    public class InvoicePayment 
     {
 
 

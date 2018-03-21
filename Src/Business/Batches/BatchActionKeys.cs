@@ -37,41 +37,31 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Business.Batches;
-using EasySII.Xml.Sii;
-using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-
-namespace EasySII.Xml.Silr
+namespace EasySII.Business.Batches
 {
+
     /// <summary>
-    /// Libro de registro de Facturas expedidas.
+    /// Clave que indica el tipo de lote.
     /// </summary>
-    [Serializable]
-    [XmlRoot("ConsultaLRFacturasEmitidas")]
-    public class BajaLRFacturasEmitidas : ISiiLote
+    public enum BatchActionKeys
     {
 
         /// <summary>
-        /// Datos de cabecera.
+        /// Lote de suministro de información LR (libro registro)
+        /// de facturas.
         /// </summary>
-        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
-        public Cabecera Cabecera { get; set; }
+        LR,
 
         /// <summary>
-        /// Filtro consulta.
+        /// Lote de suministro de información
+        /// de pagos/cobros.
         /// </summary>
-        [XmlElement("RegistroLRBajaExpedidas", Order = 2)]
-        public List<RegistroLRBajaExpedidas> RegistroLRBajaExpedidas { get; set; }
+        PG,
 
         /// <summary>
-        /// Constructor de la clase SuministroLRFacturasEmitidas.
+        /// Lote de borrado de información.
         /// </summary>
-        public BajaLRFacturasEmitidas()
-        {
-            Cabecera = new Cabecera();
-            RegistroLRBajaExpedidas = new List<RegistroLRBajaExpedidas>();
-        }
+        DR
+
     }
 }

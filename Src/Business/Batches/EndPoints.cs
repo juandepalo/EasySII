@@ -37,41 +37,35 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Business.Batches;
-using EasySII.Xml.Sii;
-using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 
-namespace EasySII.Xml.Silr
+namespace EasySII.Business.Batches
 {
+
     /// <summary>
-    /// Libro de registro de Facturas expedidas.
+    /// EndPoints por tipo de documentos.
     /// </summary>
-    [Serializable]
-    [XmlRoot("ConsultaLRFacturasEmitidas")]
-    public class BajaLRFacturasEmitidas : ISiiLote
+    public class EndPoints
     {
 
         /// <summary>
-        /// Datos de cabecera.
+        /// Prefijo de todos los endpoints del SII.
         /// </summary>
-        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
-        public Cabecera Cabecera { get; set; }
+        public static string EndPointPrefix = Settings.Current.SiiEndPointPrefix;
 
         /// <summary>
-        /// Filtro consulta.
+        /// Mapeo entre tipos de lote del SII y objetos de negocio.
         /// </summary>
-        [XmlElement("RegistroLRBajaExpedidas", Order = 2)]
-        public List<RegistroLRBajaExpedidas> RegistroLRBajaExpedidas { get; set; }
-
-        /// <summary>
-        /// Constructor de la clase SuministroLRFacturasEmitidas.
-        /// </summary>
-        public BajaLRFacturasEmitidas()
-        {
-            Cabecera = new Cabecera();
-            RegistroLRBajaExpedidas = new List<RegistroLRBajaExpedidas>();
-        }
+        public static Dictionary<BatchTypes, string> BusinessTypesOfSii = new Dictionary<BatchTypes, string>() {
+            {BatchTypes.FacturasRecibidas,                                      $"{EndPointPrefix}/fr/SiiFactFRV1SOAP" },
+            {BatchTypes.PagosRecibidas,                                         $"{EndPointPrefix}/fr/SiiFactPAGV1SOAP" },
+            {BatchTypes.FacturasEmitidas,                                       $"{EndPointPrefix}/fe/SiiFactFEV1SOAP" },
+            {BatchTypes.CobrosEmitidas,                                         $"{EndPointPrefix}/fe/SiiFactCOBV1SOAP" },
+            {BatchTypes.BienesInversion,                                        $"{EndPointPrefix}/bi/SiiFactBIV1SOAP" },
+            {BatchTypes.CobrosMetalico,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
+            {BatchTypes.OperacionesSeguros,                                     $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
+            {BatchTypes.DetOperacionIntracomunitaria,                           $"{EndPointPrefix}/oi/SiiFactOIV1SOAP" },
+            {BatchTypes.AgenciasViajes,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
+        };
     }
 }

@@ -54,14 +54,14 @@ namespace EasySII.Xml.Soap
         /// <summary>
         /// SOAP Header.
         /// </summary>
-        [XmlElement]
+        [XmlElement(Order = 1)]
         public Header Header { get; set; }
 
 
         /// <summary>
         /// Body del envelope SOAP.
         /// </summary>
-        [XmlElement]
+        [XmlElement(Order = 2)]
         public Body Body { get; set; }
 
         /// <summary>

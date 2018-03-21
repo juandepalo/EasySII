@@ -37,6 +37,7 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
 using EasySII.Xml.Sii;
 using System;
 using System.Xml.Serialization;
@@ -48,7 +49,7 @@ namespace EasySII.Xml.Silr
     /// </summary>
     [Serializable]
     [XmlRoot("ConsultaLRFacturasRecibidas")]
-    public class ConsultaLRFacturasRecibidas
+    public class ConsultaLRFacturasRecibidas 
     {
 
         /// <summary>

@@ -37,6 +37,7 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
 using EasySII.Xml.Sii;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace EasySII.Xml.Silr
     /// </summary>
     [Serializable]
     [XmlRoot("SuministroLRFacturasEmitidas")]
-    public class SuministroLRFacturasEmitidas
+    public class SuministroLRFacturasEmitidas : ISiiLote
     {
 
         /// <summary>

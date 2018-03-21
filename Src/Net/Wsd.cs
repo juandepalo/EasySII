@@ -38,6 +38,7 @@
  */
 
 using EasySII.Business;
+using EasySII.Business.Batches;
 using EasySII.Xml;
 using EasySII.Xml.Soap;
 using System;
@@ -451,6 +452,7 @@ namespace EasySII.Net
         /// <param name="invoicesBatch"> Lote de facturas emitidas.</param>
         /// <returns>Devuelve un string con el xml de respuesta de
         /// la AEAT a la operación de envío del lote de facturas emitidas.</returns>
+        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
         public static string SendFacturasEmitidas(ARInvoicesBatch invoicesBatch)
         {
 
@@ -499,6 +501,7 @@ namespace EasySII.Net
         /// <returns>Devuelve un string con el xml de respuesta de la AEAT
         /// a la operación de envío de cobros de facturas emitidas en regimen 
         /// especial de criterio de caja.</returns>
+        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
         public static string SendCobrosFacturasEmitidas(ARInvoicesPaymentsBatch paymentsBatch)
         {
 
@@ -570,6 +573,7 @@ namespace EasySII.Net
         /// <param name="invoicesBatch"> Lote de facturas emitidas a borrar.</param>
         /// <returns>Devuelve un string con el xml de respuesta de
         /// la AEAT a la operación de envío del lote de facturas emitidas.</returns>
+        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
         public static string DeleteFacturasEmitidas(ARInvoicesDeleteBatch invoicesBatch)
         {
 
@@ -593,6 +597,7 @@ namespace EasySII.Net
         /// <param name="invoicesBatch"> Lote de facturas recibidas.</param>
         /// <returns>Devuelve el xml de respuesta de la AEAT a una
         /// petición de consulta de facturas emitidas recibidas.</returns>
+        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
         public static string SendFacturasRecibidas(APInvoicesBatch invoicesBatch)
         {
 
@@ -619,6 +624,7 @@ namespace EasySII.Net
         /// <returns>Devuelve un string con el xml de respuesta de la AEAT
         /// a la operación de envío de pagos de facturas recibidas en regimen 
         /// especial de criterio de caja.</returns>
+        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
         public static string SendPagosFacturasRecibidas(APInvoicesPaymentsBatch paymentsBatch)
         {
 
@@ -693,6 +699,7 @@ namespace EasySII.Net
         /// <param name="invoicesBatch"> Lote de facturas recibidas a borrar.</param>
         /// <returns>Devuelve un string con el xml de respuesta de
         /// la AEAT a la operación de envío del lote de facturas recibidas.</returns>
+        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
         public static string DeleteFacturasRecibidas(APInvoicesDeleteBatch invoicesBatch)
         {
 
@@ -1045,6 +1052,8 @@ namespace EasySII.Net
 
         }
 
+
+
         /// <summary>
         /// Llama a al web service de la AEAT para el SII seleccionado.
         /// </summary>
@@ -1052,7 +1061,7 @@ namespace EasySII.Net
         /// <param name="action">Acción a ejecutar.</param>
         /// <param name="xmlDocument">Documento soap xml.</param>
         /// <returns>Devuelve la respuesta.</returns>
-        private static string Call(string url, string action, XmlDocument xmlDocument)
+        protected static string Call(string url, string action, XmlDocument xmlDocument)
         {
             HttpWebRequest webRequest = CreateWebRequest(url, action);
 

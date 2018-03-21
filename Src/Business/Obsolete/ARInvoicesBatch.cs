@@ -50,6 +50,7 @@ namespace EasySII.Business
     /// <summary>
     /// Lote de facturas expedidas (Accounts recivable invoices batch).
     /// </summary>
+    [Obsolete("Utilice la clase Batch con el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
     public class ARInvoicesBatch
     {
 

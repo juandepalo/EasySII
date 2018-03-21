@@ -37,41 +37,33 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Business.Batches;
-using EasySII.Xml.Sii;
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 
-namespace EasySII.Xml.Silr
+namespace EasySII.Business.Batches
 {
+
     /// <summary>
-    /// Libro de registro de Facturas expedidas.
+    /// Clases utilizadas para simplificar el trabajo
+    /// de generación y envío de lotes.
     /// </summary>
-    [Serializable]
-    [XmlRoot("ConsultaLRFacturasEmitidas")]
-    public class BajaLRFacturasEmitidas : ISiiLote
+    public class BusinessTypes
     {
 
-        /// <summary>
-        /// Datos de cabecera.
-        /// </summary>
-        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
-        public Cabecera Cabecera { get; set; }
 
         /// <summary>
-        /// Filtro consulta.
+        /// Mapeo entre tipos de lote del SII y objetos de negocio.
         /// </summary>
-        [XmlElement("RegistroLRBajaExpedidas", Order = 2)]
-        public List<RegistroLRBajaExpedidas> RegistroLRBajaExpedidas { get; set; }
-
-        /// <summary>
-        /// Constructor de la clase SuministroLRFacturasEmitidas.
-        /// </summary>
-        public BajaLRFacturasEmitidas()
-        {
-            Cabecera = new Cabecera();
-            RegistroLRBajaExpedidas = new List<RegistroLRBajaExpedidas>();
-        }
+        public static Dictionary<BatchTypes, Type> BusinessTypesOfSii = new Dictionary<BatchTypes, Type>() {
+            {BatchTypes.FacturasRecibidas,                                      typeof(APInvoice) },
+            {BatchTypes.PagosRecibidas,                                         typeof(APInvoicePayment) },
+            {BatchTypes.FacturasEmitidas,                                       typeof(ARInvoice) },
+            {BatchTypes.CobrosEmitidas,                                         typeof(ARInvoicePayment) },
+            {BatchTypes.BienesInversion,                                        typeof(Asset) },
+            {BatchTypes.CobrosMetalico,                                         typeof(OPTributaria) },
+            {BatchTypes.OperacionesSeguros,                                     typeof(OPTributaria) },
+            {BatchTypes.DetOperacionIntracomunitaria,                           typeof(ITInvoice) },
+            {BatchTypes.AgenciasViajes,                                         typeof(OPTributaria) },
+        };
     }
 }

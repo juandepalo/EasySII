@@ -48,89 +48,49 @@ using System.Xml;
 namespace EasySII.Business
 {
     /// <summary>
-    /// Lote de facturas expedidas (Accounts recivable invoices batch).
+    /// Lote de facturas recibidadas a eliminar (Accounts payable invoices batch).
     /// </summary>
-    public class ARInvoicesBatchAV
+    [Obsolete("Utilice la clase Batch con el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+    public class APInvoicesDeleteBatch
     {
 
+ 
         /// <summary>
-        /// Tipo de comunicación.
-        /// </summary>
-        public CommunicationType CommunicationType { get; set; }
-
-        /// <summary>
-        /// Titular del lote de facturas expedidas.
+        /// Titular del lote de facturas recibidas.
         /// </summary>
         public Party Titular { get; set; }
 
         /// <summary>
-        /// Colección de facturas emitidas incluidas en el lote.
+        /// Colección de facturas recibidas incluidas en el lote.
         /// </summary>
-        public List<ARInvoiceAV> ARInvoicesAV { get; private set; }
+        public List<APInvoice> APInvoices { get; private set; }
 
         /// <summary>
-        /// Constructor clase ARInvoicesBatch.
+        /// Constructor clase APInvoicesDeleteBatch.
         /// </summary>
-        public ARInvoicesBatchAV()
+        public APInvoicesDeleteBatch()
         {
-            ARInvoicesAV = new List<ARInvoiceAV>();
+            APInvoices = new List<APInvoice>();
         }
 
         /// <summary>
-        /// Constructor clase ARInvoicesBatch.
+        /// Devuelve el sobre soap del lote de facturas emitidas.
         /// </summary>
-        /// <param name="suministroLRFacturasEmitidas">Objeto de serialización xml para
-        /// suministro de facturas emitidas.</param>
-        public ARInvoicesBatchAV(SuministroLRFacturasEmitidas suministroLRFacturasEmitidas)
-        {
-            ARInvoicesAV = new List<ARInvoiceAV>();
-
-            CommunicationType communicationType;
-
-            if (!Enum.TryParse<CommunicationType>(
-                suministroLRFacturasEmitidas.Cabecera.TipoComunicacion, out communicationType))
-                throw new InvalidOperationException($"Unknown comunication type {suministroLRFacturasEmitidas.Cabecera.TipoComunicacion}");
-
-            CommunicationType = communicationType;
-
-            Titular = new Party()
-            {
-                TaxIdentificationNumber = suministroLRFacturasEmitidas.Cabecera.Titular.NIF,
-                PartyName = suministroLRFacturasEmitidas.Cabecera.Titular.NombreRazon
-            };
-
-            foreach (var invoice in 
-                suministroLRFacturasEmitidas.RegistroLRFacturasEmitidas)
-                ARInvoicesAV.Add(new ARInvoiceAV(invoice));
-
-        }
-
-		/// <summary>
-		/// Devuelve el sobre soap del lote de facturas emitidas.
-		/// </summary>	
-		/// <param name="skipErrors">Indica si hay que omitir las excepciones.</param>
-		/// <returns>Devuelve un string con el xml del sobre SOAP
-		/// compuesto para el envío del mensaje de lote de facturas
-		/// emitidas.</returns>
-		public Envelope GetEnvelope(bool skipErrors = false)
+        /// <returns>Devuelve un string con el xml del sobre SOAP
+        /// compuesto para el envío del mensaje de lote de facturas
+        /// emitidas.</returns>
+        public Envelope GetEnvelope()
         {
             Envelope envelope = new Envelope();
 
-            envelope.Body.SuministroLRFacturasEmitidas = new SuministroLRFacturasEmitidas();
+            envelope.Body.BajaLRFacturasRecibidas = new BajaLRFacturasRecibidas();
 
-            envelope.Body.SuministroLRFacturasEmitidas.Cabecera.TipoComunicacion = CommunicationType.ToString();
+            envelope.Body.BajaLRFacturasRecibidas.Cabecera.Titular.NIF = Titular.TaxIdentificationNumber;
+            envelope.Body.BajaLRFacturasRecibidas.Cabecera.Titular.NombreRazon = Titular.PartyName;
 
-            envelope.Body.SuministroLRFacturasEmitidas.Cabecera.Titular.NIF = Titular.TaxIdentificationNumber;
-            envelope.Body.SuministroLRFacturasEmitidas.Cabecera.Titular.NombreRazon = Titular.PartyName;
-
-            foreach(ARInvoiceAV invoice in ARInvoicesAV)
-            {
-                if (invoice.InvoiceNumberLastItem!=null && invoice.InvoiceType != InvoiceType.F4 && !skipErrors)
-                    throw new InvalidOperationException(
-                       "InvoiceNumberLastItem only valid with InvoiceType.F4");
-
-                envelope.Body.SuministroLRFacturasEmitidas.RegistroLRFacturasEmitidas.Add(invoice.ToSII(skipErrors));
-            }
+            foreach(APInvoice invoice in APInvoices)
+                envelope.Body.BajaLRFacturasRecibidas.RegistroLRBajaRecibidas.Add(
+                    invoice.ToRegistroLRBajaRecibidasSII());
 
             return envelope;
         }
@@ -145,7 +105,6 @@ namespace EasySII.Business
         {
             return SIIParser.GetXml(GetEnvelope(), xmlPath);
         }
-  
 
         /// <summary>
         /// Devuelve el nombre del archivo de envío para una instancia
@@ -156,12 +115,12 @@ namespace EasySII.Business
         public string GetSentFileName()
         {
 
-            return GetFileName("LRFE.SENT.{0}.{1}.{2}.xml");
+            return GetFileName("DRFR.SENT.{0}.{1}.{2}.xml");
 
         }
 
         /// <summary>
-        /// Devuelve el nombre del archivo de respuesta recibido para esta instancia
+        /// Devuelve el nombre del archivo de respuesta recibido para una instancia
         /// determinda de lote de facturas.
         /// </summary>
         /// <returns>Nombre del archivo de respuesta del SII 
@@ -169,7 +128,7 @@ namespace EasySII.Business
         public string GetReceivedFileName()
         {
 
-            return GetFileName("LRFE.RECEIVED.{0}.{1}.{2}.xml");
+            return GetFileName("DRFR.RECEIVED.{0}.{1}.{2}.xml");
 
         }
 
@@ -179,18 +138,18 @@ namespace EasySII.Business
         /// </summary>
         /// <param name="numFirstInvoiceNumber"> Número factura inicial.</param>
         /// <param name="numLastInvoiceNumber"> Número factura final.</param>
-        /// <param name="taxIdentificationNumber"> NIF del titular.</param>        
+        /// <param name="taxIdentificationNumber"> NIF del titular.</param>
         /// <returns>Nombre del archivo de respuesta del SII 
         /// del lote de facturas emitidas.</returns>
         public static string GetNameSent(string numFirstInvoiceNumber,
             string numLastInvoiceNumber, string taxIdentificationNumber)
         {
 
-            string template = "LRFE.SENT.{0}.{1}.{2}.xml";
+            string template = "DRFR.SENT.{0}.{1}.{2}.xml";
 
-            return  GetName(template, numFirstInvoiceNumber, 
+            return GetName(template, numFirstInvoiceNumber,
                 numLastInvoiceNumber, taxIdentificationNumber);
-   
+
         }
 
         /// <summary>
@@ -206,13 +165,12 @@ namespace EasySII.Business
             string numLastInvoiceNumber, string taxIdentificationNumber)
         {
 
-            string template = "LRFE.RECEIVED.{0}.{1}.{2}.xml";
+            string template = "DRFR.RECEIVED.{0}.{1}.{2}.xml";
 
             return GetName(template, numFirstInvoiceNumber,
                 numLastInvoiceNumber, taxIdentificationNumber);
 
         }
-   
 
         /// <summary>
         /// Devuelve un nombre del archivo de para la instancia
@@ -223,9 +181,9 @@ namespace EasySII.Business
         private string GetFileName(string template)
         {
 
-            return GetName(template, ARInvoicesAV[0].InvoiceNumber, 
-                ARInvoicesAV[ARInvoicesAV.Count - 1].InvoiceNumber, 
-                Titular.TaxIdentificationNumber);
+            return GetName(template, APInvoices[0].InvoiceNumber,
+               APInvoices[APInvoices.Count - 1].InvoiceNumber,
+               Titular.TaxIdentificationNumber);
 
         }
 
@@ -239,7 +197,7 @@ namespace EasySII.Business
         /// <param name="taxIdentificationNumber"> NIF del titular.</param>        
         /// <returns>Nombre del archivo de respuesta del SII 
         /// del lote de facturas emitidas.</returns>
-        private static string GetName(string template, string numFirstInvoiceNumber, 
+        private static string GetName(string template, string numFirstInvoiceNumber,
             string numLastInvoiceNumber, string taxIdentificationNumber)
         {
             string numFirst, numLast;
@@ -252,6 +210,5 @@ namespace EasySII.Business
 
             return string.Format(template, taxIdentificationNumber, numFirst, numLast);
         }
-
     }
 }

@@ -37,41 +37,59 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Business.Batches;
-using EasySII.Xml.Sii;
-using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-
-namespace EasySII.Xml.Silr
+namespace EasySII.Business.Batches
 {
+
     /// <summary>
-    /// Libro de registro de Facturas expedidas.
+    /// Tipos de lotes.
     /// </summary>
-    [Serializable]
-    [XmlRoot("ConsultaLRFacturasEmitidas")]
-    public class BajaLRFacturasEmitidas : ISiiLote
+    public enum BatchTypes
     {
 
         /// <summary>
-        /// Datos de cabecera.
+        /// Facturas recibidas.
         /// </summary>
-        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
-        public Cabecera Cabecera { get; set; }
+        FacturasRecibidas,
 
         /// <summary>
-        /// Filtro consulta.
+        /// Pagos recibidas.
         /// </summary>
-        [XmlElement("RegistroLRBajaExpedidas", Order = 2)]
-        public List<RegistroLRBajaExpedidas> RegistroLRBajaExpedidas { get; set; }
+        PagosRecibidas,
 
         /// <summary>
-        /// Constructor de la clase SuministroLRFacturasEmitidas.
+        /// Facturas emitidas.
         /// </summary>
-        public BajaLRFacturasEmitidas()
-        {
-            Cabecera = new Cabecera();
-            RegistroLRBajaExpedidas = new List<RegistroLRBajaExpedidas>();
-        }
+        FacturasEmitidas,
+
+        /// <summary>
+        /// Cobros emitidas.
+        /// </summary>
+        CobrosEmitidas,
+
+        /// <summary>
+        /// Bienes inversión.
+        /// </summary>
+        BienesInversion,
+
+        /// <summary>
+        /// Cobros metálico.
+        /// </summary>
+        CobrosMetalico,
+
+        /// <summary>
+        /// Operaciones seguros.
+        /// </summary>
+        OperacionesSeguros,
+
+        /// <summary>
+        /// Det. operacion intracomunitaria.
+        /// </summary>
+        DetOperacionIntracomunitaria,
+
+        /// <summary>
+        /// Agencias viajes.
+        /// </summary>
+        AgenciasViajes
+
     }
 }

@@ -41,7 +41,6 @@ using EasySII.Xml;
 using EasySII.Xml.Silr;
 using EasySII.Xml.Soap;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
@@ -50,7 +49,7 @@ namespace EasySII.Business
     /// <summary>
     /// Consulta de facturas recibidas enviadas.
     /// </summary>
-    public class APInvoicesQuery
+    public class APInvoicesQuery 
     {
  
 
@@ -146,5 +145,7 @@ namespace EasySII.Business
             return string.Format(template, Titular.TaxIdentificationNumber, numFirst, numLast);
 
         }
+
+
     }
 }

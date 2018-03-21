@@ -48,96 +48,88 @@ using System.Xml;
 namespace EasySII.Business
 {
     /// <summary>
-    /// Lote de cobros de facturas expedidas (Accounts recivable invoices batch).
+    /// Lote de facturas recibidas (Accounts payable invoices batch).
     /// </summary>
-    public class ARInvoicesPaymentsBatch
+    [Obsolete("Utilice la clase Batch con el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+    public class APInvoicesBatch
     {
- 
 
         /// <summary>
-        /// Titular del lote de facturas expedidas.
+        /// Tipo de comunicación.
+        /// </summary>
+        public CommunicationType CommunicationType { get; set; }
+
+        /// <summary>
+        /// Titular del lote de facturas recibidas.
         /// </summary>
         public Party Titular { get; set; }
 
         /// <summary>
-        /// Colección de facturas emitidas incluidas en el lote.
+        /// Colección de facturas recibidas incluidas en el lote.
         /// </summary>
-        public List<ARInvoice> ARInvoices { get; set; }
+        public List<APInvoice> APInvoices { get; private set; }
 
         /// <summary>
-        /// Constructor clase ARInvoicesPaymentsBatch.
+        /// Constructor clase APInvoicesBatch.
         /// </summary>
-        public ARInvoicesPaymentsBatch()
+        public APInvoicesBatch()
         {
-            ARInvoices = new List<ARInvoice>();
+            APInvoices = new List<APInvoice>();
         }
 
         /// <summary>
-        /// Constructor clase ARInvoicesPaymentsBatch.
+        /// Constructor clase APInvoicesBatch.
         /// </summary>
-        /// <param name="suministroLRCobrosEmitidas">Objeto de serialización xml para
-        /// suministro de facturas emitidas.</param>
-        public ARInvoicesPaymentsBatch(SuministroLRCobrosEmitidas suministroLRCobrosEmitidas)
+        /// <param name="suministroLRFacturasRecibidas">Objeto de serialización xml para
+        /// suministro de facturas recibidas.</param>
+        public APInvoicesBatch(SuministroLRFacturasRecibidas suministroLRFacturasRecibidas)
         {
-            ARInvoices = new List<ARInvoice>();
+
+            APInvoices = new List<APInvoice>();
+
+            CommunicationType communicationType;
+
+            if (!Enum.TryParse<CommunicationType>(
+                suministroLRFacturasRecibidas.Cabecera.TipoComunicacion, out communicationType))
+                throw new InvalidOperationException($"Unknown comunication type {suministroLRFacturasRecibidas.Cabecera.TipoComunicacion}");
+
+            CommunicationType = communicationType;
 
             Titular = new Party()
             {
-                TaxIdentificationNumber = suministroLRCobrosEmitidas.Cabecera.Titular.NIF,
-                PartyName = suministroLRCobrosEmitidas.Cabecera.Titular.NombreRazon
+                TaxIdentificationNumber = suministroLRFacturasRecibidas.Cabecera.Titular.NIF,
+                PartyName = suministroLRFacturasRecibidas.Cabecera.Titular.NombreRazon
             };
 
-            foreach (var invoice in suministroLRCobrosEmitidas.RegistroLRCobros)
+            foreach (var invoice in
+                suministroLRFacturasRecibidas.RegistroLRFacturasRecibidas)
             {
-                ARInvoice facturaWrk = new ARInvoice();
-
-                facturaWrk.InvoiceNumber = invoice.IDFactura.NumSerieFacturaEmisor;
-                facturaWrk.IssueDate = Convert.ToDateTime(invoice.IDFactura.FechaExpedicionFacturaEmisor);
-                facturaWrk.BuyerParty = Titular; // En este caso, al no venir dicha información y para evitar problemas, el comprador también será el titular.
-
-                //facturaWrk.SellerParty.PartyName = invoice.IDFactura.IDEmisorFactura.NombreRazon;
-                Party Emisor = new Party()
-                {
-                    TaxIdentificationNumber = invoice.IDFactura.IDEmisorFactura.NIF
-                };
-                facturaWrk.SellerParty = Emisor;
-
-                foreach (var cobros in invoice.Cobros)
-                {
-                    ARInvoicePayment cobroWrk = new ARInvoicePayment();
-                    cobroWrk.PaymentDate = Convert.ToDateTime(cobros.Fecha);
-                    cobroWrk.PaymentAmount = Convert.ToDecimal(cobros.Importe, Settings.DefaultNumberFormatInfo);
-
-                    PaymentTerms tipoCobro;
-                    if (!Enum.TryParse<PaymentTerms>(cobros.Medio, out tipoCobro))
-                        throw new InvalidOperationException($"Unknown payment term {cobros.Medio}");
-
-                    cobroWrk.PaymentTerm = tipoCobro;
-
-                    facturaWrk.ARInvoicePayments.Add(cobroWrk);
-                }
-                ARInvoices.Add(facturaWrk);
+                APInvoice apInvoice = new APInvoice(invoice);
+                apInvoice.BuyerParty = Titular;
+                APInvoices.Add(apInvoice);
             }
 
         }
 
-        /// <summary>
-        /// Devuelve el sobre soap del lote de facturas emitidas.
-        /// </summary>
-        /// <returns>String con el xml del sobre SOAP para el envío de
-        /// cobros de facturas emitidas en regimen especial de caja.</returns>
-        public Envelope GetEnvelope()
-        {
 
+		/// <summary>
+		/// Devuelve el sobre soap del lote de facturas emitidas.
+		/// </summary>
+		/// <param name="skipErrors">Indica si hay que omitir las excepciones.</param>
+		/// <returns>Sobre SOAP con lote de facturas recibidas.</returns>
+		public Envelope GetEnvelope(bool skipErrors = false)
+        {
             Envelope envelope = new Envelope();
 
-            envelope.Body.SuministroLRCobrosEmitidas = new SuministroLRCobrosEmitidas();
+            envelope.Body.SuministroLRFacturasRecibidas = new SuministroLRFacturasRecibidas();
 
-            envelope.Body.SuministroLRCobrosEmitidas.Cabecera.Titular.NIF = Titular.TaxIdentificationNumber;
-            envelope.Body.SuministroLRCobrosEmitidas.Cabecera.Titular.NombreRazon = Titular.PartyName;
+            envelope.Body.SuministroLRFacturasRecibidas.Cabecera.TipoComunicacion = CommunicationType.ToString();
 
-            foreach(ARInvoice invoice in ARInvoices)
-                envelope.Body.SuministroLRCobrosEmitidas.RegistroLRCobros.Add(invoice.ToPaymentsSII());
+            envelope.Body.SuministroLRFacturasRecibidas.Cabecera.Titular.NIF = Titular.TaxIdentificationNumber;
+            envelope.Body.SuministroLRFacturasRecibidas.Cabecera.Titular.NombreRazon = Titular.PartyName;
+
+            foreach(APInvoice invoice in APInvoices)
+                envelope.Body.SuministroLRFacturasRecibidas.RegistroLRFacturasRecibidas.Add(invoice.ToSII(false, skipErrors));
 
             return envelope;
         }
@@ -162,7 +154,7 @@ namespace EasySII.Business
         public string GetSentFileName()
         {
 
-            return GetFileName("LCFE.SENT.{0}.{1}.{2}.xml");
+            return GetFileName("LRFR.SENT.{0}.{1}.{2}.xml");
 
         }
 
@@ -175,7 +167,7 @@ namespace EasySII.Business
         public string GetReceivedFileName()
         {
 
-            return GetFileName("LCFE.RECEIVED.{0}.{1}.{2}.xml");
+            return GetFileName("LRFR.RECEIVED.{0}.{1}.{2}.xml");
 
         }
 
@@ -192,7 +184,7 @@ namespace EasySII.Business
             string numLastInvoiceNumber, string taxIdentificationNumber)
         {
 
-            string template = "LCFE.SENT.{0}.{1}.{2}.xml";
+            string template = "LRFR.SENT.{0}.{1}.{2}.xml";
 
             return GetName(template, numFirstInvoiceNumber,
                 numLastInvoiceNumber, taxIdentificationNumber);
@@ -212,7 +204,7 @@ namespace EasySII.Business
             string numLastInvoiceNumber, string taxIdentificationNumber)
         {
 
-            string template = "LCFE.RECEIVED.{0}.{1}.{2}.xml";
+            string template = "LRFR.RECEIVED.{0}.{1}.{2}.xml";
 
             return GetName(template, numFirstInvoiceNumber,
                 numLastInvoiceNumber, taxIdentificationNumber);
@@ -228,9 +220,9 @@ namespace EasySII.Business
         private string GetFileName(string template)
         {
 
-            return GetName(template, ARInvoices[0].InvoiceNumber,
-                ARInvoices[ARInvoices.Count - 1].InvoiceNumber,
-                Titular.TaxIdentificationNumber);
+            return GetName(template, APInvoices[0].InvoiceNumber,
+                APInvoices[APInvoices.Count - 1].InvoiceNumber,
+                Titular.TaxIdentificationNumber);      
 
         }
 
@@ -257,5 +249,6 @@ namespace EasySII.Business
 
             return string.Format(template, taxIdentificationNumber, numFirst, numLast);
         }
+
     }
 }

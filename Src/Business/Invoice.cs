@@ -37,6 +37,7 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
 using System;
 using System.Collections.Generic;
 
@@ -45,7 +46,7 @@ namespace EasySII.Business
     /// <summary>
     /// Representa una factura.
     /// </summary>
-    public class Invoice 
+    public class Invoice
     {
 
         Dictionary<decimal, decimal[]> _TaxesOutputs;     
@@ -203,6 +204,14 @@ namespace EasySII.Business
                 _TaxesOutputs[taxRate][2] += taxAmountRecargoEquivalencia;
 				_TaxesOutputs[taxRate][3] += taxAmountCompensacionREAGYP;
 			}
+        }
+
+        /// <summary>
+        /// Devuelve un identificador para la instancia de item: InvoiceNumber.
+        /// </summary>
+        public string GetItemKey()
+        {
+            return InvoiceNumber;
         }
 
     }

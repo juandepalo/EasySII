@@ -17,7 +17,11 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
+<<<<<<< working copy
     <DefineConstants>TRACE;DEBUG;NOT_BIZKAIA</DefineConstants>
+=======
+    <DefineConstants>TRACE;DEBUG;_BIZKAIA</DefineConstants>
+>>>>>>> merge rev
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\EasySII.xml</DocumentationFile>
@@ -50,15 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Src\Business\APPaymentsQuery.cs" />
     <Compile Include="Src\Business\ARInvoiceAV.cs" />
-    <Compile Include="Src\Business\Obsolete\ARInvoicesBatchAV.cs" />
-    <Compile Include="Src\Business\Batches\Batch.cs" />
-    <Compile Include="Src\Business\Batches\BatchActionKeys.cs" />
-    <Compile Include="Src\Business\Batches\BatchActionPrefixes.cs" />
-    <Compile Include="Src\Business\Batches\BatchTypes.cs" />
-    <Compile Include="Src\Business\Batches\EndPoints.cs" />
-    <Compile Include="Src\Business\Batches\BusinessTypes.cs" />
-    <Compile Include="Src\Business\Batches\IBatchItem.cs" />
-    <Compile Include="Src\Business\Batches\ISiiLote.cs" />
+    <Compile Include="Src\Business\ARInvoicesBatchAV.cs" />
     <Compile Include="Src\Business\Context.cs" />
     <Compile Include="Src\Business\TravelAgencyDeleteBatch.cs" />
     <Compile Include="Src\Business\TravelAgencyQuery.cs" />
@@ -78,21 +74,21 @@
     <Compile Include="Src\Business\Asset.cs" />
     <Compile Include="Src\Business\APInvoice.cs" />
     <Compile Include="Src\Business\APInvoicePayment.cs" />
-    <Compile Include="Src\Business\Obsolete\APInvoicesDeleteBatch.cs" />
+    <Compile Include="Src\Business\APInvoicesDeleteBatch.cs" />
     <Compile Include="Src\Business\ClaveDeclarado.cs" />
     <Compile Include="Src\Business\IDOtroType.cs" />
     <Compile Include="Src\Business\AssetsBatch.cs" />
     <Compile Include="Src\Business\InvoicePayment.cs" />
-    <Compile Include="Src\Business\Obsolete\ARInvoicesDeleteBatch.cs" />
-    <Compile Include="Src\Business\Obsolete\APInvoicesPaymentsBatch.cs" />
+    <Compile Include="Src\Business\ARInvoicesDeleteBatch.cs" />
+    <Compile Include="Src\Business\APInvoicesPaymentsBatch.cs" />
     <Compile Include="Src\Business\ARPaymentsQuery.cs" />
     <Compile Include="Src\Business\ARInvoicePayment.cs" />
     <Compile Include="Src\Business\ARInvoice.cs" />
-    <Compile Include="Src\Business\Obsolete\APInvoicesBatch.cs" />
+    <Compile Include="Src\Business\APInvoicesBatch.cs" />
     <Compile Include="Src\Business\APInvoicesQuery.cs" />
-    <Compile Include="Src\Business\Obsolete\ARInvoicesPaymentsBatch.cs" />
+    <Compile Include="Src\Business\ARInvoicesPaymentsBatch.cs" />
     <Compile Include="Src\Business\ARInvoicesQuery.cs" />
-    <Compile Include="Src\Business\Obsolete\ARInvoicesBatch.cs" />
+    <Compile Include="Src\Business\ARInvoicesBatch.cs" />
     <Compile Include="Src\Business\CausaExencion.cs" />
     <Compile Include="Src\Business\ClaveRegimenEspecialOTrascendencia.cs" />
     <Compile Include="Src\Business\CommunicationType.cs" />
@@ -107,7 +103,6 @@
     <Compile Include="Src\Business\BuildingState.cs" />
     <Compile Include="Src\Business\SujetaType.cs" />
     <Compile Include="Src\NamespaceDoc.cs" />
-    <Compile Include="Src\Net\BatchDispatcher.cs" />
     <Compile Include="Src\Net\Wsd.cs" />
     <Compile Include="Src\Tax\TaxIdEsPersonTypeCode.cs" />
     <Compile Include="Src\Tax\TaxIdEsTypes.cs" />

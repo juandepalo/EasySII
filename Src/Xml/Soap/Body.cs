@@ -37,6 +37,7 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
 using EasySII.Xml.SiiR;
 using EasySII.Xml.Silr;
 using System;
@@ -51,6 +52,7 @@ namespace EasySII.Xml.Soap
     [XmlRoot("Body")]
     public class Body
     {
+
 
         /*--------------------------- Tratamiento de los suministros --------------------------------------*/
         /// <summary>

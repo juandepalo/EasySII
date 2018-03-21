@@ -37,6 +37,7 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
 using EasySII.Xml.Sii;
 using System;
 using System.Collections.Generic;
@@ -49,19 +50,19 @@ namespace EasySII.Xml.Silr
     /// </summary>
     [Serializable]
     [XmlRoot("SuministroLRFacturasRecibidas")]
-    public class SuministroLRFacturasRecibidas
+    public class SuministroLRFacturasRecibidas : ISiiLote
     {
 
         /// <summary>
         /// Datos de cabecera.
         /// </summary>
-        [XmlElement("Cabecera", Namespace = Settings.NamespaceSii)]
+        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
         public Cabecera Cabecera { get; set; }
 
         /// <summary>
         /// Lista de facturas con un límite de 10.000.
         /// </summary>
-        [XmlElement("RegistroLRFacturasRecibidas")]
+        [XmlElement("RegistroLRFacturasRecibidas", Order = 2)]
         public List<RegistroLRFacturasRecibidas> RegistroLRFacturasRecibidas { get; set; }
 
         /// <summary>
