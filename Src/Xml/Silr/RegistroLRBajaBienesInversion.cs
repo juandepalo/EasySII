@@ -72,7 +72,28 @@ namespace EasySII.Xml.Silr
         /// cuando el Tipo de Factura es un asiento resumen de facturas.
         /// </summary>
         public IDFactura IDFactura { get; set; }
-   
+
+        /// <summary>
+        /// Clave que identificará el bien inversión.
+        /// </summary>
+        [XmlElement("IdentificacionBien", Namespace = Settings.NamespaceSiiLR)]
+        public string IdentificacionBien { get; set; }
+
+        /// <summary>
+        /// A partir de la versión 1.1.
+        /// Referencia Externa. Dato adicional de contenido 
+        /// libre enviado por algunas aplicaciones clientes 
+        /// (asiento contable, etc). Alfanumérico(60).
+        /// Se añade en los libros de emitidas, recibidas, 
+        /// bienes de inversión y determinadas operaciones 
+        /// intracomunitarias una etiqueta adicional de contenido 
+        /// libre denominada RefExterna con el objetivo de que se 
+        /// pueda añadir información interna de la empresa asociada 
+        /// al registro de la factura.
+        /// </summary>
+        [XmlElement("RefExterna", Namespace = Settings.NamespaceSii)]
+        public string RefExterna { get; set; }
+
 
         /// <summary>
         /// Constructor clase RegistroLRFacturasEmitidas.

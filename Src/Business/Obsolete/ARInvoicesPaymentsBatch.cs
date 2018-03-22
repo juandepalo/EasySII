@@ -52,8 +52,7 @@ namespace EasySII.Business
     /// </summary>
     [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
     public class ARInvoicesPaymentsBatch
-    {
- 
+    { 
 
         /// <summary>
         /// Titular del lote de facturas expedidas.

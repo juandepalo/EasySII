@@ -73,7 +73,7 @@
     <Compile Include="Src\Business\InsurancesQuery.cs" />
     <Compile Include="Src\Business\InsurancesDeleteBatch.cs" />
     <Compile Include="Src\Business\OPTributaria.cs" />
-    <Compile Include="Src\Business\AssetsDeleteBatch.cs" />
+    <Compile Include="Src\Business\Obsolete\AssetsDeleteBatch.cs" />
     <Compile Include="Src\Business\AssetsQuery.cs" />
     <Compile Include="Src\Business\Asset.cs" />
     <Compile Include="Src\Business\APInvoice.cs" />
@@ -81,7 +81,7 @@
     <Compile Include="Src\Business\Obsolete\APInvoicesDeleteBatch.cs" />
     <Compile Include="Src\Business\ClaveDeclarado.cs" />
     <Compile Include="Src\Business\IDOtroType.cs" />
-    <Compile Include="Src\Business\AssetsBatch.cs" />
+    <Compile Include="Src\Business\Obsolete\AssetsBatch.cs" />
     <Compile Include="Src\Business\InvoicePayment.cs" />
     <Compile Include="Src\Business\Obsolete\ARInvoicesDeleteBatch.cs" />
     <Compile Include="Src\Business\Obsolete\APInvoicesPaymentsBatch.cs" />

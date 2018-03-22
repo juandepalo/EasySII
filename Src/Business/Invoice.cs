@@ -209,7 +209,7 @@ namespace EasySII.Business
         /// <summary>
         /// Devuelve un identificador para la instancia de item: InvoiceNumber.
         /// </summary>
-        public string GetItemKey()
+        public virtual string GetItemKey()
         {
             return InvoiceNumber;
         }

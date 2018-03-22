@@ -45,7 +45,10 @@ using System;
 namespace EasySII.Business
 {
     /// <summary>
-    /// Factura emitida.
+    /// Factura emitida. Añade funcionalidad para las facturas
+    /// no sujetas por reglas de localización (Canarias, Ceuta y Melilla,
+    /// por ejemplo que no están sujetas a IVA ya que están sujetas a
+    /// IGIC o IPSI).
     /// </summary>
     public class ARInvoiceAV : ARInvoice
     {    

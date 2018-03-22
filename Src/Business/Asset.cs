@@ -37,6 +37,7 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
 using EasySII.Tax;
 using EasySII.Xml.Sii;
 using EasySII.Xml.Silr;
@@ -47,7 +48,7 @@ namespace EasySII.Business
     /// <summary>
     /// Factura de bienes de inversión (Activo).
     /// </summary>
-    public class Asset : Invoice
+    public class Asset : Invoice, IBatchItem
     {
 
         /// <summary>
@@ -162,12 +163,12 @@ namespace EasySII.Business
             if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
             {
                 siiInvoice.PeriodoImpositivo.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiInvoice.PeriodoImpositivo.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiInvoice.PeriodoImpositivo.Periodo = "0A"; // anual
             }
             else
             {
                 siiInvoice.PeriodoLiquidacion.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiInvoice.PeriodoLiquidacion.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiInvoice.PeriodoLiquidacion.Periodo = "0A"; // anual
             }
 
             if (SellerParty == null)
@@ -312,12 +313,12 @@ namespace EasySII.Business
             if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
             {
                 siiDelete.PeriodoImpositivo.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiDelete.PeriodoImpositivo.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiDelete.PeriodoImpositivo.Periodo = "0A"; // anual
             }
             else
             {
                 siiDelete.PeriodoLiquidacion.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiDelete.PeriodoLiquidacion.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiDelete.PeriodoImpositivo.Periodo = "0A"; // anual
             }
 
 
@@ -370,8 +371,36 @@ namespace EasySII.Business
 
             }
 
+            // Campos especificos para los bienes de inversión.
+
+            siiDelete.IdentificacionBien = PropertyId;       
+
             return siiDelete;
 
+        }
+
+        /// <summary>
+        /// Obtiene un objeto RegistroLRFacturasRecibidas, este objeto se utiliza
+        /// para la serialización xml.
+        /// </summary>
+        /// <param name="batchActionKey">Tipo de lote.</param>
+        /// <param name="updateInnerSII">Si es true, actualiza el objeto SII subyacente
+        /// con el valor calculado.</param>
+        /// <param name="skipErrors">Indica si hay que omitir las excepciones.</param>
+        /// <returns>Nueva instancia del objeto para serialización 
+        /// xml RegistroLRFacturasEmitidas.</returns>
+        public object ToSIIBatchItem(BatchActionKeys batchActionKey,
+            bool updateInnerSII = false, bool skipErrors = false)
+        {
+            switch (batchActionKey)
+            {
+                case BatchActionKeys.LR:
+                    return ToSII();
+                case BatchActionKeys.DR:
+                    return ToRegistroLRBajaBienesInversionSII();
+            }
+
+            throw new Exception($"Unknown BatchActionKey: {batchActionKey}");
         }
 
     }

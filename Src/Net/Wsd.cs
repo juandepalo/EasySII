@@ -722,6 +722,7 @@ namespace EasySII.Net
         /// <param name="assetsBatch"> Lote de bienes inversion.</param>
         /// <returns>Devuelve el xml de respuesta de la AEAT a una
         /// petición de consulta de Bienes de Inversión.</returns>
+        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
         public static string SendBienesInversion(AssetsBatch assetsBatch)
         {
 
@@ -768,6 +769,7 @@ namespace EasySII.Net
         /// <param name="assetsBatch"> Lote de Bienes Inversión.</param>
         /// <returns>Devuelve el xml de respuesta de la AEAT a una
         /// petición de borrado de un lote de Bienes de Inversión.</returns>
+        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
         public static string DeleteBienesInversion(AssetsDeleteBatch assetsBatch)
         {
 
