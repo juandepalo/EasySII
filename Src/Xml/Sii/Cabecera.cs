@@ -60,7 +60,14 @@ namespace EasySII.Xml.Sii
         /// Titular del libro de registro. Alfanumérico(3).
         /// </summary>
         [XmlElement("Titular")]
-        public Titular Titular { get; set; }
+        public virtual Titular Titular { get; set; }
+
+        /// <summary>
+        /// Titular en las consultas cuando se trata de un cliente
+        /// o un proveedor. Alfanumérico(3).
+        /// </summary>
+        [XmlElement("TitularLRFE")]
+        public virtual Titular TitularLRFE { get; set; }
 
         /// <summary>
         /// Tipo de operación (alta, modificación). Lista L0: A0, A1, A4.

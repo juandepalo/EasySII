@@ -56,13 +56,13 @@ namespace EasySII.Xml.Silr
         /// <summary>
         /// Datos de cabecera.
         /// </summary>
-        [XmlElement("Cabecera", Namespace = Settings.NamespaceSii)]
+        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
         public Cabecera Cabecera { get; set; }
 
         /// <summary>
         /// Lista de facturas con un límite de 10.000.
         /// </summary>
-        [XmlElement("RegistroLRFacturasEmitidas")]
+        [XmlElement("RegistroLRFacturasEmitidas", Order = 2)]
         public List<RegistroLRFacturasEmitidas> RegistroLRFacturasEmitidas { get; set; }
 
         /// <summary>

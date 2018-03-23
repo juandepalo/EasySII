@@ -37,36 +37,56 @@
     address: info@irenesolutions.com
  */
 
-namespace EasySII.Business
+using EasySII.Xml.Sii;
+using EasySII.Xml.SiiR;
+using EasySII.Xml.Silr;
+using System.Xml.Serialization;
+
+namespace EasySII.Xml.SiiR
 {
     /// <summary>
-    /// L0 Tipo de Comunicación
+    /// Bloque que contiene campos de la factura
+    /// informados por el proveedor. Se obtendrán como
+    /// máximo 10.000 facturas, es decir, este bloque 
+    /// puede repetirse 10.000 veces como máximo.
     /// </summary>
-    public enum CommunicationType
+    public class RegistroRespuestaConsultaFactInformadasProveedor
     {
-        /// <summary>
-        /// Alta de facturas/registro
-        /// </summary>
-        A0,
+
 
         /// <summary>
-        /// Modificación de facturas/registros (errores registrales)
+        /// Indica si hay facturas para la consulta realizada.
+        /// Valores posibles: “ConDatos” o “SinDatos”.
         /// </summary>
-        A1,
+        [XmlElement("IDFactura", Namespace = Settings.NamespaceSiiRQ)]
+        public IDFactura IDFactura { get; set; }
 
         /// <summary>
-        /// Modificación Factura Régimen de Viajeros
+        /// Bloque que contiene el periodo de liquidación
+        /// informado por el proveedor
         /// </summary>
-        A4,
+        [XmlElement("PeriodoLiquidacion", Namespace = Settings.NamespaceSiiRQ)]
+        public PeriodoImpositivo PeriodoLiquidacion { get; set; }
 
         /// <summary>
-        /// Alta Devoluciones del IVA de viajeros.
+        /// Bloque que contiene los campos de la factura
+        /// informada por el proveedor
         /// </summary>
-        A5,
+        [XmlElement("DatosFacturaInformadaproveedor", Namespace = Settings.NamespaceSiiRQ)]
+        public RegistroLRFacturasEmitidas DatosFacturaInformadaproveedor { get; set; }
 
         /// <summary>
-        /// Modificación Devoluciones del IVA de viajeros.
+        /// Datos proveedor.
         /// </summary>
-        A6
-    };
+        [XmlElement("Proveedor", Namespace = Settings.NamespaceSiiRQ)]
+        public Contraparte Proveedor { get; set; }
+
+        /// <summary>
+        /// Bloque que contiene los campos del estado de
+        /// la factura registrada:
+        /// </summary>
+        [XmlElement("EstadoFactura", Namespace = Settings.NamespaceSiiRQ)]
+        public EstadoFactura EstadoFactura { get; set; }
+
+    }
 }

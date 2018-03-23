@@ -37,36 +37,52 @@
     address: info@irenesolutions.com
  */
 
-namespace EasySII.Business
+using EasySII.Xml.Sii;
+using System;
+using System.Xml.Serialization;
+
+namespace EasySII.Xml.SiiR
 {
-    /// <summary>
-    /// L0 Tipo de Comunicación
+
+    /// Libro de registro de Facturas emitidas.
     /// </summary>
-    public enum CommunicationType
+    [Serializable]
+    [XmlRoot("RespuestaConsultaFactInformadasProveedor")]
+    public class RespuestaConsultaFactInformadasProveedor
     {
-        /// <summary>
-        /// Alta de facturas/registro
-        /// </summary>
-        A0,
 
         /// <summary>
-        /// Modificación de facturas/registros (errores registrales)
+        /// Datos de cabecera.
         /// </summary>
-        A1,
+        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSiiRQ)]
+        public Cabecera Cabecera { get; set; }
 
         /// <summary>
-        /// Modificación Factura Régimen de Viajeros
+        /// Indica si hay más facturas en la consulta realizada
+        /// Si hay más datos pendientes, este campo tendrá valor
+        /// “S” y se podrán realizar nuevas consultas indicando
+        /// la identificación de la última factura a partir de la
+        /// cual se devolverán los siguientes registros.
+        /// Alfanumérico(1).
+        /// Valores posibles: “S” o “N”
         /// </summary>
-        A4,
+        [XmlElement("IndicadorPaginacion", Namespace = Settings.NamespaceSiiRQ)]
+        public string IndicadorPaginacion { get; set; }
 
         /// <summary>
-        /// Alta Devoluciones del IVA de viajeros.
+        /// Indica si hay facturas para la consulta realizada.
+        /// Valores posibles: “ConDatos” o “SinDatos”.
         /// </summary>
-        A5,
+        [XmlElement("ResultadoConsulta", Namespace = Settings.NamespaceSiiRQ)]
+        public string ResultadoConsulta { get; set; }
 
         /// <summary>
-        /// Modificación Devoluciones del IVA de viajeros.
+        /// Bloque que contiene campos de la factura
+        /// informados por el proveedor. Se obtendrán como
+        /// máximo 10.000 facturas, es decir, este bloque 
+        /// puede repetirse 10.000 veces como máximo.
         /// </summary>
-        A6
-    };
+        public RegistroRespuestaConsultaFactInformadasProveedor RegistroRespuestaConsultaFactInformadasProveedor { get; set; }
+
+    }
 }

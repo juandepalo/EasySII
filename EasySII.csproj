@@ -115,6 +115,10 @@
     <Compile Include="Src\Tax\TaxIdEsDCDniNie.cs" />
     <Compile Include="Src\Tax\TaxIdEsDCNif.cs" />
     <Compile Include="Src\Tax\TaxIdEsError.cs" />
+    <Compile Include="Src\Xml\Silr\ConsultaFactInformadasProveedor.cs" />
+    <Compile Include="Src\Xml\SiiR\RegistroRespuestaConsultaFactInformadasCliente.cs" />
+    <Compile Include="Src\Xml\SiiR\RegistroRespuestaConsultaFactInformadasProveedor.cs" />
+    <Compile Include="Src\Xml\SiiR\RespuestaConsultaFactInformadasCliente.cs" />
     <Compile Include="Src\Xml\SIIParser.cs" />
     <Compile Include="Src\Xml\SiiR\EstadoFactura.cs" />
     <Compile Include="Src\Xml\SiiR\RegistroRespuestaConsultaPagos.cs" />
@@ -220,6 +224,8 @@
     <Compile Include="Src\Xml\Soap\Envelope.cs" />
     <Compile Include="Src\Xml\Silr\SuministroLRFacturasRecibidas.cs" />
     <Compile Include="Src\Xml\Sii\Titular.cs" />
+    <Compile Include="Src\Xml\Silr\ConsultaFactInformadasCliente.cs" />
+    <Compile Include="Src\Xml\SiiR\RespuestaConsultaFactInformadasProveedor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Doc\Help\EasySII.chm" />
@@ -227,7 +233,9 @@
   <ItemGroup>
     <Content Include="logo-heart.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Src\z_alfa_11\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

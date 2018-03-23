@@ -85,10 +85,19 @@ namespace EasySII.Xml.Silr
         public RangoFechaPresentacion FechaPresentacion { get; set; }
 
         /// <summary>
-        /// ID Factura modificada.
+        /// Rango inicio fin fecha cuadre. 
+        /// </summary>
+        [XmlElement("FechaCuadre", Namespace = Settings.NamespaceSii)]
+        public RangoFechaPresentacion FechaCuadre { get; set; }
+
+        /// <summary>
+        /// Indica si la factura ha sido modificada mediante una
+        /// operación de modificación(A1, A4) o baja.
+        /// Alfanumérico(1).
+        /// Valores posibles: “S” o “N”.
         /// </summary>
         [XmlElement("FacturaModificada")]
-        public IDFactura FacturaModificada { get; set; }
+        public string FacturaModificada { get; set; }
 
         /// <summary>
         /// <para> Lista L23: Estado de cuadre de la factura</para>

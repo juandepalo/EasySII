@@ -55,7 +55,7 @@ namespace EasySII.Xml.Silr
         public IDEmisorFactura IDEmisorFactura { get; set; }
 
         /// <summary>
-        /// Número de factura.
+        /// Número de factura. Alfanumérico(60).
         /// </summary>
         [XmlElement("NumSerieFacturaEmisor", Namespace = Settings.NamespaceSii)]
         public string NumSerieFacturaEmisor { get; set; }
@@ -65,6 +65,13 @@ namespace EasySII.Xml.Silr
         /// </summary>
         [XmlElement("FechaExpedicionFacturaEmisor", Namespace = Settings.NamespaceSii)]
         public string FechaExpedicionFacturaEmisor { get; set; }
+
+
+        /// <summary>
+        /// Datos cliente.
+        /// </summary>
+        [XmlElement("Cliente", Namespace = Settings.NamespaceSii)]
+        public Contraparte Cliente { get; set; }
 
         /// <summary>
         /// Constructor clase IDFactura.
