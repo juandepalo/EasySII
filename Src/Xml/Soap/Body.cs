@@ -37,10 +37,11 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Business.Batches;
 using EasySII.Xml.SiiR;
 using EasySII.Xml.Silr;
+using EasySII.Xml.VNifV2Ent;
 using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace EasySII.Xml.Soap
@@ -52,6 +53,22 @@ namespace EasySII.Xml.Soap
     [XmlRoot("Body")]
     public class Body
     {
+
+        /*--------------------------- Validación de NIF --------------------------------------*/
+
+        /// <summary>
+        /// Información de contribuyente a validar.
+        /// </summary>
+        [XmlElement("VNifV2Ent", Namespace = Settings.NamespaceVNifV2Ent)]
+        public VNifVEnt VNifV2Ent { get; set; }
+
+        /// <summary>
+        /// NIF del contribuyente.
+        /// Numérico(4).
+        /// </summary>
+        [XmlArray("VNifV2Sal", Namespace = Settings.NamespaceVNifV2Sal)]
+        [XmlArrayItem("Contribuyente", Namespace = Settings.NamespaceVNifV2Sal)]
+        public List<ContribuyenteSal> Contribuyentes { get; set; }
 
 
         /*--------------------------- Tratamiento de los suministros --------------------------------------*/
@@ -361,6 +378,9 @@ namespace EasySII.Xml.Soap
         public int GetChildNumber()
         {
             return
+                ((VNifV2Ent == null) ? 0 : 1) +
+                ((Contribuyentes == null) ? 0 : 1) +
+
                 ((SuministroLRBienesInversion == null) ? 0 : 1) +
                 ((SuministroLRCobrosEmitidas == null) ? 0 : 1) +
                 ((SuministroLRFacturasEmitidas == null) ? 0 : 1) +

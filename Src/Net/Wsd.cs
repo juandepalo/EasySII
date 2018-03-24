@@ -59,6 +59,22 @@ namespace EasySII.Net
         /// <summary>
         /// Prefijo de todos los endpoints del SII.
         /// </summary>
+        public static string VNifV2EndPointPrefix = Settings.Current.VNifV2EndPointPrefix;
+
+        /// <summary>
+        /// Url del web service de validación de NIF.
+        /// </summary>
+        private static string WsdValidaNifUrl = VNifV2EndPointPrefix + "/VNifV2SOAP";
+
+
+        /// <summary>
+        /// Url del action del webservice de validación de NIF.
+        /// </summary>
+        private static string WsdValidaNifAction = VNifV2EndPointPrefix + "?op=VNifV2";
+
+        /// <summary>
+        /// Prefijo de todos los endpoints del SII.
+        /// </summary>
         public static string EndPointPrefix = Settings.Current.SiiEndPointPrefix; 
 
         /// <summary>
@@ -452,7 +468,7 @@ namespace EasySII.Net
         /// <param name="invoicesBatch"> Lote de facturas emitidas.</param>
         /// <returns>Devuelve un string con el xml de respuesta de
         /// la AEAT a la operación de envío del lote de facturas emitidas.</returns>
-        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+        [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
         public static string SendFacturasEmitidas(ARInvoicesBatch invoicesBatch)
         {
 
@@ -501,7 +517,7 @@ namespace EasySII.Net
         /// <returns>Devuelve un string con el xml de respuesta de la AEAT
         /// a la operación de envío de cobros de facturas emitidas en regimen 
         /// especial de criterio de caja.</returns>
-        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+        [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
         public static string SendCobrosFacturasEmitidas(ARInvoicesPaymentsBatch paymentsBatch)
         {
 
@@ -573,7 +589,7 @@ namespace EasySII.Net
         /// <param name="invoicesBatch"> Lote de facturas emitidas a borrar.</param>
         /// <returns>Devuelve un string con el xml de respuesta de
         /// la AEAT a la operación de envío del lote de facturas emitidas.</returns>
-        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+        [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
         public static string DeleteFacturasEmitidas(ARInvoicesDeleteBatch invoicesBatch)
         {
 
@@ -597,7 +613,7 @@ namespace EasySII.Net
         /// <param name="invoicesBatch"> Lote de facturas recibidas.</param>
         /// <returns>Devuelve el xml de respuesta de la AEAT a una
         /// petición de consulta de facturas emitidas recibidas.</returns>
-        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+        [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
         public static string SendFacturasRecibidas(APInvoicesBatch invoicesBatch)
         {
 
@@ -624,7 +640,7 @@ namespace EasySII.Net
         /// <returns>Devuelve un string con el xml de respuesta de la AEAT
         /// a la operación de envío de pagos de facturas recibidas en regimen 
         /// especial de criterio de caja.</returns>
-        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+        [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
         public static string SendPagosFacturasRecibidas(APInvoicesPaymentsBatch paymentsBatch)
         {
 
@@ -699,7 +715,7 @@ namespace EasySII.Net
         /// <param name="invoicesBatch"> Lote de facturas recibidas a borrar.</param>
         /// <returns>Devuelve un string con el xml de respuesta de
         /// la AEAT a la operación de envío del lote de facturas recibidas.</returns>
-        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+        [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
         public static string DeleteFacturasRecibidas(APInvoicesDeleteBatch invoicesBatch)
         {
 
@@ -722,7 +738,7 @@ namespace EasySII.Net
         /// <param name="assetsBatch"> Lote de bienes inversion.</param>
         /// <returns>Devuelve el xml de respuesta de la AEAT a una
         /// petición de consulta de Bienes de Inversión.</returns>
-        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+        [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
         public static string SendBienesInversion(AssetsBatch assetsBatch)
         {
 
@@ -769,7 +785,7 @@ namespace EasySII.Net
         /// <param name="assetsBatch"> Lote de Bienes Inversión.</param>
         /// <returns>Devuelve el xml de respuesta de la AEAT a una
         /// petición de borrado de un lote de Bienes de Inversión.</returns>
-        [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+        [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
         public static string DeleteBienesInversion(AssetsDeleteBatch assetsBatch)
         {
 
@@ -856,20 +872,21 @@ namespace EasySII.Net
         /// <summary>
         /// Envía un lote de Cobros en metálico al SII.
         /// </summary>
-        /// <param name="invoicesBatch"> Lote de cobros en metálico.</param>
+        /// <param name="cashBatch"> Lote de cobros en metálico.</param>
         /// <returns>Devuelve el xml de respuesta de la AEAT a una
         /// petición de consulta de Cobros en metálico.</returns>
-        public static string SendCobrosMetalico(InsurancesBatch invoicesBatch)
+        [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
+        public static string SendCobrosMetalico(CashBatch cashBatch)
         {
 
-            if (invoicesBatch.Insurances.Count == 0)
+            if (cashBatch.CashReceipts.Count == 0)
                 throw new ArgumentException("Couldnt't send InsurancesBatch without insurance.");
 
             string response = Wsd.Call(Wsd.WsdSuministroLROperTributariasUrl,
                 Wsd.WsdSuministroLRCobrosMetalicoAction,
-                invoicesBatch.GetXml(Settings.Current.OutboxPath + invoicesBatch.GetSentFileName()));
+                cashBatch.GetXml(Settings.Current.OutboxPath + cashBatch.GetSentFileName()));
 
-            File.WriteAllText(Settings.Current.InboxPath + invoicesBatch.GetReceivedFileName(), response);
+            File.WriteAllText(Settings.Current.InboxPath + cashBatch.GetReceivedFileName(), response);
 
             return response;
         }
@@ -1054,7 +1071,56 @@ namespace EasySII.Net
 
         }
 
+        /// <summary>
+        /// Envía un mensaje xml al serivicio de validación de
+        /// NIF de la AEAT.
+        /// </summary>
+        /// <param name="envelope">Sobre SOAP.</param>
+        /// <returns>Respuesta de la AEAT.</returns>
+        public static string SendValidationNIF(Envelope envelope)
+        {
 
+            if (string.IsNullOrEmpty(Settings.Current.VNifV2EndPointPrefix))
+                throw new Exception("VNifV2EndPointPrefix not found in settings.");
+
+            int childCount = envelope.Body.GetChildNumber();
+
+            if (envelope.Body.GetChildNumber() > childCount)
+                throw new InvalidOperationException(
+                    "Body with more than one child not allowed.");
+
+            if (envelope.Body.GetChildNumber() == 0)
+                throw new InvalidOperationException(
+                    "Empty body not allowed.");
+
+            string url = "";
+            string action = "";
+            string fileNameSent = "";
+            string fileNameReceived = "";
+
+            if (envelope.Body.VNifV2Ent != null)
+            {
+                url = Wsd.WsdValidaNifUrl;
+                action = Wsd.WsdValidaNifAction;
+
+                fileNameSent = $"VNifV2.sent.{DateTime.Now.ToString("yyyyMMddHHmmss")}.xml";
+                fileNameReceived = $"VNifV2.received.{DateTime.Now.ToString("yyyyMMddHHmmss")}.xml";
+
+            }
+
+
+            // Llamada a la rutina de envío
+
+            string response = Wsd.Call(url,
+            action,
+            SIIParser.GetXml(envelope, Settings.Current.OutboxPath + fileNameSent));
+
+            File.WriteAllText(Settings.Current.InboxPath + fileNameReceived, response);
+
+            return response;
+
+
+        }
 
         /// <summary>
         /// Llama a al web service de la AEAT para el SII seleccionado.

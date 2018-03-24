@@ -37,26 +37,32 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
 using EasySII.Tax;
+using EasySII.Xml;
 using EasySII.Xml.Sii;
 using EasySII.Xml.Silr;
 using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace EasySII.Business
 {
     /// <summary>
     /// Representa las Operaciones de Seguros.
     /// </summary>
-    public class OPTributaria
+    public class OPTributaria : IBatchItem
     {
 
         /// <summary>
-        /// Parte compradora que figura en la factura.
+        /// Parte compradora que 
+        /// figura en la factura.
         /// </summary>
         public virtual Party SellerParty { get; set; }
 
         /// <summary>
-        /// Cuando el identificador es distinto del NIF establece el tipo de identificador utilizado.
+        /// Cuando el identificador es distinto del NIF 
+        /// establece el tipo de identificador utilizado.
         /// </summary>
         public IDOtroType IDOtroType { get; set; }
 
@@ -71,12 +77,14 @@ namespace EasySII.Business
         public string ClaveOperacion { get; set; }
 
         /// <summary>
-        /// Importe total (tanto para las operaciones de seguros como para los cobros en metálico
+        /// Importe total (tanto para las operaciones de seguros 
+        /// como para los cobros en metálico).
         /// </summary>
         public decimal GrossAmount { get; set; }
 
         /// <summary>
-        /// Fecha de emisión de la operación. La necesitamos para posteriormente poder generar el Periodo Impositivo
+        /// Fecha de emisión de la operación. La necesitamos para 
+        /// posteriormente poder generar el Periodo Impositivo
         /// </summary>
         public DateTime? IssueDate { get; set; }
 
@@ -92,11 +100,11 @@ namespace EasySII.Business
         /// <summary>
         /// Constructor de Insurance.
         /// </summary>
-        /// <param name="registroLROperacionesSeguros">Objeto serialización xml facturas emitidas.</param>
-        public OPTributaria(RegistroLROpTrascendTribu registroLROperacionesSeguros)
+        /// <param name="registroLRCobrosMetalico">Objeto serialización xml facturas emitidas.</param>
+        public OPTributaria(RegistroLROpTrascendTribu registroLRCobrosMetalico)
         {
 
-            RegistroLROpTrascendTribu siiTributo= registroLROperacionesSeguros;
+            RegistroLROpTrascendTribu siiTributo= registroLRCobrosMetalico;
 
             if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
                 IssueDate = Convert.ToDateTime(siiTributo.PeriodoImpositivo.Ejercicio); // Necesitamos una fecha para calcular el Ejercicio/Periodo
@@ -146,12 +154,12 @@ namespace EasySII.Business
             if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
             {
                 siiTributo.PeriodoImpositivo.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiTributo.PeriodoImpositivo.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiTributo.PeriodoImpositivo.Periodo = "0A"; // anual
             }
             else
             {
                 siiTributo.PeriodoLiquidacion.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiTributo.PeriodoLiquidacion.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiTributo.PeriodoLiquidacion.Periodo = "0A"; // anual
             }
 
             if (SellerParty == null)
@@ -198,7 +206,7 @@ namespace EasySII.Business
 
 
             siiTributo.ClaveOperacion = ClaveOperacion;
-            siiTributo.ImporteTotal = GrossAmount.ToString(Settings.DefaultNumberFormatInfo);
+            siiTributo.ImporteTotal = SIIParser.FromDecimal(GrossAmount);
 
             return siiTributo;
 
@@ -213,12 +221,12 @@ namespace EasySII.Business
             if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
             {
                 siiFilter.PeriodoImpositivo.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiFilter.PeriodoImpositivo.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiFilter.PeriodoImpositivo.Periodo = "0A"; // anual
             }
             else
             {
                 siiFilter.PeriodoLiquidacion.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiFilter.PeriodoLiquidacion.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiFilter.PeriodoLiquidacion.Periodo = "0A"; // anual
             }
 
             TaxIdEs taxIdEs = null;
@@ -280,12 +288,12 @@ namespace EasySII.Business
             if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
             {
                 siiDelete.PeriodoImpositivo.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiDelete.PeriodoImpositivo.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiDelete.PeriodoImpositivo.Periodo = "0A"; // anual
             }
             else
             {
                 siiDelete.PeriodoLiquidacion.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiDelete.PeriodoLiquidacion.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiDelete.PeriodoLiquidacion.Periodo = "0A"; // anual
             }
 
             TaxIdEs taxIdEs = null;
@@ -335,6 +343,39 @@ namespace EasySII.Business
 
             return siiDelete;
 
+        }
+
+        /// <summary>
+        /// Devuelve un identificador para la instancia de item: InvoiceNumber...
+        /// </summary>
+        /// <returns>Id texto para la instancia.</returns>
+        public string GetItemKey()
+        {
+            return $"{ClaveOperacion}.{CountryCode}.{SellerParty.TaxIdentificationNumber}.";              
+        }
+
+        /// <summary>
+        /// Obtiene un objeto RegistroLRFacturasRecibidas, este objeto se utiliza
+        /// para la serialización xml.
+        /// </summary>
+        /// <param name="batchActionKey">Tipo de lote.</param>
+        /// <param name="updateInnerSII">Si es true, actualiza el objeto SII subyacente
+        /// con el valor calculado.</param>
+        /// <param name="skipErrors">Indica si hay que omitir las excepciones.</param>
+        /// <returns>Nueva instancia del objeto para serialización 
+        /// xml RegistroLRFacturasEmitidas.</returns>
+        public object ToSIIBatchItem(BatchActionKeys batchActionKey,
+            bool updateInnerSII = false, bool skipErrors = false)
+        {
+            switch (batchActionKey)
+            {
+                case BatchActionKeys.LR:
+                    return ToSII();
+                case BatchActionKeys.DR:
+                    return ToRegistroLRBajaOpTrascendTribuSII();
+            }
+
+            throw new Exception($"Unknown BatchActionKey: {batchActionKey}");
         }
 
     }

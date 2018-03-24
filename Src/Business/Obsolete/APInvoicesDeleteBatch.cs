@@ -50,7 +50,7 @@ namespace EasySII.Business
     /// <summary>
     /// Lote de facturas recibidadas a eliminar (Accounts payable invoices batch).
     /// </summary>
-    [Obsolete("Utilice la clase Batch con el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+    [Obsolete("Utilice la clase Batch con el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
     public class APInvoicesDeleteBatch
     {
 

@@ -50,6 +50,7 @@ namespace EasySII.Business
     /// <summary>
     /// Lote de Cobros en metálico a eliminar.
     /// </summary>
+    [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
     public class CashDeleteBatch
     {
 
@@ -88,7 +89,7 @@ namespace EasySII.Business
 
             foreach (OPTributaria invoice in CashReceipts)
 
-                envelope.Body.BajaLRCobrosMetalico.RegistroLRCobrosMetalico.Add(invoice.ToRegistroLRBajaOpTrascendTribuSII());
+                envelope.Body.BajaLRCobrosMetalico.RegistroLRBajaCobrosMetalico.Add(invoice.ToRegistroLRBajaOpTrascendTribuSII());
 
             return envelope;
         }

@@ -70,6 +70,18 @@ namespace EasySII
         internal static string Path = System.Environment.GetFolderPath(
             Environment.SpecialFolder.CommonApplicationData) + "\\EasySII\\";
 
+        /// <summary>
+        /// Espacio de nombres servicio web
+        /// para validación NIF (Entrada).
+        /// </summary>
+        internal const string NamespaceVNifV2Ent = "http://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/burt/jdit/ws/VNifV2Ent.xsd";
+
+        /// <summary>
+        /// Espacio de nombres servicio web
+        /// para validación NIF (Salida).
+        /// </summary>
+        internal const string NamespaceVNifV2Sal = "http://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/burt/jdit/ws/VNifV2Sal.xsd";
+
 
         /// <summary>
         /// Prefijo de espacios de nombres estatal (AEAT).
@@ -198,6 +210,13 @@ namespace EasySII
         [XmlElement("SiiEndPointPrefix")]
         public string SiiEndPointPrefix { get; set; }
 
+        /// <summary>
+        /// EndPoint del web service de la AEAT para
+        /// validación del NIF.
+        /// </summary>
+        [XmlElement("VNifV2EndPointPrefix")]
+        public string VNifV2EndPointPrefix { get; set; }
+
 
         /// <summary>
         /// Constructor estático de la clase Settings.
@@ -242,7 +261,7 @@ namespace EasySII
         /// <summary>
         /// Inicia estaticos.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>La configuración cargada.</returns>
         internal static Settings Get()
         {
 
@@ -266,7 +285,8 @@ namespace EasySII
 				_Current.OutboxPath = Path + "Outbox\\";
 				_Current.CertificateSerial = "3D327B0B";
 				_Current.SiiEndPointPrefix = "https://www1.agenciatributaria.gob.es/wlpl/SSII-FACT/ws";
-			}
+                _Current.VNifV2EndPointPrefix = "https://www1.agenciatributaria.gob.es/wlpl/BURT-JDIT/ws";
+            }
 
             Wsd.EndPointPrefix = _Current.SiiEndPointPrefix;
 

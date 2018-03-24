@@ -38,7 +38,6 @@
  */
 
 using EasySII.Xml;
-using EasySII.Xml.Silr;
 using EasySII.Xml.Soap;
 using System;
 using System.Collections;
@@ -147,7 +146,8 @@ namespace EasySII.Business.Batches
 
                 if(batchType.StartsWith("Pagos"))
                     batchType = "Pagos";
-                else if (batchType.StartsWith("Cobros"))
+                else if (!batchType.StartsWith("CobrosMetalico") && 
+                    batchType.StartsWith("Cobros"))
                     batchType = "Cobros";
 
                 return $"{siiType}{batchType}";
@@ -157,9 +157,11 @@ namespace EasySII.Business.Batches
                 siiType = siiType.Replace("Baja", "Registro");
 
                 // En emitidas no sigue un orden :(
-                
-                if(batchType.EndsWith("Emitidas"))
+
+                if (batchType.EndsWith("Emitidas"))
                     batchType = batchType.Replace("Emitidas", "Expedidas");
+                else if (batchType == "CobrosMetalico")
+                    batchType = $"Baja{batchType}";
 
                 siiType = $"{siiType}{batchType}";
                 return siiType.Replace("Facturas", "Baja");

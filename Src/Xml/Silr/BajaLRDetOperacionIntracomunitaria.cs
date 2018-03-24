@@ -37,6 +37,7 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
 using EasySII.Xml.Sii;
 using System;
 using System.Collections.Generic;
@@ -49,19 +50,19 @@ namespace EasySII.Xml.Silr
     /// </summary>
     [Serializable]
     [XmlRoot("BajaLRDetOperacionIntracomunitaria")]
-    public class BajaLRDetOperacionIntracomunitaria
+    public class BajaLRDetOperacionIntracomunitaria : ISiiLote
     {
 
         /// <summary>
         /// Datos de cabecera.
         /// </summary>
-        [XmlElement("Cabecera", Namespace = Settings.NamespaceSii)]
+        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
         public Cabecera Cabecera { get; set; }
 
         /// <summary>
         /// Filtro consulta.
         /// </summary>
-        [XmlElement("RegistroLRBajaDetOperacionIntracomunitaria")]
+        [XmlElement("RegistroLRBajaDetOperacionIntracomunitaria", Order = 2)]
         public List<RegistroLRBajaDetOperacionIntracomunitaria> RegistroLRBajaDetOperacionIntracomunitaria { get; set; }
 
         /// <summary>

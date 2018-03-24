@@ -37,6 +37,7 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
 using EasySII.Xml.Sii;
 using System;
 using System.Collections.Generic;
@@ -50,19 +51,19 @@ namespace EasySII.Xml.Silr
     /// </summary>
     [Serializable]
     [XmlRoot("BajaLRCobrosMetalico")]
-    public class BajaLRCobrosMetalico
+    public class BajaLRCobrosMetalico : ISiiLote
     {
         /// <summary>
         /// Datos de cabecera.
         /// </summary>
-        [XmlElement("Cabecera", Namespace = Settings.NamespaceSii)]
+        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
         public Cabecera Cabecera { get; set; }
 
         /// <summary>
         /// Lista de Operaciones de Seguros con un límite de 10.000.
         /// </summary>
-        [XmlElement("RegistroLRCobrosMetalico")]
-        public List<RegistroLROpTrascendTribu> RegistroLRCobrosMetalico { get; set; }
+        [XmlElement("RegistroLRBajaCobrosMetalico", Order = 2)]
+        public List<RegistroLROpTrascendTribu> RegistroLRBajaCobrosMetalico { get; set; }
 
         /// <summary>
         /// Constructor de la clase SuministroLRFacturasEmitidas.
@@ -70,7 +71,7 @@ namespace EasySII.Xml.Silr
         public BajaLRCobrosMetalico()
         {
             Cabecera = new Cabecera();
-            RegistroLRCobrosMetalico = new List<RegistroLROpTrascendTribu>();
+            RegistroLRBajaCobrosMetalico = new List<RegistroLROpTrascendTribu>();
         }
     }
 }

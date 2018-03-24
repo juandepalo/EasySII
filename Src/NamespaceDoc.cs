@@ -136,9 +136,19 @@ namespace EasySII.Business
 namespace EasySII.Tax
 {
     /// <summary>
-    /// <para>Este espacio de nombres contiene los componentes de relacionados
-    /// con ciertas funcionalidades relacionadas con la AEAT.
-    /// mediante el SII.</para> 
+    /// <para>Este espacio de nombres contiene los componentes de 
+    /// con ciertas funcionalidades relacionadas con la AEAT.</para> 
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
+    {
+    }
+}
+namespace EasySII.Xml.VNifV2Ent
+{
+    /// <summary>
+    /// <para>Este espacio de nombres contiene los componentes 
+    /// de validación de NIF DE la AEAT.</para> 
     /// </summary>
     [System.Runtime.CompilerServices.CompilerGenerated]
     class NamespaceDoc

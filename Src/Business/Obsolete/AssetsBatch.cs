@@ -50,7 +50,7 @@ namespace EasySII.Business
     /// <summary>
     /// Lote de Bienes de Inversión (Activo - Asset).
     /// </summary>
-    [Obsolete("Utilice el método SendSiiLote(Batch invoicesBatch) de la clase BatchDispatcher.")]
+    [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
     public class AssetsBatch
     {
         /// <summary>

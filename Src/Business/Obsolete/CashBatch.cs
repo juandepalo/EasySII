@@ -50,6 +50,7 @@ namespace EasySII.Business
     /// <summary>
     /// Lote de Cobros en metálico.
     /// </summary>
+    [Obsolete("Utilice el método SendSiiLote(Batch batch) de la clase BatchDispatcher.")]
     public class CashBatch
     {
         /// <summary>

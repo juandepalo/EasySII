@@ -66,10 +66,10 @@
     <Compile Include="Src\Business\InvoiceRectified.cs" />
     <Compile Include="Src\Business\ITInvoicesDeleteBatch.cs" />
     <Compile Include="Src\Business\ITInvoicesQuery.cs" />
-    <Compile Include="Src\Business\CashBatch.cs" />
+    <Compile Include="Src\Business\Obsolete\CashBatch.cs" />
     <Compile Include="Src\Business\InsurancesBatch.cs" />
     <Compile Include="Src\Business\CashQuery.cs" />
-    <Compile Include="Src\Business\CashDeleteBatch.cs" />
+    <Compile Include="Src\Business\Obsolete\CashDeleteBatch.cs" />
     <Compile Include="Src\Business\InsurancesQuery.cs" />
     <Compile Include="Src\Business\InsurancesDeleteBatch.cs" />
     <Compile Include="Src\Business\OPTributaria.cs" />
@@ -226,6 +226,9 @@
     <Compile Include="Src\Xml\Sii\Titular.cs" />
     <Compile Include="Src\Xml\Silr\ConsultaFactInformadasCliente.cs" />
     <Compile Include="Src\Xml\SiiR\RespuestaConsultaFactInformadasProveedor.cs" />
+    <Compile Include="Src\Xml\VNifV2Ent\Contribuyente.cs" />
+    <Compile Include="Src\Xml\VNifV2Ent\ContribuyenteSal.cs" />
+    <Compile Include="Src\Xml\VNifV2Ent\VNifVEnt.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Doc\Help\EasySII.chm" />
@@ -233,9 +236,7 @@
   <ItemGroup>
     <Content Include="logo-heart.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Src\z_alfa_11\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

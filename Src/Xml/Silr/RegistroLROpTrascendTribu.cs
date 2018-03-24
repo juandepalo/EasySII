@@ -83,7 +83,7 @@ namespace EasySII.Xml.Silr
         /// <summary>
         /// Importe total del Seguro o Cobro en Metállico.
         /// </summary>
-        [XmlElement("ImporteTotal", Namespace = Settings.NamespaceSii)]
+        [XmlElement("ImporteTotal", Namespace = Settings.NamespaceSiiLR)]
         public string ImporteTotal { get; set; }
 
         /// <summary>

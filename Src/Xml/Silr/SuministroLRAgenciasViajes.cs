@@ -37,6 +37,7 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
 using EasySII.Xml.Sii;
 using System;
 using System.Collections.Generic;
@@ -53,18 +54,18 @@ namespace EasySII.Xml.Silr
     /// </summary>
     [Serializable]
     [XmlRoot("SuministroLRAgenciasViajes")]
-    public class SuministroLRAgenciasViajes
+    public class SuministroLRAgenciasViajes : ISiiLote
     {
         /// <summary>
         /// Datos de cabecera.
         /// </summary>
-        [XmlElement("Cabecera", Namespace = Settings.NamespaceSii)]
+        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
         public Cabecera Cabecera { get; set; }
 
         /// <summary>
         /// Lista de Operaciones de Seguros con un límite de 10.000.
         /// </summary>
-        [XmlElement("RegistroLRAgenciasViajes")]
+        [XmlElement("RegistroLRAgenciasViajes", Order = 2)]
         public List<RegistroLROpTrascendTribu> RegistroLRAgenciasViajes { get; set; }
 
         /// <summary>
