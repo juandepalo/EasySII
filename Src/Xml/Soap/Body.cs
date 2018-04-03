@@ -408,5 +408,68 @@ namespace EasySII.Xml.Soap
                 ((BajaLRAgenciasViajes == null) ? 0 : 1) +
                 ((BajaLRDetOperacionIntracomunitaria == null) ? 0 : 1);
         }
+
+        /// <summary>
+        /// Si el body es de una respuesta a un envío de alta/baja
+        /// de libro registro, devuelve el cuerpo de la respuesta. 
+        /// En caso contrario devuelve null.
+        /// </summary>
+        /// <returns>Respuesta en su caso o null.</returns>
+        public RespuestaLRF GetRespuestaLRF()
+        {
+
+            var respuesta = RespuestaLRFacturasEmitidas;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRBajaFacturasEmitidas;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRFacturasRecibidas;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRBajaFacturasRecibidas;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRBienesInversion;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRBajaBienesInversion;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRDetOperacionesIntracomunitarias;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRBajaDetOperacionesIntracomunitarias;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRCobrosMetalico;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRCobrosMetalico;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRCobrosMetalico;
+
+            if (respuesta == null)
+                respuesta = RespuestaLROperacionesSeguros;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRAgenciasViajes;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRBajaCobrosMetalico;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRBajaOperacionesSeguros;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRCobrosEmitidas;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRPagosRecibidas;
+
+            return respuesta;
+
+        }
     }
 }

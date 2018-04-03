@@ -79,5 +79,44 @@ namespace EasySII.Xml.Silr
         {
             IDEmisorFactura = new IDEmisorFactura();
         }
+
+        /// <summary>
+        /// Representación textual de la instancia.
+        /// </summary>
+        /// <returns>Representación textual de la instancia.</returns>
+        public override string ToString()
+        {
+            return $"{IDEmisorFactura},{NumSerieFacturaEmisor}," +
+                $"{NumSerieFacturaEmisorResumenFin},{FechaExpedicionFacturaEmisor}";
+        }
+
+        /// <summary>
+        /// Devuelve nif, dni, pasaporte.. del 
+        /// emisor de la factura.
+        /// </summary>
+        /// <returns> nif, dni, pasaporte.. del 
+        /// emisor la factura.</returns>
+        public string GetIDEmisorFactura()
+        {
+            return $"{IDEmisorFactura.NIF}{IDEmisorFactura.IDOtro?.ID}";
+        }
+
+        /// <summary>
+        /// Devuelve el número de factura si se trata de una factura,
+        /// o la concatenación de número inicial y final si se 
+        /// trata de un asiento resumen.
+        /// </summary>
+        /// <returns>Devuelve el número de factura si se trata de una factura,
+        /// o la concatenación de número inicial y final si se 
+        /// trata de un asiento resumen.</returns>
+        public string GetNumSerieFacturaEmisor()
+        {
+            if(string.IsNullOrEmpty(NumSerieFacturaEmisorResumenFin))
+                return $"{NumSerieFacturaEmisor}";
+            else
+                return $"{NumSerieFacturaEmisor},{NumSerieFacturaEmisorResumenFin}";
+        }
+
+
     }
 }

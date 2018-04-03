@@ -132,7 +132,9 @@ namespace EasySII.Business
             InvoiceNumber = siiInvoice.IDFactura.NumSerieFacturaEmisor;
             IssueDate = Convert.ToDateTime(siiInvoice.IDFactura.FechaExpedicionFacturaEmisor);
             PostingDate = Convert.ToDateTime(siiInvoice.FacturaRecibida.FechaRegContable);
-            OperationIssueDate = Convert.ToDateTime(siiInvoice.FacturaRecibida.FechaOperacion);
+
+            if(siiInvoice.FacturaRecibida.FechaOperacion!=null)
+                OperationIssueDate = Convert.ToDateTime(siiInvoice.FacturaRecibida.FechaOperacion);
 
             SellerParty = new Party()
             {

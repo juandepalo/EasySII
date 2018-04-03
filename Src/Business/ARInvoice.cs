@@ -147,7 +147,7 @@ namespace EasySII.Business
 
             InvoiceNumber = siiInvoice.IDFactura.NumSerieFacturaEmisor;
 
-            if (siiInvoice.FacturaExpedida.TipoFactura == InvoiceType.F4.ToString())
+            if (siiInvoice.FacturaExpedida.TipoFactura == $"{InvoiceType.F4}")
                 InvoiceNumberLastItem = siiInvoice.IDFactura.NumSerieFacturaEmisorResumenFin;
 
 
@@ -166,8 +166,10 @@ namespace EasySII.Business
 
             GrossAmount = SIIParser.ToDecimal(siiInvoice.FacturaExpedida.ImporteTotal);
             InvoiceText = siiInvoice.FacturaExpedida.DescripcionOperacion;
-            OperationIssueDate = Convert.ToDateTime(siiInvoice.FacturaExpedida.FechaOperacion);
 
+            if(siiInvoice.FacturaExpedida.FechaOperacion != null)
+                OperationIssueDate = Convert.ToDateTime(siiInvoice.FacturaExpedida.FechaOperacion);
+                
             BuyerParty = new Party()
             {
                 PartyName = siiInvoice.FacturaExpedida.Contraparte.NombreRazon,
@@ -1120,7 +1122,19 @@ namespace EasySII.Business
             throw new Exception($"Unknown BatchActionKey: {batchActionKey}");
         }
 
-   
+        /// <summary>
+        /// Id. de la instancia.
+        /// </summary>
+        /// <returns>Id. de la instancia.</returns>
+        public override string GetItemKey()
+        {
+            if(string.IsNullOrEmpty(InvoiceNumberLastItem))
+                return base.GetItemKey();
+
+            return base.GetItemKey() + "," + InvoiceNumberLastItem;
+        }
+
+
 
     }
 }

@@ -89,6 +89,26 @@ namespace EasySII.Business
         public DateTime? IssueDate { get; set; }
 
         /// <summary>
+        /// Código CSV asginado por la AEAT.
+        /// </summary>
+        public string CSV { get; set; }
+
+        /// <summary>
+        /// Estado de la factura en el SII de la AEAT.
+        /// </summary>
+        public string Status { get; set; }
+
+        /// <summary>
+        /// Código de error de la factura en el SII de la AEAT.
+        /// </summary>
+        public string ErrorCode { get; set; }
+
+        /// <summary>
+        /// Mensaje de error de de la factura en el SII de la AEAT.
+        /// </summary>
+        public string ErrorMessage { get; set; }
+
+        /// <summary>
         /// Constructor OPTributarias.
         /// </summary>
         public OPTributaria()
@@ -376,6 +396,25 @@ namespace EasySII.Business
             }
 
             throw new Exception($"Unknown BatchActionKey: {batchActionKey}");
+        }
+
+        /// <summary>
+        /// Devuelve fecha del item: IssueDate...
+        /// con formato dd-MM-yyyy (Ejemplo: 15-01-2015).
+        /// </summary>
+        public virtual string GetItemDate()
+        {
+            return IssueDate?.ToString("dd-MM-yyyy");
+        }
+
+        /// <summary>
+        /// Devuelve el identificador del interlocutor de negocio
+        /// que actúa como emisor.
+        /// </summary>
+        /// <returns>Id. del emisor.</returns>
+        public string GetPartyKey()
+        {
+            return SellerParty.TaxIdentificationNumber;
         }
 
     }

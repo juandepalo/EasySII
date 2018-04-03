@@ -38,6 +38,9 @@
  */
 
 using EasySII.Business.Batches;
+using EasySII.Xml.SiiR;
+using EasySII.Xml.Silr;
+using EasySII.Xml.Soap;
 using System;
 using System.IO;
 
@@ -65,10 +68,58 @@ namespace EasySII.Net
                 batch.GetActionUrl(),
                 batch.GetXml(Settings.Current.OutboxPath + batch.GetSentFileName()));
 
-            File.WriteAllText(Settings.Current.InboxPath + batch.GetReceivedFileName(), response);
+            string responsePath = Settings.Current.InboxPath + batch.GetReceivedFileName();
+            File.WriteAllText(responsePath, response);
+
+            // Aquí tengo que volcar los resultados de la respuesta en el lote
+
+            //RespuestaLRF
+            Envelope envelopeRespuesta = new Envelope(responsePath);
+
+            var respuesta = envelopeRespuesta.Body.GetRespuestaLRF();
+
+            foreach (var lin in respuesta.RespuestaLinea)
+            {
+                if (lin.IDFactura != null)
+                {
+                    IBatchItem it = GetBatchItem(batch, lin.IDFactura);
+
+                    it.Status = lin.EstadoRegistro;
+
+                    if (it.Status == "Incorrecto")
+                    {
+                        it.CSV = lin.CSV;
+                        it.ErrorCode = lin.CodigoErrorRegistro;
+                        it.ErrorMessage = lin.DescripcionErrorRegistro;
+                    }
+                    else
+                    {
+                        it.CSV = respuesta.CSV;
+                    }
+                }
+
+            }
 
             return response;
 
+        }
+
+        /// <summary>
+        /// Devuelve el item del lote que se corresponde
+        /// con los datos de identificación facilitados.
+        /// </summary>
+        /// <param name="batch">Lote en el que buscar.</param>
+        /// <param name="idFactura">Datos de identificación.</param>
+        /// <returns>Item coicidente o null.</returns>
+        private static IBatchItem GetBatchItem(Batch batch, IDFactura idFactura)
+        {
+            foreach (var it in batch.BatchItems)
+                if ((it as IBatchItem)?.GetPartyKey() == idFactura.GetIDEmisorFactura() &&
+                    (it as IBatchItem)?.GetItemKey() == idFactura.GetNumSerieFacturaEmisor() &&
+                    (it as IBatchItem)?.GetItemDate() == idFactura.FechaExpedicionFacturaEmisor)
+                    return (it as IBatchItem);
+
+            return null;
         }
     }
 }
