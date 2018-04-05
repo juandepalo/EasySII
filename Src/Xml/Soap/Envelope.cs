@@ -101,5 +101,29 @@ namespace EasySII.Xml.Soap
 
 		}
 
+        /// <summary>
+        /// Constructor clase Envelope.
+        /// </summary>
+        /// <param name="stream">Ruta al archivo xml que contiene el mensaje SOAP.</param>
+        public Envelope(Stream stream)
+        {
+
+            Envelope envelope = null;
+
+            XmlSerializer serializer = new XmlSerializer(this.GetType());
+        
+            using (StreamReader r = new StreamReader(stream))
+                envelope = serializer.Deserialize(r) as Envelope;
+
+            if (envelope == null)
+                throw new Exception("XML SOAP selerailization error");
+
+            Header = envelope.Header;
+            Body = envelope.Body;
+
+            SIIParser.ClearNulls(Body);
+
+        }
+
     }
 }

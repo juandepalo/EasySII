@@ -60,6 +60,8 @@
     <Compile Include="Src\Business\Batches\IBatchItem.cs" />
     <Compile Include="Src\Business\Batches\ISiiLote.cs" />
     <Compile Include="Src\Business\Context.cs" />
+    <Compile Include="Src\Business\Queries\QueryAeatInvoice.cs" />
+    <Compile Include="Src\Business\Queries\QueryAeatInvoiceLine.cs" />
     <Compile Include="Src\Business\TravelAgencyDeleteBatch.cs" />
     <Compile Include="Src\Business\TravelAgencyQuery.cs" />
     <Compile Include="Src\Business\TravelAgencyBatch.cs" />
