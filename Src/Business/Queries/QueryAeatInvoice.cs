@@ -38,31 +38,17 @@ namespace EasySII.Business.Queries
         {
             get
             {
-                if (Libro == "FE")
-                {
-                    if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida != null)
-                    {
-                        if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose != null)
-                        {
-                            if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose.DesgloseFactura != null)
-                            {
-                                return _RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose.DesgloseFactura;
-                            }
-                            else
-                            {
-                                if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose.DesgloseTipoOperacion != null)
-                                {
-                                    if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose.DesgloseTipoOperacion.Entrega != null)
-                                        return _RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose.DesgloseTipoOperacion.Entrega;
-                                    else if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose.DesgloseTipoOperacion.PrestacionServicios != null)
-                                        return _RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose.DesgloseTipoOperacion.PrestacionServicios;
-                                }
-                            }
-                        }
-                    }
-                }
 
-                return null;
+                DesgloseF result = _RegistroRCLRFacturasEmitidas?.DatosFacturaEmitida?.TipoDesglose?.DesgloseFactura;
+
+                if(result == null)
+                    result = _RegistroRCLRFacturasEmitidas?.DatosFacturaEmitida?.TipoDesglose?.DesgloseTipoOperacion?.Entrega;
+
+                if (result == null)
+                    result = _RegistroRCLRFacturasEmitidas?.DatosFacturaEmitida?.TipoDesglose?.DesgloseTipoOperacion?.PrestacionServicios;
+
+                return result;
+
             }
         }
 
@@ -74,15 +60,12 @@ namespace EasySII.Business.Queries
         {
             get
             {
-                if (Libro == "FR")
-                    if (_RegistroRCLRFacturasRecibidas.FacturaRecibida != null)
-                        if (_RegistroRCLRFacturasRecibidas.FacturaRecibida.DesgloseFactura != null)
-                            if (_RegistroRCLRFacturasRecibidas.FacturaRecibida.DesgloseFactura.InversionSujetoPasivo != null)
-                                return _RegistroRCLRFacturasRecibidas.FacturaRecibida.DesgloseFactura.InversionSujetoPasivo;
-                            else if (_RegistroRCLRFacturasRecibidas.FacturaRecibida.DesgloseFactura.DesgloseIVA != null)
-                                return _RegistroRCLRFacturasRecibidas.FacturaRecibida.DesgloseFactura.DesgloseIVA;
+                DesgloseIVA result = _RegistroRCLRFacturasRecibidas?.FacturaRecibida?.DesgloseFactura?.InversionSujetoPasivo;
 
-                return null;
+                if(result == null)
+                    result = _RegistroRCLRFacturasRecibidas?.FacturaRecibida?.DesgloseFactura?.DesgloseIVA;
+
+                return result;
             }
         }
 
@@ -117,18 +100,12 @@ namespace EasySII.Business.Queries
 
             string response = Wsd.GetFacturasEmitidas(batchInvoiceQuery);
 
-            var streamResponse = new MemoryStream();
-            var writer = new StreamWriter(streamResponse);
-            writer.Write(response);
-            writer.Flush();
-            streamResponse.Position = 0;
-
             try
             {
                 // Obtengo la respuesta de la consulta de facturas recibidas del archivo de respuesta de la AEAT.
-                Envelope envelope = new Envelope(streamResponse);
+                Envelope envelope = Envelope.FromXml(response);
 
-                if(envelope.Body.RespuestaConsultaLRFacturasEmitidas != null)
+                if (envelope.Body.RespuestaConsultaLRFacturasEmitidas != null)
                     return envelope.Body.RespuestaConsultaLRFacturasEmitidas;
              
                 SoapFault msgError = envelope.Body.RespuestaError;
@@ -177,17 +154,11 @@ namespace EasySII.Business.Queries
 
             string response = Wsd.GetFacturasRecibidas(batchInvoiceQuery);
 
-            var streamResponse = new MemoryStream();
-            var writer = new StreamWriter(streamResponse);
-            writer.Write(response);
-            writer.Flush();
-            streamResponse.Position = 0;
-
             try
             {
 
                 // Obtengo la respuesta de la consulta de facturas recibidas del archivo de respuesta de la AEAT.
-                Envelope envelope = new Envelope(streamResponse);                
+                Envelope envelope = Envelope.FromXml(response);
 
                 if (envelope.Body.RespuestaConsultaLRFacturasRecibidas != null)
                     return envelope.Body.RespuestaConsultaLRFacturasRecibidas;
@@ -447,20 +418,14 @@ namespace EasySII.Business.Queries
         {
             get
             {
-                if (Libro == "FE")
-                {
-                    if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida != null)
-                        if (!string.IsNullOrEmpty(_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.ClaveRegimenEspecialOTrascendencia))
-                            return _RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.ClaveRegimenEspecialOTrascendencia;
-                }
-                if (Libro == "FR")
-                {
-                    if (_RegistroRCLRFacturasRecibidas.FacturaRecibida != null)
-                        if (!string.IsNullOrEmpty(_RegistroRCLRFacturasRecibidas.FacturaRecibida.ClaveRegimenEspecialOTrascendencia))
-                            return _RegistroRCLRFacturasRecibidas.FacturaRecibida.ClaveRegimenEspecialOTrascendencia;
-                }
 
-                return null;
+                string result = _RegistroRCLRFacturasEmitidas?.DatosFacturaEmitida?.ClaveRegimenEspecialOTrascendencia;
+
+                if(string.IsNullOrEmpty(result))
+                    result = _RegistroRCLRFacturasRecibidas?.FacturaRecibida?.ClaveRegimenEspecialOTrascendencia;
+
+                return result;
+
             }
         }
 
@@ -471,39 +436,20 @@ namespace EasySII.Business.Queries
         {
             get
             {
-                if (Libro == "FE")
-                {
-                    if (_RegistroRCLRFacturasEmitidas.IDFactura.IDEmisorFactura != null)
-                    {
-                        if (!string.IsNullOrEmpty(_RegistroRCLRFacturasEmitidas.IDFactura.IDEmisorFactura.NIF))
-                        {
-                            return _RegistroRCLRFacturasEmitidas.IDFactura.IDEmisorFactura.NIF;
-                        }
-                        else
-                        {
-                            if (_RegistroRCLRFacturasEmitidas.IDFactura.IDEmisorFactura.IDOtro != null)
-                                return _RegistroRCLRFacturasEmitidas.IDFactura.IDEmisorFactura.IDOtro.ID;
-                        }
-                    }
-                }
-                else if (Libro == "FR")
-                {
-                    if (_RegistroRCLRFacturasRecibidas.IDFactura.IDEmisorFactura != null)
-                    {
-                        if (!string.IsNullOrEmpty(_RegistroRCLRFacturasRecibidas.IDFactura.IDEmisorFactura.NIF))
-                        {
-                            return _RegistroRCLRFacturasRecibidas.IDFactura.IDEmisorFactura.NIF;
-                        }
-                        else
-                        {
-                            if (_RegistroRCLRFacturasRecibidas.IDFactura.IDEmisorFactura.IDOtro != null)
-                                return _RegistroRCLRFacturasRecibidas.IDFactura.IDEmisorFactura.IDOtro.ID;
-                        }
-                    }
 
-                }
+                string result = _RegistroRCLRFacturasEmitidas?.DatosFacturaEmitida?.Contraparte?.NIF;
 
-                return null;
+                if(string.IsNullOrEmpty(result))
+                    result = _RegistroRCLRFacturasEmitidas?.DatosFacturaEmitida?.Contraparte?.IDOtro?.ID;
+
+                if (string.IsNullOrEmpty(result))
+                    result = _RegistroRCLRFacturasRecibidas?.IDFactura?.IDEmisorFactura?.NIF;
+
+                if (string.IsNullOrEmpty(result))
+                    result = _RegistroRCLRFacturasRecibidas?.IDFactura?.IDEmisorFactura?.IDOtro?.ID;
+
+                return result;
+         
             }
         }
 
@@ -514,23 +460,14 @@ namespace EasySII.Business.Queries
         {
             get
             {
-                if (Libro == "FE")
-                {
-                    if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida != null)
-                        if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.Contraparte != null)
-                            if (!string.IsNullOrEmpty(_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.Contraparte.NombreRazon))
-                                return _RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.Contraparte.NombreRazon;
 
-                }
-                else if (Libro == "FR")
-                {
-                    if (_RegistroRCLRFacturasRecibidas.FacturaRecibida != null)
-                        if (_RegistroRCLRFacturasRecibidas.FacturaRecibida.Contraparte != null)
-                            if (!string.IsNullOrEmpty(_RegistroRCLRFacturasRecibidas.FacturaRecibida.Contraparte.NombreRazon))
-                                return _RegistroRCLRFacturasRecibidas.FacturaRecibida.Contraparte.NombreRazon;
-                }
+                string result = _RegistroRCLRFacturasEmitidas?.DatosFacturaEmitida?.Contraparte?.NombreRazon;
 
-                return null;
+                if(string.IsNullOrEmpty(result))
+                    result = _RegistroRCLRFacturasRecibidas?.FacturaRecibida?.Contraparte?.NombreRazon;
+
+                return result;
+
             }
         }
 
@@ -542,22 +479,14 @@ namespace EasySII.Business.Queries
         {
             get
             {
-                if (Libro == "FE")
-                {
-                    if (_RegistroRCLRFacturasEmitidas.IDFactura != null)
-                        if (!string.IsNullOrEmpty(_RegistroRCLRFacturasEmitidas.IDFactura.NumSerieFacturaEmisor))
-                            return _RegistroRCLRFacturasEmitidas.IDFactura.NumSerieFacturaEmisor;
 
-                }
-                else if (Libro == "FR")
-                {
-                    if (_RegistroRCLRFacturasRecibidas.IDFactura != null)
-                        if (!string.IsNullOrEmpty(_RegistroRCLRFacturasRecibidas.IDFactura.NumSerieFacturaEmisor))
-                            return _RegistroRCLRFacturasRecibidas.IDFactura.NumSerieFacturaEmisor;
+                string result = _RegistroRCLRFacturasEmitidas?.IDFactura?.NumSerieFacturaEmisor;
 
-                }
+                if (string.IsNullOrEmpty(result))
+                    result = _RegistroRCLRFacturasRecibidas.IDFactura.NumSerieFacturaEmisor;
 
-                return null;
+                return result;
+
             }
         }
 
@@ -568,22 +497,17 @@ namespace EasySII.Business.Queries
         {
             get
             {
-                if (Libro == "FE")
-                {
-                    if (_RegistroRCLRFacturasEmitidas.IDFactura.IDEmisorFactura != null)
-                        if (!string.IsNullOrEmpty(_RegistroRCLRFacturasEmitidas.IDFactura.IDEmisorFactura.NIF))
-                            return Convert.ToDateTime(_RegistroRCLRFacturasEmitidas.IDFactura.FechaExpedicionFacturaEmisor);
 
-                }
-                else if (Libro == "FR")
-                {
-                    if (_RegistroRCLRFacturasRecibidas.IDFactura.IDEmisorFactura != null)
-                        if (!string.IsNullOrEmpty(_RegistroRCLRFacturasRecibidas.IDFactura.IDEmisorFactura.NIF))
-                            return Convert.ToDateTime(_RegistroRCLRFacturasRecibidas.IDFactura.FechaExpedicionFacturaEmisor);
+                string date = _RegistroRCLRFacturasEmitidas?.IDFactura?.FechaExpedicionFacturaEmisor;
 
-                }
+                if (string.IsNullOrEmpty(date))
+                    date = _RegistroRCLRFacturasRecibidas?.IDFactura?.FechaExpedicionFacturaEmisor;
 
-                return null;
+                if (string.IsNullOrEmpty(date))
+                    return null;
+
+                return Convert.ToDateTime(date);
+           
             }
         }
 
@@ -594,22 +518,14 @@ namespace EasySII.Business.Queries
         {
             get
             {
-                if (Libro == "FE")
-                {
-                    if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida != null)
-                        if (!string.IsNullOrEmpty(_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoFactura))
-                            return _RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoFactura;
 
-                }
-                else if (Libro == "FR")
-                {
-                    if (_RegistroRCLRFacturasRecibidas.FacturaRecibida != null)
-                        if (!string.IsNullOrEmpty(_RegistroRCLRFacturasRecibidas.FacturaRecibida.TipoFactura))
-                            return _RegistroRCLRFacturasRecibidas.FacturaRecibida.TipoFactura;
+                string result = _RegistroRCLRFacturasEmitidas?.DatosFacturaEmitida?.TipoFactura;
 
-                }
+                if (string.IsNullOrEmpty(result))
+                    result = _RegistroRCLRFacturasRecibidas?.FacturaRecibida?.TipoFactura;
 
-                return null;
+                return result;
+
             }
         }
 
@@ -621,48 +537,27 @@ namespace EasySII.Business.Queries
         {
             get
             {
-                if (Libro == "FE")
-                {
-                    if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida != null)
-                    {
-                        if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose != null)
-                        {
-                            if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose.DesgloseFactura != null)
-                            {
-                                return "FEFactura";
-                            }
-                            else
-                            {
-                                if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose.DesgloseTipoOperacion != null)
-                                {
-                                    if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose.DesgloseTipoOperacion.Entrega != null)
-                                        return "FEOpEntrega";
-                                    else if (_RegistroRCLRFacturasEmitidas.DatosFacturaEmitida.TipoDesglose.DesgloseTipoOperacion.PrestacionServicios != null)
-                                        return "FEOpServicios";
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (Libro == "FR")
-                {
-                    if (_RegistroRCLRFacturasRecibidas != null)
-                    {
-                        if (_RegistroRCLRFacturasRecibidas.FacturaRecibida != null)
-                        {
-                            if (_RegistroRCLRFacturasRecibidas.FacturaRecibida.DesgloseFactura.InversionSujetoPasivo != null)
-                            {
-                                return "FRInvSujPasivo";
-                            }
-                            else if (_RegistroRCLRFacturasRecibidas.FacturaRecibida.DesgloseFactura.DesgloseIVA != null)
-                            {
-                                return "FRDesgloseIVA";
-                            }
-                        }
-                    }
-                }
 
-                return null;
+                string result = (_RegistroRCLRFacturasEmitidas?.DatosFacturaEmitida?.
+                    TipoDesglose?.DesgloseFactura == null) ? null : "FEFactura";
+
+                if (string.IsNullOrEmpty(result))
+                    result = (_RegistroRCLRFacturasEmitidas?.DatosFacturaEmitida?.
+                        TipoDesglose?.DesgloseTipoOperacion?.Entrega == null) ? null : "FEOpEntrega";
+
+                if (string.IsNullOrEmpty(result))
+                    result = (_RegistroRCLRFacturasEmitidas?.DatosFacturaEmitida?.TipoDesglose?.
+                        DesgloseTipoOperacion?.PrestacionServicios == null) ? null : "FEOpServicios";
+
+                if (string.IsNullOrEmpty(result))
+                    result = (_RegistroRCLRFacturasRecibidas?.FacturaRecibida?.DesgloseFactura?.
+                        InversionSujetoPasivo == null) ? null : "FRInvSujPasivo";
+
+                if (string.IsNullOrEmpty(result))
+                    result = (_RegistroRCLRFacturasRecibidas?.FacturaRecibida?.DesgloseFactura?.DesgloseIVA == null) ? null : "FRDesgloseIVA";
+
+                return result;
+
 
             }
         }

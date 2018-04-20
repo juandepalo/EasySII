@@ -30,13 +30,14 @@
     develop commercial activities involving the EasySII software without
     disclosing the source code of your own applications.
     These activities include: offering paid services to customers as an ASP,
-    serving extract PDFs data on the fly in a web application, shipping EasySII
+    serving sii XML data on the fly in a web application, shipping EasySII
     with a closed source product.
     
     For more information, please contact Irene Solutions SL. at this
     address: info@irenesolutions.com
  */
 
+using EasySII.Xml.Sii;
 using EasySII.Xml.Silr;
 using System.Xml.Serialization;
 
@@ -71,6 +72,14 @@ namespace EasySII.Xml.SiiR
         /// </summary>
         [XmlElement("EstadoFactura", Namespace = Settings.NamespaceSiiRQ)]
         public EstadoFactura EstadoFactura { get; set; }
+
+        /// <summary>
+        /// Las facturas con estado “Parcialmente contrastada” incluirán en la respuesta de la consulta el bloque
+        /// DatosDescuadreContraparte con la información declarada por el cliente que no coincide en la 
+        /// información del libro de facturas emitidas.
+        /// </summary>
+        [XmlElement("DatosDescuadreContraparte", Namespace = Settings.NamespaceSiiRQ)]
+        public DatosDescuadreContraparte DatosDescuadreContraparte { get; set; }
 
         /// <summary>
         /// Constructor de la clase RegistroRCLRFacturasEmitidas.

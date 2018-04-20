@@ -30,7 +30,7 @@
     develop commercial activities involving the EasySII software without
     disclosing the source code of your own applications.
     These activities include: offering paid services to customers as an ASP,
-    serving extract PDFs data on the fly in a web application, shipping EasySII
+    serving sii XML data on the fly in a web application, shipping EasySII
     with a closed source product.
     
     For more information, please contact Irene Solutions SL. at this
@@ -123,6 +123,23 @@ namespace EasySII.Xml.Soap
 
             SIIParser.ClearNulls(Body);
 
+        }
+
+        /// <summary>
+        /// Devuelve un objeto envelope a partir de un
+        /// string procedente de una respuesta de la AEAT.
+        /// </summary>
+        /// <param name="xml">String xml de una instancia de tipo del SII.</param>
+        /// <returns>Nuevo objeto envelope.</returns>
+        public static Envelope FromXml(string xml)
+        {
+            var streamResponse = new MemoryStream();
+            var writer = new StreamWriter(streamResponse);
+            writer.Write(xml);
+            writer.Flush();
+            streamResponse.Position = 0;
+
+            return new Envelope(streamResponse);
         }
 
     }

@@ -111,6 +111,7 @@
     <Compile Include="Src\NamespaceDoc.cs" />
     <Compile Include="Src\Net\BatchDispatcher.cs" />
     <Compile Include="Src\Net\Wsd.cs" />
+    <Compile Include="Src\SiiEndPointPrefixes.cs" />
     <Compile Include="Src\Tax\TaxIdEsPersonTypeCode.cs" />
     <Compile Include="Src\Tax\TaxIdEsTypes.cs" />
     <Compile Include="Src\Tax\TaxIdEs.cs" />

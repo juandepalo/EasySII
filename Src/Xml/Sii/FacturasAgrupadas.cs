@@ -30,7 +30,7 @@
     develop commercial activities involving the EasySII software without
     disclosing the source code of your own applications.
     These activities include: offering paid services to customers as an ASP,
-    serving extract PDFs data on the fly in a web application, shipping EasySII
+    serving sii XML data on the fly in a web application, shipping EasySII
     with a closed source product.
     
     For more information, please contact Irene Solutions SL. at this

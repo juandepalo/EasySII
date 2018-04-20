@@ -30,7 +30,7 @@
     develop commercial activities involving the EasySII software without
     disclosing the source code of your own applications.
     These activities include: offering paid services to customers as an ASP,
-    serving extract PDFs data on the fly in a web application, shipping EasySII
+    serving sii XML data on the fly in a web application, shipping EasySII
     with a closed source product.
     
     For more information, please contact Irene Solutions SL. at this
@@ -51,6 +51,29 @@ namespace EasySII.Xml.SiiR
     {
 
         /// <summary>
+        /// Estado de contraste de la factura.
+        /// <para>Lista L23:</para> 
+        /// <para>1: No contrastable. Estas facturas no permiten contrastarse.</para> 
+        /// <para>2: En proceso de contraste. Estado "temporal" entre el alta/modificación 
+        /// de la factura y su intento de cuadre.</para> 
+        /// <para>3: No contrastada. El emisor o el receptor no han registrado la factura 
+        /// (no hay coincidencia en el NIF del emisor, número de factura del emisor y fecha de expedición).</para>
+        /// <para>4: Parcialmente contrastada. El emisor y el receptor han registrado la factura 
+        /// (coincidencia en el NIF del emisor, número de factura del emisor y fecha de expedición) pero tiene 
+        /// discrepancias en algunos datos de la factura.</para>
+        /// <para> 5: Contrastada. El emisor y el receptor han registrado la factura (coincidencia en el NIF del 
+        /// emisor, número de factura del emisor y fecha de expedición) con los mismos datos de la factura.</para>
+        /// </summary>
+        [XmlElement("EstadoCuadre", Namespace = Settings.NamespaceSiiRQ)]
+        public string EstadoCuadre { get; set; }
+
+        /// <summary>
+        /// Timestamp del cuadre.
+        /// </summary>
+        [XmlElement("TimestampEstadoCuadre", Namespace = Settings.NamespaceSiiRQ)]
+        public string TimestampEstadoCuadre { get; set; }
+
+        /// <summary>
         /// Timestamp de la última modificación realizada a la factura.
         /// </summary>
         [XmlElement("TimestampUltimaModificacion", Namespace = Settings.NamespaceSiiRQ)]
@@ -58,6 +81,10 @@ namespace EasySII.Xml.SiiR
 
         /// <summary>
         /// Estado de la factura en el registro.
+        /// <para>Lista L24: </para>
+        /// <para>Correcta</para>
+        /// <para>AceptadaConErrores</para>
+        /// <para>Anulada</para>
         /// </summary>
         [XmlElement("EstadoRegistro", Namespace = Settings.NamespaceSiiRQ)]
         public string EstadoRegistro { get; set; }
