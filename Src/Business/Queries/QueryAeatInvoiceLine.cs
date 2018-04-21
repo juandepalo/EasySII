@@ -62,5 +62,10 @@
         /// </summary>
         public string Estado { get; set; }
 
+        /// <summary>
+        /// Contrastada, No contrastada...
+        /// </summary>
+        public string EstadoCuadre { get; set; }
+
     }
 }

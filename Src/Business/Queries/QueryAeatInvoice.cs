@@ -293,7 +293,8 @@ namespace EasySII.Business.Queries
                     iva.NoSujArt7_14,                                   // 17
                     iva.NoSujTAI,                                       // 18
                     invoice.CSV,                                        // 19
-                    invoice.Estado);                                    // 20           
+                    invoice.Estado,                                     // 20
+                    invoice.EstadoCuadre);                              // 21        
                 }
             }
 
@@ -316,7 +317,7 @@ namespace EasySII.Business.Queries
 
             List<QueryAeatInvoice> invoices = GetInvoices(periodStart, periodEnd, titular);
 
-            string line = "Libro;NumDoc;Fecha;NIF;Nombre;Periodo;TipoFactura;ClaveRegEspOTrasc;TipoDesglose;Tipo;BaseImponible;TipoImpositivo;Cuota;TipoRE;CuotaRE;TipoREAGYP;CuotaREAGYP;NoSujArt7_14;NoSujTAI;CSV;Estado\n";
+            string line = "Libro;NumDoc;Fecha;NIF;Nombre;Periodo;TipoFactura;ClaveRegEspOTrasc;TipoDesglose;Tipo;BaseImponible;TipoImpositivo;Cuota;TipoRE;CuotaRE;TipoREAGYP;CuotaREAGYP;NoSujArt7_14;NoSujTAI;CSV;Estado;EstadoCuadre\n";
             StringBuilder sb = new StringBuilder();
             sb.Append(line);
 
@@ -345,7 +346,8 @@ namespace EasySII.Business.Queries
                     $"{iva.NoSujArt7_14};" +                                            // 17
                     $"{iva.NoSujTAI};" +                                                // 18
                     $"{invoice.CSV};" +                                                 // 19
-                    $"{invoice.Estado}\n";                                              // 20  
+                    $"{invoice.Estado};" +                                              // 20  
+                    $"{invoice.EstadoCuadre}\n";                                        // 21 
 
                     sb.Append(line);
                 }
@@ -386,6 +388,7 @@ namespace EasySII.Business.Queries
             result.Columns.Add("NoSujTAI", typeof(decimal));
             result.Columns.Add("CSV", typeof(string));
             result.Columns.Add("Estado", typeof(string));
+            result.Columns.Add("EstadoCuadre", typeof(string));
 
             return result;
 
@@ -405,6 +408,11 @@ namespace EasySII.Business.Queries
         /// Estado en el SII de la AEAT.
         /// </summary>
         public string Estado { get; set; }
+
+        /// <summary>
+        /// Estado cuadre en el SII de la AEAT.
+        /// </summary>
+        public string EstadoCuadre { get; set; }
 
         /// <summary>
         /// código CSV.
@@ -580,18 +588,28 @@ namespace EasySII.Business.Queries
 
             Lines = new List<QueryAeatInvoiceLine>();
 
+            EstadoFactura estado = respuesta.EstadoFactura;
+
+            //if (estado == null)
+            //    estado = _RegistroRCLRFacturasRecibidas?.EstadoFactura;
+
+            Estado = estado.EstadoRegistro;
+            ExternStatus exStatus = (ExternStatus)Convert.ToInt32(estado.EstadoCuadre);
+            EstadoCuadre = $"{exStatus}";
+
             switch (respuesta.GetType().Name)
             {
                 case "RegistroRCLRFacturasEmitidas":
                     _RegistroRCLRFacturasEmitidas = (RegistroRCLRFacturasEmitidas)respuesta;
                     Libro = "FE";
-                    Estado = _RegistroRCLRFacturasEmitidas.EstadoFactura.EstadoRegistro;
+                    //Estado = _RegistroRCLRFacturasEmitidas.EstadoFactura.EstadoRegistro;
+                    //EstadoCuadre =$"{((ExternStatus)((int)_RegistroRCLRFacturasEmitidas.EstadoFactura.EstadoCuadre))}";
                     GetLinesFE();
                     break;
                 case "RegistroRCLRFacturasRecibidas":
                     _RegistroRCLRFacturasRecibidas = (RegistroRCLRFacturasRecibidas)respuesta;
                     Libro = "FR";
-                    Estado = _RegistroRCLRFacturasRecibidas.EstadoFactura.EstadoRegistro;
+                    //Estado = _RegistroRCLRFacturasRecibidas.EstadoFactura.EstadoRegistro;
                     GetLinesFR();
                     break;
             }

@@ -50,6 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Src\Business\APPaymentsQuery.cs" />
     <Compile Include="Src\Business\ARInvoiceAV.cs" />
+    <Compile Include="Src\Business\ExternStatus.cs" />
     <Compile Include="Src\Business\Obsolete\ARInvoicesBatchAV.cs" />
     <Compile Include="Src\Business\Batches\Batch.cs" />
     <Compile Include="Src\Business\Batches\BatchActionKeys.cs" />
