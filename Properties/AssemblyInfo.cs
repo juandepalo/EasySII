@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Oscar Valor, Julio Carballo y Manuel Diago")]
 [assembly: AssemblyProduct("EasySII")]
-[assembly: AssemblyCopyright("Copyright ©  Oscar Valor, Julio Carballo y Manuel Diago 2017")]
+[assembly: AssemblyCopyright("Copyright ©  Oscar Valor, Julio Carballo y Manuel Diago 2018")]
 [assembly: AssemblyTrademark("Oscar Valor y Manuel Diago")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.7")]
-[assembly: AssemblyFileVersion("1.0.0.7")]
+[assembly: AssemblyVersion("1.0.0.9")]
+[assembly: AssemblyFileVersion("1.0.0.9")]
