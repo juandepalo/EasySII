@@ -146,10 +146,22 @@ namespace EasySII.Xml.Soap
         public ConsultaLRFacturasEmitidas ConsultaLRFacturasEmitidas { get; set; }
 
         /// <summary>
+        /// Consulta de información al SII de facturas emitidas cliente.
+        /// </summary>
+        [XmlElement("ConsultaLRFactInformadasCliente", Namespace = Settings.NamespaceSiiLRQ)]
+        public ConsultaFactInformadasCliente ConsultaFactInformadasCliente { get; set; }
+
+        /// <summary>
         /// Consulta de información al SII de facturas recibidas.
         /// </summary>
         [XmlElement("ConsultaLRFacturasRecibidas", Namespace = Settings.NamespaceSiiLRQ)]
         public ConsultaLRFacturasRecibidas ConsultaLRFacturasRecibidas { get; set; }
+
+        /// <summary>
+        /// Consulta de información al SII de facturas recibidas proveedor.
+        /// </summary>
+        [XmlElement("ConsultaLRFactInformadasProveedor", Namespace = Settings.NamespaceSiiLRQ)]
+        public ConsultaFactInformadasProveedor ConsultaFactInformadasProveedor { get; set; }
 
         /// <summary>
         /// Consulta de envíos al SII de pagos de facturas recibidas.
@@ -318,10 +330,22 @@ namespace EasySII.Xml.Soap
         public RespuestaConsultaLRFacturasRecibidas RespuestaConsultaLRFacturasRecibidas { get; set; }
 
         /// <summary>
+        /// Respuesta AEAT RespuestaConsultaLRFactInformadasProveedor.
+        /// </summary>
+        [XmlElement("RespuestaConsultaLRFactInformadasProveedor", Namespace = Settings.NamespaceSiiRQ)]
+        public RespuestaConsultaLRFactInformadasProveedor RegistroRespuestaConsultaLRFactInformadasProveedor { get; set; }
+
+        /// <summary>
         /// Respuesta AEAT ConsultaLRFacturasRecibidas.
         /// </summary>
         [XmlElement("RespuestaConsultaLRFacturasEmitidas", Namespace = Settings.NamespaceSiiRQ)]
         public RespuestaConsultaLRFacturasEmitidas RespuestaConsultaLRFacturasEmitidas { get; set; }
+
+        /// <summary>
+        /// Respuesta AEAT RespuestaConsultaLRFactInformadasCliente.
+        /// </summary>
+        [XmlElement("RespuestaConsultaLRFactInformadasCliente", Namespace = Settings.NamespaceSiiRQ)]
+        public RespuestaConsultaLRFactInformadasCliente RespuestaConsultaLRFactInformadasCliente { get; set; }
 
         /// <summary>
         /// Respuesta AEAT ConsultaLRBienesInversion.

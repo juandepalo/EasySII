@@ -37,21 +37,20 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Business.Batches;
 using EasySII.Xml.Sii;
 using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace EasySII.Xml.Silr
+namespace EasySII.Xml.SiiR
 {
 
-
     /// <summary>
-    /// Consulta de Facturas Informadas por Proveedor.
+    /// Libro de registro de Facturas emitidas.
     /// </summary>
     [Serializable]
-    [XmlRoot("ConsultaFactInformadasProveedor")]
-    public class ConsultaFactInformadasProveedor : ISiiLote
+    [XmlRoot("RespuestaConsultaLRFactInformadasCliente")]
+    public class RespuestaConsultaLRFactInformadasCliente
     {
 
         /// <summary>
@@ -61,19 +60,32 @@ namespace EasySII.Xml.Silr
         public Cabecera Cabecera { get; set; }
 
         /// <summary>
-        /// Filtro consulta.
+        /// Indica si hay más facturas en la consulta realizada
+        /// Si hay más datos pendientes, este campo tendrá valor
+        /// “S” y se podrán realizar nuevas consultas indicando
+        /// la identificación de la última factura a partir de la
+        /// cual se devolverán los siguientes registros.
+        /// Alfanumérico(1).
+        /// Valores posibles: “S” o “N”
         /// </summary>
-        [XmlElement("FiltroConsulta", Order = 2)]
-        public FiltroConsultaInformadasCliPro FiltroConsulta { get; set; }
+        [XmlElement("IndicadorPaginacion", Order = 2, Namespace = Settings.NamespaceSiiRQ)]
+        public string IndicadorPaginacion { get; set; }
 
         /// <summary>
-        /// Constructor de la clase ConsultaFactInformadasProveedor.
+        /// Indica si hay facturas para la consulta realizada.
+        /// Valores posibles: “ConDatos” o “SinDatos”.
         /// </summary>
-        public ConsultaFactInformadasProveedor()
-        {
-            Cabecera = new Cabecera();
-            FiltroConsulta = new FiltroConsultaInformadasCliPro();
-        }
+        [XmlElement("ResultadoConsulta", Order = 3, Namespace = Settings.NamespaceSiiRQ)]
+        public string ResultadoConsulta { get; set; }
+
+        /// <summary>
+        /// Bloque que contiene campos de la factura
+        /// informados por el cliente. Se obtendrán como
+        /// máximo 10.000 facturas, es decir, este bloque 
+        /// puede repetirse 10.000 veces como máximo.
+        /// </summary>
+        [XmlElement("RegistroRespuestaConsultaLRFactInformadasCliente", Order = 4, Namespace = Settings.NamespaceSiiRQ)]
+        public List<RegistroRespuestaConsultaFactInformadasCliente> RegistroRespuestaConsultaFactInformadasCliente { get; set; }
 
     }
 }

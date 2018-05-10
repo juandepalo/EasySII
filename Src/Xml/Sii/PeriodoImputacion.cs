@@ -37,43 +37,42 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Business.Batches;
-using EasySII.Xml.Sii;
 using System;
 using System.Xml.Serialization;
 
-namespace EasySII.Xml.Silr
+namespace EasySII.Xml.Sii
 {
-
-
     /// <summary>
-    /// Consulta de Facturas Informadas por Proveedor.
+    /// Perido impositivo
     /// </summary>
     [Serializable]
-    [XmlRoot("ConsultaFactInformadasProveedor")]
-    public class ConsultaFactInformadasProveedor : ISiiLote
+    [XmlRoot("PeriodoImputacion", Namespace = Settings.NamespaceSii)]
+    public class PeriodoImputacion
     {
+        /// <summary>
+        /// Ejercicio impositivo de la factura.
+        /// Numérico(4).
+        /// </summary>
+        [XmlElement("EjercicioImputacion")]
+        public string Ejercicio { get; set; }
 
         /// <summary>
-        /// Datos de cabecera.
+        /// Periodo impositivo de la factura. Alfanumérico(2). L1:
+        /// <para>01: Enero</para>
+        /// <para>02: Febrero</para>
+        /// <para>03: Marzo</para>
+        /// <para>04: Abril</para>
+        /// <para>05: Mayo</para>
+        /// <para>06: Junio</para>
+        /// <para>07: Julio</para>
+        /// <para>08: Agosto</para>
+        /// <para>09: Septiembre</para>
+        /// <para>10: Octubre</para>
+        /// <para>11: Noviembre</para>
+        /// <para>12: Diciembre</para>
+        /// <para>0A: Anual</para>
         /// </summary>
-        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
-        public Cabecera Cabecera { get; set; }
-
-        /// <summary>
-        /// Filtro consulta.
-        /// </summary>
-        [XmlElement("FiltroConsulta", Order = 2)]
-        public FiltroConsultaInformadasCliPro FiltroConsulta { get; set; }
-
-        /// <summary>
-        /// Constructor de la clase ConsultaFactInformadasProveedor.
-        /// </summary>
-        public ConsultaFactInformadasProveedor()
-        {
-            Cabecera = new Cabecera();
-            FiltroConsulta = new FiltroConsultaInformadasCliPro();
-        }
-
+        [XmlElement("PeriodoImputacion")]
+        public string Periodo { get; set; }
     }
 }

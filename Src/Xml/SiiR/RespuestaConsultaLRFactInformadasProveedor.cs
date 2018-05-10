@@ -38,55 +38,53 @@
  */
 
 using EasySII.Xml.Sii;
-using EasySII.Xml.SiiR;
-using EasySII.Xml.Silr;
+using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace EasySII.Xml.SiiR
 {
-    /// <summary>
-    /// Bloque que contiene campos de la factura
-    /// informados por el proveedor. Se obtendrán como
-    /// máximo 10.000 facturas, es decir, este bloque 
-    /// puede repetirse 10.000 veces como máximo.
+
+    /// Libro de registro de Facturas emitidas.
     /// </summary>
-    public class RegistroRespuestaConsultaFactInformadasProveedor
+    [Serializable]
+    [XmlRoot("RespuestaConsultaLRFactInformadasProveedor")]
+    public class RespuestaConsultaLRFactInformadasProveedor
     {
 
+        /// <summary>
+        /// Datos de cabecera.
+        /// </summary>
+        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
+        public Cabecera Cabecera { get; set; }
+
+        /// <summary>
+        /// Indica si hay más facturas en la consulta realizada
+        /// Si hay más datos pendientes, este campo tendrá valor
+        /// “S” y se podrán realizar nuevas consultas indicando
+        /// la identificación de la última factura a partir de la
+        /// cual se devolverán los siguientes registros.
+        /// Alfanumérico(1).
+        /// Valores posibles: “S” o “N”
+        /// </summary>
+        [XmlElement("IndicadorPaginacion", Order = 2, Namespace = Settings.NamespaceSiiRQ)]
+        public string IndicadorPaginacion { get; set; }
 
         /// <summary>
         /// Indica si hay facturas para la consulta realizada.
         /// Valores posibles: “ConDatos” o “SinDatos”.
         /// </summary>
-        [XmlElement("IDFactura", Namespace = Settings.NamespaceSiiRQ)]
-        public IDFactura IDFactura { get; set; }
+        [XmlElement("ResultadoConsulta", Order = 3, Namespace = Settings.NamespaceSiiRQ)]
+        public string ResultadoConsulta { get; set; }
 
         /// <summary>
-        /// Bloque que contiene el periodo de liquidación
-        /// informado por el proveedor
+        /// Bloque que contiene campos de la factura
+        /// informados por el proveedor. Se obtendrán como
+        /// máximo 10.000 facturas, es decir, este bloque 
+        /// puede repetirse 10.000 veces como máximo.
         /// </summary>
-        [XmlElement("PeriodoLiquidacion", Namespace = Settings.NamespaceSiiRQ)]
-        public PeriodoImpositivo PeriodoLiquidacion { get; set; }
-
-        /// <summary>
-        /// Bloque que contiene los campos de la factura
-        /// informada por el proveedor
-        /// </summary>
-        [XmlElement("DatosFacturaInformadaproveedor", Namespace = Settings.NamespaceSiiRQ)]
-        public RegistroLRFacturasEmitidas DatosFacturaInformadaproveedor { get; set; }
-
-        /// <summary>
-        /// Datos proveedor.
-        /// </summary>
-        [XmlElement("Proveedor", Namespace = Settings.NamespaceSiiRQ)]
-        public Contraparte Proveedor { get; set; }
-
-        /// <summary>
-        /// Bloque que contiene los campos del estado de
-        /// la factura registrada:
-        /// </summary>
-        [XmlElement("EstadoFactura", Namespace = Settings.NamespaceSiiRQ)]
-        public EstadoFactura EstadoFactura { get; set; }
+        [XmlElement("RegistroRespuestaConsultaLRFactInformadasProveedor", Order = 4, Namespace = Settings.NamespaceSiiRQ)]
+        public List<RegistroRespuestaConsultaLRFactInformadasProveedor> RegistroRespuestaConsultaLRFactInformadasProveedor { get; set; }
 
     }
 }

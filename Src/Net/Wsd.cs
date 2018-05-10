@@ -86,6 +86,7 @@ namespace EasySII.Net
         private static string WsdSuministroLRFacturasEmitidasAction = WsdSuministroLRFacturasEmitidasUrl + "?op=SuministroLRFacturasEmitidas";
         private static string WsdConsultaLRFacturasEmitidasAction = WsdSuministroLRFacturasEmitidasUrl + "?op=ConsultaLRFacturasEmitidas";
         private static string WsdAnulacionLRFacturasEmitidasAction = WsdSuministroLRFacturasEmitidasUrl + "?op=AnulacionLRFacturasEmitidas";
+        private static string WsdConsultaLRFacturasEmitidasClienteAction = WsdSuministroLRFacturasEmitidasUrl + "?op=ConsultaLRFactInformadasCliente";
 
         /// <summary>
         /// Url del web service 'SuministroLRCobrosEmitidas' con sus respectivas acciones para
@@ -106,6 +107,7 @@ namespace EasySII.Net
         private static string WsdSuministroLRFacturasRecibidasAction = WsdSuministroLRFacturasRecibidasUrl + "?op=SuministroLRFacturasRecibidas";
         private static string WsdConsultaLRFacturasRecibidasAction = WsdSuministroLRFacturasRecibidasUrl + "?op=ConsultaLRFacturasRecibidas";
         private static string WsdAnulacionLRFacturasRecibidasAction = WsdSuministroLRFacturasRecibidasUrl + "?op=AnulacionLRFacturasRecibidas";
+        private static string WsdConsultaLRFacturasRecibidasProveedorAction = WsdSuministroLRFacturasRecibidasUrl + "?op=ConsultaLRFactInformadasProveedor";
 
         /// <summary>
         /// Url del web service 'SuministroLRPagosRecibidas' con sus respectivas acciones para
@@ -553,6 +555,54 @@ namespace EasySII.Net
                 invoicesQuery.GetXml(Settings.Current.OutboxPath + invoicesQuery.GetSentFileName()));
 
             File.WriteAllText(Settings.Current.InboxPath + invoicesQuery.GetReceivedFileName(), response);
+
+            return response;
+
+        }
+
+        /// <summary>
+        /// Consulta de facturas emitidas enviadas al SII. Devuelve un string
+        /// con el xml de la AEAT en respuesta a una consulta de facturas emitidas
+        /// según los criterios facilitados.
+        /// </summary>
+        /// <param name="invoicesQuery"> Consulta facturas.</param>
+        /// <returns>Devuelve el xml de respuesta de la AEAT a una
+        /// petición de consulta de facturas emitidas enviadas.</returns>
+        public static string GetFacturasEmitidasCliente(ARInvoicesQuery invoicesQuery)
+        {
+
+            if (invoicesQuery.ARInvoice.IssueDate == null)
+                throw new ArgumentException("Couldnt't get ARInvoicesQuery without invoice IssueDate.");
+
+            string response = Wsd.Call(Wsd.WsdSuministroLRFacturasEmitidasUrl,
+                Wsd.WsdConsultaLRFacturasEmitidasClienteAction,
+                invoicesQuery.GetXmlExtern(Settings.Current.OutboxPath + invoicesQuery.GetSentExternFileName()));
+
+            File.WriteAllText(Settings.Current.InboxPath + invoicesQuery.GetReceivedExternFileName(), response);
+
+            return response;
+
+        }
+
+        /// <summary>
+        /// Consulta de facturas emitidas enviadas al SII. Devuelve un string
+        /// con el xml de la AEAT en respuesta a una consulta de facturas emitidas
+        /// según los criterios facilitados.
+        /// </summary>
+        /// <param name="invoicesQuery"> Consulta facturas.</param>
+        /// <returns>Devuelve el xml de respuesta de la AEAT a una
+        /// petición de consulta de facturas emitidas enviadas.</returns>
+        public static string GetFacturasRecibidasProveedor(APInvoicesQuery invoicesQuery)
+        {
+
+            if (invoicesQuery.APInvoice.IssueDate == null)
+                throw new ArgumentException("Couldnt't get ARInvoicesQuery without invoice IssueDate.");
+
+            string response = Wsd.Call(Wsd.WsdSuministroLRFacturasRecibidasUrl,
+                Wsd.WsdConsultaLRFacturasRecibidasProveedorAction,
+                invoicesQuery.GetXmlExtern(Settings.Current.OutboxPath + invoicesQuery.GetSentExternFileName()));
+
+            File.WriteAllText(Settings.Current.InboxPath + invoicesQuery.GetReceivedExternFileName(), response);
 
             return response;
 

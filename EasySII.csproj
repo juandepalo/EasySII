@@ -61,6 +61,7 @@
     <Compile Include="Src\Business\Batches\IBatchItem.cs" />
     <Compile Include="Src\Business\Batches\ISiiLote.cs" />
     <Compile Include="Src\Business\Context.cs" />
+    <Compile Include="Src\Business\Queries\QueryAeatExtern.cs" />
     <Compile Include="Src\Business\Queries\QueryAeatInvoice.cs" />
     <Compile Include="Src\Business\Queries\QueryAeatInvoiceLine.cs" />
     <Compile Include="Src\Business\TravelAgencyDeleteBatch.cs" />
@@ -119,10 +120,13 @@
     <Compile Include="Src\Tax\TaxIdEsDCDniNie.cs" />
     <Compile Include="Src\Tax\TaxIdEsDCNif.cs" />
     <Compile Include="Src\Tax\TaxIdEsError.cs" />
+    <Compile Include="Src\Xml\Sii\DesgloseFacturaInfCliente.cs" />
+    <Compile Include="Src\Xml\Sii\PeriodoImputacion.cs" />
+    <Compile Include="Src\Xml\Sii\TipoDesgloseFactInfProveedor.cs" />
     <Compile Include="Src\Xml\Silr\ConsultaFactInformadasProveedor.cs" />
     <Compile Include="Src\Xml\SiiR\RegistroRespuestaConsultaFactInformadasCliente.cs" />
-    <Compile Include="Src\Xml\SiiR\RegistroRespuestaConsultaFactInformadasProveedor.cs" />
-    <Compile Include="Src\Xml\SiiR\RespuestaConsultaFactInformadasCliente.cs" />
+    <Compile Include="Src\Xml\SiiR\RegistroRespuestaConsultaLRFactInformadasProveedor.cs" />
+    <Compile Include="Src\Xml\SiiR\RespuestaConsultaLRFactInformadasCliente.cs" />
     <Compile Include="Src\Xml\SIIParser.cs" />
     <Compile Include="Src\Xml\SiiR\EstadoFactura.cs" />
     <Compile Include="Src\Xml\SiiR\RegistroRespuestaConsultaPagos.cs" />
@@ -176,8 +180,10 @@
     <Compile Include="Src\Xml\Silr\BajaLRAgenciasViajes.cs" />
     <Compile Include="Src\Xml\Silr\ClavePaginacionOTT.cs" />
     <Compile Include="Src\Xml\Silr\ConsultaLRBienesInversion.cs" />
+    <Compile Include="Src\Xml\Silr\DatosFacturaInformadaProveedor.cs" />
     <Compile Include="Src\Xml\Silr\FacturaExpedidaLRRC.cs" />
     <Compile Include="Src\Xml\Silr\FacturaRecibidaLRRC.cs" />
+    <Compile Include="Src\Xml\Silr\FiltroConsultaInformadasCliPro.cs" />
     <Compile Include="Src\Xml\Silr\FiltroConsultaOTT.cs" />
     <Compile Include="Src\Xml\Silr\RangoFechaPresentacion.cs" />
     <Compile Include="Src\Xml\Silr\OperacionIntracomunitariaLRRC.cs" />
@@ -207,6 +213,7 @@
     <Compile Include="Src\Xml\Silr\ConsultaLRCobrosMetalico.cs" />
     <Compile Include="Src\Xml\Silr\ConsultaLROperacionesSeguros.cs" />
     <Compile Include="Src\Xml\Silr\BajaLRCobrosMetalico.cs" />
+    <Compile Include="Src\Xml\Silr\DatosFacturaInformadaCliente.cs" />
     <Compile Include="Src\Xml\Silr\RegistroLROpTrascendTribu.cs" />
     <Compile Include="Src\Xml\Silr\SuministroLRCobrosMetalico.cs" />
     <Compile Include="Src\Xml\Silr\SuministroLRAgenciasViajes.cs" />
@@ -229,7 +236,7 @@
     <Compile Include="Src\Xml\Silr\SuministroLRFacturasRecibidas.cs" />
     <Compile Include="Src\Xml\Sii\Titular.cs" />
     <Compile Include="Src\Xml\Silr\ConsultaFactInformadasCliente.cs" />
-    <Compile Include="Src\Xml\SiiR\RespuestaConsultaFactInformadasProveedor.cs" />
+    <Compile Include="Src\Xml\SiiR\RespuestaConsultaLRFactInformadasProveedor.cs" />
     <Compile Include="Src\Xml\VNifV2Ent\Contribuyente.cs" />
     <Compile Include="Src\Xml\VNifV2Ent\ContribuyenteSal.cs" />
     <Compile Include="Src\Xml\VNifV2Ent\VNifVEnt.cs" />

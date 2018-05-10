@@ -37,52 +37,28 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Xml.Sii;
-using System;
 using System.Xml.Serialization;
 
-namespace EasySII.Xml.SiiR
+namespace EasySII.Xml.Sii
 {
-
-    /// Libro de registro de Facturas emitidas.
+    /// <summary>
+    /// No Exenta.
     /// </summary>
-    [Serializable]
-    [XmlRoot("RespuestaConsultaFactInformadasProveedor")]
-    public class RespuestaConsultaFactInformadasProveedor
+    public class DesgloseFacturaInfCliente
     {
 
         /// <summary>
-        /// Datos de cabecera.
+        /// Desglose IVA
         /// </summary>
-        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSiiRQ)]
-        public Cabecera Cabecera { get; set; }
+        [XmlElement("DesgloseIVA", Namespace = Settings.NamespaceSii)]
+        public DesgloseIVA DesgloseIVA { get; set; }
 
         /// <summary>
-        /// Indica si hay más facturas en la consulta realizada
-        /// Si hay más datos pendientes, este campo tendrá valor
-        /// “S” y se podrán realizar nuevas consultas indicando
-        /// la identificación de la última factura a partir de la
-        /// cual se devolverán los siguientes registros.
-        /// Alfanumérico(1).
-        /// Valores posibles: “S” o “N”
+        /// Constructor clase NoExenta.
         /// </summary>
-        [XmlElement("IndicadorPaginacion", Namespace = Settings.NamespaceSiiRQ)]
-        public string IndicadorPaginacion { get; set; }
-
-        /// <summary>
-        /// Indica si hay facturas para la consulta realizada.
-        /// Valores posibles: “ConDatos” o “SinDatos”.
-        /// </summary>
-        [XmlElement("ResultadoConsulta", Namespace = Settings.NamespaceSiiRQ)]
-        public string ResultadoConsulta { get; set; }
-
-        /// <summary>
-        /// Bloque que contiene campos de la factura
-        /// informados por el proveedor. Se obtendrán como
-        /// máximo 10.000 facturas, es decir, este bloque 
-        /// puede repetirse 10.000 veces como máximo.
-        /// </summary>
-        public RegistroRespuestaConsultaFactInformadasProveedor RegistroRespuestaConsultaFactInformadasProveedor { get; set; }
-
+        public DesgloseFacturaInfCliente()
+        {
+            DesgloseIVA = new DesgloseIVA();
+        }
     }
 }

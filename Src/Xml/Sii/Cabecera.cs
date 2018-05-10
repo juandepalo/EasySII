@@ -63,11 +63,18 @@ namespace EasySII.Xml.Sii
         public virtual Titular Titular { get; set; }
 
         /// <summary>
-        /// Titular en las consultas cuando se trata de un cliente
-        /// o un proveedor. Alfanumérico(3).
+        /// Titular en las consultas cuando se trata 
+        /// de un cliente. Alfanumérico(3).
         /// </summary>
         [XmlElement("TitularLRFE")]
         public virtual Titular TitularLRFE { get; set; }
+
+        /// <summary>
+        /// Titular en las consultas cuando se trata de un 
+        /// proveedor. Alfanumérico(3).
+        /// </summary>
+        [XmlElement("TitularLRFR")]
+        public virtual Titular TitularLRFR { get; set; }
 
         /// <summary>
         /// Tipo de operación (alta, modificación). Lista L0: A0, A1, A4.

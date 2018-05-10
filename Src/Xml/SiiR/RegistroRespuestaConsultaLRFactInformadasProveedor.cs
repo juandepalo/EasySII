@@ -37,43 +37,57 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Business.Batches;
 using EasySII.Xml.Sii;
-using System;
+using EasySII.Xml.SiiR;
+using EasySII.Xml.Silr;
 using System.Xml.Serialization;
 
-namespace EasySII.Xml.Silr
+namespace EasySII.Xml.SiiR
 {
-
-
     /// <summary>
-    /// Consulta de Facturas Informadas por Proveedor.
+    /// Bloque que contiene campos de la factura
+    /// informados por el proveedor. Se obtendrán como
+    /// máximo 10.000 facturas, es decir, este bloque 
+    /// puede repetirse 10.000 veces como máximo.
     /// </summary>
-    [Serializable]
-    [XmlRoot("ConsultaFactInformadasProveedor")]
-    public class ConsultaFactInformadasProveedor : ISiiLote
+    public class RegistroRespuestaConsultaLRFactInformadasProveedor
     {
 
-        /// <summary>
-        /// Datos de cabecera.
-        /// </summary>
-        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
-        public Cabecera Cabecera { get; set; }
 
         /// <summary>
-        /// Filtro consulta.
+        /// Bloque que contiene los campos que
+        ///  identifican a la factura informada por el
+        /// proveedor.
         /// </summary>
-        [XmlElement("FiltroConsulta", Order = 2)]
-        public FiltroConsultaInformadasCliPro FiltroConsulta { get; set; }
+        [XmlElement("IDFactura", Namespace = Settings.NamespaceSiiRQ)]
+        public IDFactura IDFactura { get; set; }
 
         /// <summary>
-        /// Constructor de la clase ConsultaFactInformadasProveedor.
+        /// Bloque que contiene el periodo de liquidación
+        /// informado por el proveedor
         /// </summary>
-        public ConsultaFactInformadasProveedor()
-        {
-            Cabecera = new Cabecera();
-            FiltroConsulta = new FiltroConsultaInformadasCliPro();
-        }
+        [XmlElement("PeriodoLiquidacion", Namespace = Settings.NamespaceSiiRQ)]
+        public PeriodoImpositivo PeriodoLiquidacion { get; set; }
+
+        /// <summary>
+        /// Bloque que contiene los campos de la factura
+        /// informada por el proveedor
+        /// </summary>
+        [XmlElement("DatosFacturaInformadaProveedor", Namespace = Settings.NamespaceSiiRQ)]
+        public DatosFacturaInformadaProveedor DatosFacturaInformadaProveedor { get; set; }
+
+        /// <summary>
+        /// Datos proveedor.
+        /// </summary>
+        [XmlElement("Proveedor", Namespace = Settings.NamespaceSiiRQ)]
+        public Contraparte Proveedor { get; set; }
+
+        /// <summary>
+        /// Bloque que contiene los campos del estado de
+        /// la factura registrada:
+        /// </summary>
+        [XmlElement("EstadoFactura", Namespace = Settings.NamespaceSiiRQ)]
+        public EstadoFactura EstadoFactura { get; set; }
 
     }
 }

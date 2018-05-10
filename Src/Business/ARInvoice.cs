@@ -913,6 +913,38 @@ namespace EasySII.Business
         }
 
         /// <summary>
+        /// Devuelve un objeto XML con un filtro consulta de facturas emitidas.
+        /// </summary>
+        /// <returns>Objeto XML con un filtro consulta de facturas emitidas.</returns>
+        internal ConsultaFactInformadasCliente ToFilterExternSII()
+        {
+
+            ConsultaFactInformadasCliente siiFilter = new ConsultaFactInformadasCliente();
+
+            if (IssueDate == null)
+                throw new ArgumentNullException("IssueDate is null.");           
+
+            siiFilter.FiltroConsulta.PeriodoImputacion.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
+            siiFilter.FiltroConsulta.PeriodoImputacion.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");  
+
+            if (BuyerParty != null)
+                siiFilter.FiltroConsulta.Cliente = GetContraparte();
+
+            // Tratamiento del Desde/Hasta Fecha Presentación.
+            if (SinceDate != null && UntilDate != null)
+            {
+                if (siiFilter.FiltroConsulta.FechaExpedicion == null)
+                    siiFilter.FiltroConsulta.FechaExpedicion = new RangoFechaPresentacion();
+
+                siiFilter.FiltroConsulta.FechaExpedicion.Desde = SIIParser.FromDate(SinceDate);
+                siiFilter.FiltroConsulta.FechaExpedicion.Hasta = SIIParser.FromDate(UntilDate);
+            }
+
+            return siiFilter;
+
+        }
+
+        /// <summary>
         /// Devuelve el registro de cobros relacionados con la factura
         /// en un objeto XML.
         /// </summary>

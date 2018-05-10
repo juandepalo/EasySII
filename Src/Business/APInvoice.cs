@@ -720,7 +720,47 @@ namespace EasySII.Business
 
         }
 
+        /// <summary>
+        /// Devuelve un objeto XML con un filtro consulta de facturas emitidas.
+        /// </summary>
+        /// <returns>Objeto XML con un filtro consulta de facturas emitidas.</returns>
+        internal ConsultaFactInformadasProveedor ToFilterExternSII()
+        {
 
+            PostingDate = RegisterDate = IssueDate;
+
+            RegistroLRFacturasRecibidas siiInvoice = ToSII();
+
+            ConsultaFactInformadasProveedor siiFilter = new ConsultaFactInformadasProveedor();
+
+            if (IssueDate == null)
+                throw new ArgumentNullException("IssueDate is null.");
+
+            siiFilter.FiltroConsulta.PeriodoImputacion.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
+            siiFilter.FiltroConsulta.PeriodoImputacion.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+
+            if (SellerParty != null)
+                siiFilter.FiltroConsulta.Proveedor = siiInvoice.FacturaRecibida.Contraparte;
+
+            // Tratamiento del Desde/Hasta Fecha Presentación.
+            if (SinceDate != null && UntilDate != null)
+            {
+                if (siiFilter.FiltroConsulta.FechaExpedicion == null)
+                    siiFilter.FiltroConsulta.FechaExpedicion = new RangoFechaPresentacion();
+
+                siiFilter.FiltroConsulta.FechaExpedicion.Desde = SIIParser.FromDate(SinceDate);
+                siiFilter.FiltroConsulta.FechaExpedicion.Hasta = SIIParser.FromDate(UntilDate);
+            }
+
+            return siiFilter;
+
+        }
+
+        /// <summary>
+        /// Devuelve el registro de cobros relacionados con la factura
+        /// en un objeto XML.
+        /// </summary>
+        /// <returns>Objeto XML de registro de cobros relacionados con la factura.</returns>
         internal RegistroLRPagos ToPaymentsSII()
         {
 

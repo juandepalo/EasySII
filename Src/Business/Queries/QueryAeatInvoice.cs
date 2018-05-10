@@ -221,7 +221,12 @@ namespace EasySII.Business.Queries
             foreach (var periodo in respuestasEmitidas)
             {
 
-                string per = $"{periodo.PeriodoImpositivo.Ejercicio}.{periodo.PeriodoImpositivo.Periodo}";
+                string per = null;
+
+                if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
+                    per = $"{periodo.PeriodoImpositivo.Ejercicio}.{periodo.PeriodoImpositivo.Periodo}";
+                else
+                    per = $"{periodo.PeriodoLiquidacion.Ejercicio}.{periodo.PeriodoLiquidacion.Periodo}";
 
                 if (periodo.ResultadoConsulta == "ConDatos")
                 {
@@ -238,7 +243,12 @@ namespace EasySII.Business.Queries
             foreach (var periodo in respuestasRecibidas)
             {
 
-                string per = $"{periodo.PeriodoImpositivo.Ejercicio}.{periodo.PeriodoImpositivo.Periodo}";
+                string per = null;
+
+                if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
+                    per = $"{periodo.PeriodoImpositivo.Ejercicio}.{periodo.PeriodoImpositivo.Periodo}";
+                else
+                    per = $"{periodo.PeriodoLiquidacion.Ejercicio}.{periodo.PeriodoLiquidacion.Periodo}";
 
                 if (periodo.ResultadoConsulta == "ConDatos")
                 {
@@ -588,10 +598,7 @@ namespace EasySII.Business.Queries
 
             Lines = new List<QueryAeatInvoiceLine>();
 
-            EstadoFactura estado = respuesta.EstadoFactura;
-
-            //if (estado == null)
-            //    estado = _RegistroRCLRFacturasRecibidas?.EstadoFactura;
+            EstadoFactura estado = respuesta.EstadoFactura; 
 
             Estado = estado.EstadoRegistro;
             ExternStatus exStatus = (ExternStatus)Convert.ToInt32(estado.EstadoCuadre);
@@ -602,14 +609,11 @@ namespace EasySII.Business.Queries
                 case "RegistroRCLRFacturasEmitidas":
                     _RegistroRCLRFacturasEmitidas = (RegistroRCLRFacturasEmitidas)respuesta;
                     Libro = "FE";
-                    //Estado = _RegistroRCLRFacturasEmitidas.EstadoFactura.EstadoRegistro;
-                    //EstadoCuadre =$"{((ExternStatus)((int)_RegistroRCLRFacturasEmitidas.EstadoFactura.EstadoCuadre))}";
                     GetLinesFE();
                     break;
                 case "RegistroRCLRFacturasRecibidas":
                     _RegistroRCLRFacturasRecibidas = (RegistroRCLRFacturasRecibidas)respuesta;
                     Libro = "FR";
-                    //Estado = _RegistroRCLRFacturasRecibidas.EstadoFactura.EstadoRegistro;
                     GetLinesFR();
                     break;
             }

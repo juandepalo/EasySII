@@ -37,53 +37,35 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Xml.Sii;
-using System;
 using System.Xml.Serialization;
 
-namespace EasySII.Xml.SiiR
+namespace EasySII.Xml.Sii
 {
-
     /// <summary>
-    /// Libro de registro de Facturas emitidas.
+    /// Tipo desglose: NIF español no empezado con 'N' => DesgloseFactura != null / DesgloseTipoOperacion == null
+    /// NIF no español o comenzado por 'N' => DesgloseTipoOperacion != null /  DesgloseFactura == null
     /// </summary>
-    [Serializable]
-    [XmlRoot("RespuestaConsultaLRFacturasInformadasPorCliente")]
-    public class RespuestaConsultaFactInformadasCliente
+    public class TipoDesgloseFactInfProveedor
     {
 
         /// <summary>
-        /// Datos de cabecera.
+        /// Desglose Factura
         /// </summary>
-        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSiiRQ)]
-        public Cabecera Cabecera { get; set; }
+        [XmlElement("DesgloseFactura", Namespace = Settings.NamespaceSiiRQ)]
+        public DesgloseFactura DesgloseFactura { get; set; }
 
         /// <summary>
-        /// Indica si hay más facturas en la consulta realizada
-        /// Si hay más datos pendientes, este campo tendrá valor
-        /// “S” y se podrán realizar nuevas consultas indicando
-        /// la identificación de la última factura a partir de la
-        /// cual se devolverán los siguientes registros.
-        /// Alfanumérico(1).
-        /// Valores posibles: “S” o “N”
+        /// Desglose Desglose Tipo Operacion
         /// </summary>
-        [XmlElement("IndicadorPaginacion", Namespace = Settings.NamespaceSiiRQ)]
-        public string IndicadorPaginacion { get; set; }
+        [XmlElement("DesgloseTipoOperacion", Namespace = Settings.NamespaceSiiRQ)]
+        public DesgloseTipoOperacion DesgloseTipoOperacion { get; set; }
 
         /// <summary>
-        /// Indica si hay facturas para la consulta realizada.
-        /// Valores posibles: “ConDatos” o “SinDatos”.
+        /// Constructor clase TipoDesglose
         /// </summary>
-        [XmlElement("ResultadoConsulta", Namespace = Settings.NamespaceSiiRQ)]
-        public string ResultadoConsulta { get; set; }
-
-        /// <summary>
-        /// Bloque que contiene campos de la factura
-        /// informados por el cliente. Se obtendrán como
-        /// máximo 10.000 facturas, es decir, este bloque 
-        /// puede repetirse 10.000 veces como máximo.
-        /// </summary>
-        public RegistroRespuestaConsultaFactInformadasCliente RegistroRespuestaConsultaFactInformadasCliente { get; set; }
+        public TipoDesgloseFactInfProveedor()
+        {
+        }
 
     }
 }

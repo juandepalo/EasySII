@@ -38,6 +38,7 @@
  */
 
 using EasySII.Xml;
+using EasySII.Xml.Sii;
 using EasySII.Xml.Silr;
 using EasySII.Xml.Soap;
 using System;
@@ -90,6 +91,26 @@ namespace EasySII.Business
         }
 
         /// <summary>
+        /// Devuelve el sobre soap de consulta de facturas emitidas clientes.
+        /// </summary>
+        /// <returns> El sobre soap de consulta de facturas emitidas.</returns>
+        public Envelope GetEnvelopeExtern()
+        {
+            Envelope envelope = new Envelope();    
+
+            envelope.Body.ConsultaFactInformadasCliente = ARInvoice.ToFilterExternSII();
+            envelope.Body.ConsultaFactInformadasCliente.Cabecera.Titular = null;
+
+            envelope.Body.ConsultaFactInformadasCliente.Cabecera.TitularLRFE = new Titular()
+            {
+                NIF = Titular.TaxIdentificationNumber,
+                NombreRazon = Titular.PartyName
+            };
+
+            return envelope;
+        }
+
+        /// <summary>
         /// Devuelve el lote de facturas como un archivo xml para soap según las
         /// especificaciones de la aeat.
         /// </summary>
@@ -101,6 +122,17 @@ namespace EasySII.Business
         }
 
         /// <summary>
+        /// Devuelve el lote de facturas como un archivo xml para soap según las
+        /// especificaciones de la aeat.
+        /// </summary>
+        /// <param name="xmlPath">Ruta donde se guardará el archivo generado.</param>
+        /// <returns>Xaml generado.</returns>
+        public XmlDocument GetXmlExtern(string xmlPath)
+        {
+            return SIIParser.GetXml(GetEnvelopeExtern(), xmlPath, SIINamespaces.con, SIINamespaces.sum);
+        }
+
+        /// <summary>
         /// Devuelve el nombre del archivo de envío para una instancia
         /// determinda de lote de facturas.
         /// </summary>
@@ -108,9 +140,18 @@ namespace EasySII.Business
         /// del lote de facturas emitidas.</returns>
         public string GetSentFileName()
         {
-
             return GetFileName("QRFE.SENT.{0}.{1}.{2}.xml");
+        }
 
+        /// <summary>
+        /// Devuelve el nombre del archivo de envío para una instancia
+        /// determinda de lote de facturas.
+        /// </summary>
+        /// <returns>Nombre del archivo de envío al SII 
+        /// del lote de facturas emitidas.</returns>
+        public string GetSentExternFileName()
+        {
+            return GetFileName("QRFE.SENT.EXTERN.{0}.{1}.{2}.xml");
         }
 
         /// <summary>
@@ -123,6 +164,19 @@ namespace EasySII.Business
         {
 
             return GetFileName("QRFE.RECEIVED.{0}.{1}.{2}.xml");
+
+        }
+
+        /// <summary>
+        /// Devuelve el nombre del archivo de respuesta recibido para una instancia
+        /// determinda de lote de facturas.
+        /// </summary>
+        /// <returns>Nombre del archivo de respuesta del SII 
+        /// del lote de facturas emitidas.</returns>
+        public string GetReceivedExternFileName()
+        {
+
+            return GetFileName("QRFE.RECEIVED.EXTERN.{0}.{1}.{2}.xml");
 
         }
 

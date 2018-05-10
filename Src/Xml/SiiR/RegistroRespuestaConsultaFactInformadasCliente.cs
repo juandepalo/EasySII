@@ -73,7 +73,7 @@ namespace EasySII.Xml.SiiR
         /// informada por el cliente
         /// </summary>
         [XmlElement("DatosFacturaInformadaCliente", Namespace = Settings.NamespaceSiiRQ)]
-        public RegistroLRFacturasEmitidas DatosFacturaInformadaCliente { get; set; }
+        public DatosFacturaInformadaCliente DatosFacturaInformadaCliente { get; set; }
 
         /// <summary>
         /// Datos cliente.

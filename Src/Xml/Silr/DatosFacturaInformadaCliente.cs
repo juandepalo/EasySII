@@ -37,43 +37,70 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Business.Batches;
 using EasySII.Xml.Sii;
 using System;
 using System.Xml.Serialization;
 
 namespace EasySII.Xml.Silr
 {
-
-
     /// <summary>
-    /// Consulta de Facturas Informadas por Proveedor.
+    /// Elemento de detalle de facturas informadas por clientes.
     /// </summary>
     [Serializable]
-    [XmlRoot("ConsultaFactInformadasProveedor")]
-    public class ConsultaFactInformadasProveedor : ISiiLote
+    public class DatosFacturaInformadaCliente
     {
 
         /// <summary>
-        /// Datos de cabecera.
+        /// Tipo factura según lista L2:
+        /// <para>F1: Factura</para>
+        /// <para>F2: Factura Simplificada (ticket)</para>
+        /// <para>R1: Factura Rectificativa (Art 80.1 y 80.2 y error fundado en derecho)</para>
+        /// <para>R2: Factura Rectificativa (Art. 80.3)</para>
+        /// <para>R3: Factura Rectificativa (Art. 80.4)</para>
+        /// <para>R4: Factura Rectificativa (Resto)</para>
+        /// <para>R5: Factura Rectificativa en facturas simplificadas</para>
+        /// <para>F3: Factura emitida en sustitución de facturas simplificadas facturadas y declaradas</para>
+        /// <para>F4: Asiento resumen de facturas</para>
         /// </summary>
-        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
-        public Cabecera Cabecera { get; set; }
+        [XmlElement("TipoFactura", Namespace = Settings.NamespaceSiiRQ)]
+        public string TipoFactura { get; set; }
 
         /// <summary>
-        /// Filtro consulta.
+        /// Clave que identificará el tipo de operación o el régimen 
+        /// especial con transcendencia tributaria. Alfanumérico(2). Lista L3.1.
         /// </summary>
-        [XmlElement("FiltroConsulta", Order = 2)]
-        public FiltroConsultaInformadasCliPro FiltroConsulta { get; set; }
+        [XmlElement("ClaveRegimenEspecialOTrascendencia", Namespace = Settings.NamespaceSiiRQ)]
+        public string ClaveRegimenEspecialOTrascendencia { get; set; }
 
         /// <summary>
-        /// Constructor de la clase ConsultaFactInformadasProveedor.
+        /// Importe total de la factura. Decimal(12,2).
         /// </summary>
-        public ConsultaFactInformadasProveedor()
-        {
-            Cabecera = new Cabecera();
-            FiltroConsulta = new FiltroConsultaInformadasCliPro();
+        [XmlElement("ImporteTotal", Namespace = Settings.NamespaceSiiRQ)]
+        public string ImporteTotal { get; set; }
+
+        /// <summary>
+        /// Texto breve de la operación. Alfanumérico(500).
+        /// </summary>
+        [XmlElement("DescripcionOperacion", Namespace = Settings.NamespaceSiiRQ)]
+        public string DescripcionOperacion { get; set; }
+
+        /// <summary>
+        /// Desglose Factura
+        /// </summary>
+        [XmlElement("DesgloseFactura", Namespace = Settings.NamespaceSiiRQ)]
+        public DesgloseFacturaInfCliente DesgloseFactura { get; set; }
+
+        /// <summary>
+        /// Formato dd-MM-yyyy (Ejemplo: 15-01-2015).
+        /// </summary>
+        [XmlElement("FechaRegContable", Namespace = Settings.NamespaceSiiRQ)]
+        public string FechaRegContable { get; set; }
+
+        /// <summary>
+        /// Constructor clase RegistroLRFacturasEmitidas.
+        /// </summary>
+        public DatosFacturaInformadaCliente()
+        {       
         }
-
     }
 }
