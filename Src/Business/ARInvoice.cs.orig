@@ -727,7 +727,11 @@ namespace EasySII.Business
                         if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
                             sujeta.Exenta = exenta;
                         else
+<<<<<<< working copy
+                            sujeta.Exenta= new Exenta()
+=======
                             sujeta.Exenta = new Exenta()
+>>>>>>> merge rev
                             {
                                 DetalleExenta = new List<Exenta>()
                                 {
@@ -782,15 +786,13 @@ namespace EasySII.Business
                 if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
                     sujeta.Exenta = exenta;
                 else
-                    sujeta.Exenta = new Exenta()
+                    sujeta.Exenta.DetalleExenta = new List<Exenta>()
                     {
-                        DetalleExenta = new List<Exenta>()
-                        {
-                            exenta
-                        }
+                        exenta
                     };
 
             }
+
 
             return sujeta;
         }
@@ -833,10 +835,8 @@ namespace EasySII.Business
 
                 if (IDOtroType == IDOtroType.NifIva)
                     if (desgloseTipoOperacion.PrestacionServicios.Sujeta.Exenta != null)
-                        if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
-                            desgloseTipoOperacion.PrestacionServicios.Sujeta.Exenta.CausaExencion = CausaExencion.ToString();
-                        else
-                            desgloseTipoOperacion.PrestacionServicios.Sujeta.Exenta.DetalleExenta[0].CausaExencion = CausaExencion.ToString();
+                        desgloseTipoOperacion.PrestacionServicios.Sujeta.Exenta.CausaExencion = CausaExencion.ToString();
+
             }
             else
             {
@@ -846,10 +846,7 @@ namespace EasySII.Business
 
                 if (IDOtroType == IDOtroType.NifIva)
                     if (desgloseTipoOperacion.Entrega.Sujeta.Exenta != null)
-                        if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
-                            desgloseTipoOperacion.Entrega.Sujeta.Exenta.CausaExencion = CausaExencion.ToString();
-                        else
-                            desgloseTipoOperacion.Entrega.Sujeta.Exenta.DetalleExenta[0].CausaExencion = CausaExencion.ToString();
+                        desgloseTipoOperacion.Entrega.Sujeta.Exenta.CausaExencion = CausaExencion.ToString();
 
             }
 

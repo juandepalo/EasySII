@@ -92,7 +92,7 @@ namespace EasySII.Business
         /// </summary>
         F6,
         /// <summary>
-        /// Aduanas - Liquidación complementaria
+        /// Sólo para recibidas. Aduanas - Liquidación complementaria
         /// </summary>
         LC
     };

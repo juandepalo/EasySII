@@ -24,5 +24,15 @@ namespace EasySII
         /// </summary>
         public const string Prod = "https://www1.agenciatributaria.gob.es/wlpl/SSII-FACT/ws";
 
+        /// <summary>
+        /// Prefijo del endpoint de purebas diputación Bizkaia.
+        /// </summary>
+        public const string TestBizkaia = "https://pruapps.bizkaia.eus/SSII-FACT/ws";
+
+        /// <summary>
+        /// Prefijo del endpoint de producción diputación Bizkaia.
+        /// </summary>
+        public const string ProdBizkaia = "https://sii.bizkaia.eus/SSII-FACT/ws";
+
     }
 }
