@@ -333,6 +333,10 @@ namespace EasySII.Business
             if (IssueDate == null && !skipErrors)
                 throw new ArgumentNullException("IssueDate is null.");
 
+            if (!string.IsNullOrEmpty(ExternalReference) &&
+                 !(Settings.Current.IDVersionSii.CompareTo("1.1") < 0))
+                siiInvoice.FacturaExpedida.RefExterna = ExternalReference;
+
 
             if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
             {

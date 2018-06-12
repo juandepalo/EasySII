@@ -297,16 +297,19 @@ namespace EasySII.Business
 			if (RegisterDate == null && !skipErrors)
 				throw new ArgumentNullException("RegisterDate is null.");
 
+            if (!string.IsNullOrEmpty(ExternalReference)&&
+                !(Settings.Current.IDVersionSii.CompareTo("1.1") < 0))
+                siiInvoice.FacturaRecibida.RefExterna = ExternalReference;
 
             if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
             {
-                siiInvoice.PeriodoImpositivo.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiInvoice.PeriodoImpositivo.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiInvoice.PeriodoImpositivo.Ejercicio = (PostingDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
+                siiInvoice.PeriodoImpositivo.Periodo = (PostingDate ?? new DateTime(1, 1, 1)).ToString("MM");
             }
             else
             {
-                siiInvoice.PeriodoLiquidacion.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiInvoice.PeriodoLiquidacion.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiInvoice.PeriodoLiquidacion.Ejercicio = (PostingDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
+                siiInvoice.PeriodoLiquidacion.Periodo = (PostingDate ?? new DateTime(1, 1, 1)).ToString("MM");
             }
 
             if (SellerParty == null && !skipErrors)

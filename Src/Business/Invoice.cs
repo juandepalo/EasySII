@@ -132,6 +132,12 @@ namespace EasySII.Business
         public DateTime? OperationIssueDate { get; set; }
 
         /// <summary>
+        /// RefExterna: Información
+        /// interna de la empresa asociada al registro de la factura.
+        /// </summary>
+        public string ExternalReference { get; set; }
+
+        /// <summary>
         /// Código CSV asginado por la AEAT.
         /// </summary>
         public string CSV { get; set; }
@@ -224,7 +230,7 @@ namespace EasySII.Business
                 _TaxesOutputs[taxRate][2] += taxAmountRecargoEquivalencia;
 				_TaxesOutputs[taxRate][3] += taxAmountCompensacionREAGYP;
 			}
-        }
+        }  
 
         /// <summary>
         /// Devuelve un identificador para la instancia de item: InvoiceNumber.
