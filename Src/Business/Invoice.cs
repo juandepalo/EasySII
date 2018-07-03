@@ -49,7 +49,13 @@ namespace EasySII.Business
     public class Invoice
     {
 
-        Dictionary<decimal, decimal[]> _TaxesOutputs;     
+        Dictionary<decimal, decimal[]> _TaxesOutputs;
+
+        /// <summary>
+        /// Límite a partir del cual la factura se considera
+        /// 
+        /// </summary>
+        internal static  decimal UpperLimit = 100000000;
 
         /// <summary>
         /// Vendedor.

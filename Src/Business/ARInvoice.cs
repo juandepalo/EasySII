@@ -368,7 +368,7 @@ namespace EasySII.Business
             siiInvoice.FacturaExpedida.ImporteTotal = SIIParser.FromDecimal(GrossAmount);
 
             if (!(Settings.Current.IDVersionSii.CompareTo("1.1") < 0)) 
-                if (GrossAmount > 100000)
+                if (GrossAmount > UpperLimit)
                     siiInvoice.FacturaExpedida.Macrodato = "S";
 
             siiInvoice.FacturaExpedida.DescripcionOperacion = InvoiceText;

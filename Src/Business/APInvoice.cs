@@ -320,7 +320,7 @@ namespace EasySII.Business
 
 
             if (!(Settings.Current.IDVersionSii.CompareTo("1.1") < 0))
-                if (GrossAmount > 100000)
+                if (GrossAmount > UpperLimit)
                     siiInvoice.FacturaRecibida.Macrodato = "S";
 
             siiInvoice.IDFactura.NumSerieFacturaEmisor = InvoiceNumber;
