@@ -1189,6 +1189,10 @@ namespace EasySII.Net
                 throw new ArgumentNullException(
                     "Certificate is null. Maybe serial number in configuration was wrong.");
 
+            if(certificate.NotAfter < DateTime.Now)
+                throw new ArgumentNullException(
+                  $"Certificate is out of date. NotAfter: {certificate.NotAfter}.");
+
             webRequest.ClientCertificates.Add(certificate);
 
             using (Stream stream = webRequest.GetRequestStream())
