@@ -44,7 +44,8 @@ using System.Xml.Serialization;
 
 namespace EasySII.Xml.SiiR
 {
-
+    
+    /// <summary>
     /// Libro de registro de Facturas emitidas.
     /// </summary>
     [Serializable]

@@ -38,7 +38,6 @@
  */
 
 using EasySII.Business;
-using EasySII.Business.Batches;
 using EasySII.Xml;
 using EasySII.Xml.Soap;
 using System;
@@ -59,102 +58,102 @@ namespace EasySII.Net
         /// <summary>
         /// Prefijo de todos los endpoints del SII.
         /// </summary>
-        public static string VNifV2EndPointPrefix = Settings.Current.VNifV2EndPointPrefix;
+        public static string VNifV2EndPointPrefix { get { return Settings.Current.VNifV2EndPointPrefix; } }
 
         /// <summary>
         /// Url del web service de validación de NIF.
         /// </summary>
-        private static string WsdValidaNifUrl = VNifV2EndPointPrefix + "/VNifV2SOAP";
+        private static string WsdValidaNifUrl { get { return VNifV2EndPointPrefix + "/VNifV2SOAP"; } }
 
 
         /// <summary>
         /// Url del action del webservice de validación de NIF.
         /// </summary>
-        private static string WsdValidaNifAction = VNifV2EndPointPrefix + "?op=VNifV2";
+        private static string WsdValidaNifAction { get { return VNifV2EndPointPrefix + "?op=VNifV2"; } }
 
         /// <summary>
         /// Prefijo de todos los endpoints del SII.
         /// </summary>
-        public static string EndPointPrefix = Settings.Current.SiiEndPointPrefix; 
+        public static string EndPointPrefix { get { return Settings.Current.SiiEndPointPrefix; } }         
 
         /// <summary>
         /// Url del web service 'SuministroLRFacturasEmitidas' con sus respectivas acciones para
         ///     el suministro, consulta y baja de facturas emitidas.
         /// </summary>
-        private static string WsdSuministroLRFacturasEmitidasUrl = EndPointPrefix +"/fe/SiiFactFEV1SOAP";
+        private static string WsdSuministroLRFacturasEmitidasUrl { get { return EndPointPrefix + "/fe/SiiFactFEV1SOAP"; } }
 
-        private static string WsdSuministroLRFacturasEmitidasAction = WsdSuministroLRFacturasEmitidasUrl + "?op=SuministroLRFacturasEmitidas";
-        private static string WsdConsultaLRFacturasEmitidasAction = WsdSuministroLRFacturasEmitidasUrl + "?op=ConsultaLRFacturasEmitidas";
-        private static string WsdAnulacionLRFacturasEmitidasAction = WsdSuministroLRFacturasEmitidasUrl + "?op=AnulacionLRFacturasEmitidas";
-        private static string WsdConsultaLRFacturasEmitidasClienteAction = WsdSuministroLRFacturasEmitidasUrl + "?op=ConsultaLRFactInformadasCliente";
+        private static string WsdSuministroLRFacturasEmitidasAction { get { return WsdSuministroLRFacturasEmitidasUrl + "?op=SuministroLRFacturasEmitidas"; } }
+        private static string WsdConsultaLRFacturasEmitidasAction { get { return  WsdSuministroLRFacturasEmitidasUrl + "?op=ConsultaLRFacturasEmitidas"; } }
+        private static string WsdAnulacionLRFacturasEmitidasAction { get { return  WsdSuministroLRFacturasEmitidasUrl + "?op=AnulacionLRFacturasEmitidas"; } }
+        private static string WsdConsultaLRFacturasEmitidasClienteAction { get { return  WsdSuministroLRFacturasEmitidasUrl + "?op=ConsultaLRFactInformadasCliente"; } }
 
         /// <summary>
         /// Url del web service 'SuministroLRCobrosEmitidas' con sus respectivas acciones para
         ///     el suministro y consulta de Cobros de facturas emitidas.
         /// </summary>
-        private static string WsdSuministroLRCobrosEmitidasUrl = EndPointPrefix +"/fe/SiiFactCOBV1SOAP";
+        private static string WsdSuministroLRCobrosEmitidasUrl { get { return EndPointPrefix +"/fe/SiiFactCOBV1SOAP"; } }
 
-        private static string WsdSuministroLRCobrosEmitidasAction = WsdSuministroLRCobrosEmitidasUrl + "?op=SuministroLRCobrosEmitidas";
-        private static string WsdConsultaLRCobrosEmitidasAction = WsdSuministroLRCobrosEmitidasUrl + "?op=ConsultaLRCobrosEmitidas";
+        private static string WsdSuministroLRCobrosEmitidasAction { get { return WsdSuministroLRCobrosEmitidasUrl + "?op=SuministroLRCobrosEmitidas"; } }
+        private static string WsdConsultaLRCobrosEmitidasAction { get { return WsdSuministroLRCobrosEmitidasUrl + "?op=ConsultaLRCobrosEmitidas"; } }
 
 
         /// <summary>
         /// Url del web service 'SuministroLRFacturasRecibidas' con sus respectivas acciones para
         ///     el suministro, consulta y baja de facturas recibidas.
         /// </summary>
-        private static string WsdSuministroLRFacturasRecibidasUrl = EndPointPrefix +"/fr/SiiFactFRV1SOAP";
+        private static string WsdSuministroLRFacturasRecibidasUrl { get { return EndPointPrefix +"/fr/SiiFactFRV1SOAP"; } }
 
-        private static string WsdSuministroLRFacturasRecibidasAction = WsdSuministroLRFacturasRecibidasUrl + "?op=SuministroLRFacturasRecibidas";
-        private static string WsdConsultaLRFacturasRecibidasAction = WsdSuministroLRFacturasRecibidasUrl + "?op=ConsultaLRFacturasRecibidas";
-        private static string WsdAnulacionLRFacturasRecibidasAction = WsdSuministroLRFacturasRecibidasUrl + "?op=AnulacionLRFacturasRecibidas";
-        private static string WsdConsultaLRFacturasRecibidasProveedorAction = WsdSuministroLRFacturasRecibidasUrl + "?op=ConsultaLRFactInformadasProveedor";
+        private static string WsdSuministroLRFacturasRecibidasAction { get { return WsdSuministroLRFacturasRecibidasUrl + "?op=SuministroLRFacturasRecibidas"; } }
+        private static string WsdConsultaLRFacturasRecibidasAction { get { return WsdSuministroLRFacturasRecibidasUrl + "?op=ConsultaLRFacturasRecibidas"; } }
+        private static string WsdAnulacionLRFacturasRecibidasAction { get { return WsdSuministroLRFacturasRecibidasUrl + "?op=AnulacionLRFacturasRecibidas"; } }
+        private static string WsdConsultaLRFacturasRecibidasProveedorAction { get { return WsdSuministroLRFacturasRecibidasUrl + "?op=ConsultaLRFactInformadasProveedor"; } }
 
         /// <summary>
         /// Url del web service 'SuministroLRPagosRecibidas' con sus respectivas acciones para
         ///     el suministro y consulta de pagos de facturas recibidas.
         /// </summary>
-        private static string WsdSuministroLRPagosRecibidasUrl = EndPointPrefix +"/fr/SiiFactPAGV1SOAP";
+        private static string WsdSuministroLRPagosRecibidasUrl { get { return EndPointPrefix +"/fr/SiiFactPAGV1SOAP"; } }
 
-        private static string WsdSuministroLRPagosRecibidasAction = WsdSuministroLRPagosRecibidasUrl + "?op=SuministroLRPagosRecibidas";
-        private static string WsdConsultaLRPagosRecibidasAction = WsdSuministroLRPagosRecibidasUrl + "?op=ConsultaLRCobrosEmitidas";
+        private static string WsdSuministroLRPagosRecibidasAction { get { return WsdSuministroLRPagosRecibidasUrl + "?op=SuministroLRPagosRecibidas"; } }
+        private static string WsdConsultaLRPagosRecibidasAction { get { return WsdSuministroLRPagosRecibidasUrl + "?op=ConsultaLRCobrosEmitidas"; } }
 
         /// <summary>
         /// Url del web service 'SuministroLRBienesInversion' con sus respectivas acciones para
         ///     el suministro, consulta y baja de Bienes de Inversión.
         /// </summary>
-        private static string WsdSuministroLRBienesInversionUrl = EndPointPrefix +"/bi/SiiFactBIV1SOAP";
+        private static string WsdSuministroLRBienesInversionUrl { get { return EndPointPrefix +"/bi/SiiFactBIV1SOAP"; } }
 
-        private static string WsdSuministroLRBienesInversionAction = WsdSuministroLRBienesInversionUrl + "?op=SuministroLRBienesInversion";
-        private static string WsdConsultaLRBienesInversionAction = WsdSuministroLRBienesInversionUrl + "?op=ConsultaLRBienesInversion";
-        private static string WsdAnulacionLRBienesInversionAction = WsdSuministroLRBienesInversionUrl + "?op=AnulacionLRBienesInversion";
+        private static string WsdSuministroLRBienesInversionAction { get { return WsdSuministroLRBienesInversionUrl + "?op=SuministroLRBienesInversion"; } }
+        private static string WsdConsultaLRBienesInversionAction { get { return WsdSuministroLRBienesInversionUrl + "?op=ConsultaLRBienesInversion"; } }
+        private static string WsdAnulacionLRBienesInversionAction { get { return WsdSuministroLRBienesInversionUrl + "?op=AnulacionLRBienesInversion"; } }
 
         /// <summary>
         /// Url del web service 'SuministroLRDetOperacionIntracomunitaria' con sus respectivas acciones para
         ///     el suministro, consulta y baja de Operaciones Intracomunitarias.
         /// </summary>   
-        private static string WsdSuministroLROperIntracomUrl = EndPointPrefix + "/oi/SiiFactOIV1SOAP";
+        private static string WsdSuministroLROperIntracomUrl { get { return EndPointPrefix + "/oi/SiiFactOIV1SOAP"; } }
 
-        private static string WsdSuministroLROperIntracomAction = WsdSuministroLROperIntracomUrl + "?op=SuministroLRDetOperacionIntracomunitaria";
-        private static string WsdConsultaLROperIntracomAction = WsdSuministroLROperIntracomUrl + "?op=ConsultaLRDetOperacionIntracomunitaria";
-        private static string WsdAnulacionLROperIntracomAction = WsdSuministroLROperIntracomUrl + "?op=AnulacionLRDetOperacionIntracomunitaria";
+        private static string WsdSuministroLROperIntracomAction { get { return WsdSuministroLROperIntracomUrl + "?op=SuministroLRDetOperacionIntracomunitaria"; } }
+        private static string WsdConsultaLROperIntracomAction { get { return WsdSuministroLROperIntracomUrl + "?op=ConsultaLRDetOperacionIntracomunitaria"; } }
+        private static string WsdAnulacionLROperIntracomAction { get { return WsdSuministroLROperIntracomUrl + "?op=AnulacionLRDetOperacionIntracomunitaria"; } }
 
         /// <summary>
         /// Url del web service 'SuministroLRCobrosMetalico' y 'SuministroLROperacionesSeguros' con sus respectivas acciones para
-        ///     el suministro, consulta y baja de Operaciones Intracomunitarias.
+        /// el suministro, consulta y baja de Operaciones Intracomunitarias.
         /// </summary>
-        private static string WsdSuministroLROperTributariasUrl = EndPointPrefix + "/pm/SiiFactCMV1SOAP";
+        private static string WsdSuministroLROperTributariasUrl { get { return EndPointPrefix + "/pm/SiiFactCMV1SOAP"; } }
 
-        private static string WsdSuministroLRCobrosMetalicoAction = WsdSuministroLROperTributariasUrl + "?op=SuministroLRCobrosMetalico";
-        private static string WsdConsultaLRCobrosMetalicoAction = WsdSuministroLROperTributariasUrl + "?op=ConsultaLRCobrosMetalico";
-        private static string WsdAnulacionLRCobrosMetalicoAction = WsdSuministroLROperTributariasUrl + "?op=AnulacionLRCobrosMetalico";
+        private static string WsdSuministroLRCobrosMetalicoAction { get { return WsdSuministroLROperTributariasUrl + "?op=SuministroLRCobrosMetalico"; } }
+        private static string WsdConsultaLRCobrosMetalicoAction { get { return WsdSuministroLROperTributariasUrl + "?op=ConsultaLRCobrosMetalico"; } }
+        private static string WsdAnulacionLRCobrosMetalicoAction { get { return WsdSuministroLROperTributariasUrl + "?op=AnulacionLRCobrosMetalico"; } }
 
-        private static string WsdSuministroLROperacionesSegurosAction = WsdSuministroLROperTributariasUrl + "?op=SuministroLROperacionesSeguros";
-        private static string WsdConsultaLROperacionesSegurosAction = WsdSuministroLROperTributariasUrl + "?op=ConsultaLROperacionesSeguros";
-        private static string WsdAnulacionLROperacionesSegurosAction = WsdSuministroLROperTributariasUrl + "?op=AnulacionLROperacionesSeguros";
+        private static string WsdSuministroLROperacionesSegurosAction { get { return WsdSuministroLROperTributariasUrl + "?op=SuministroLROperacionesSeguros"; } }
+        private static string WsdConsultaLROperacionesSegurosAction { get { return WsdSuministroLROperTributariasUrl + "?op=ConsultaLROperacionesSeguros"; } }
+        private static string WsdAnulacionLROperacionesSegurosAction { get { return WsdSuministroLROperTributariasUrl + "?op=AnulacionLROperacionesSeguros"; } }
 
-        private static string WsdSuministroLRAgenciasViajesAction = WsdSuministroLROperTributariasUrl + "?op=SuministroLRAgenciasViajes";
-        private static string WsdConsultaLRAgenciasViajesAction = WsdSuministroLROperTributariasUrl + "?op=ConsultaLRAgenciasViajes";
-        private static string WsdAnulacionLRAgenciasViajesAction = WsdSuministroLROperTributariasUrl + "?op=AnulacionLRAgenciasViajes";
+        private static string WsdSuministroLRAgenciasViajesAction { get { return WsdSuministroLROperTributariasUrl + "?op=SuministroLRAgenciasViajes"; } }
+        private static string WsdConsultaLRAgenciasViajesAction { get { return WsdSuministroLROperTributariasUrl + "?op=ConsultaLRAgenciasViajes"; } }
+        private static string WsdAnulacionLRAgenciasViajesAction { get { return WsdSuministroLROperTributariasUrl + "?op=AnulacionLRAgenciasViajes"; } }
 
         /// <summary>
         /// Constructor estático de la clase Wsd.

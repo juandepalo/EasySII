@@ -288,8 +288,6 @@ namespace EasySII
                 _Current.VNifV2EndPointPrefix = "https://www1.agenciatributaria.gob.es/wlpl/BURT-JDIT/ws";
             }
 
-            Wsd.EndPointPrefix = _Current.SiiEndPointPrefix;
-
             CheckDirectories();
 
             return _Current;
