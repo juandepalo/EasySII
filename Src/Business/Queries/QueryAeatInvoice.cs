@@ -636,14 +636,28 @@ namespace EasySII.Business.Queries
 
             if (Desglose.Sujeta != null)
             {
-
                 if (Desglose.Sujeta.Exenta != null)
                 {
-                    Lines.Add(new QueryAeatInvoiceLine()
+
+                    if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
                     {
-                        BaseImponible = SIIParser.ToDecimal(Desglose.Sujeta.Exenta.BaseImponible),
-                        Tipo = Desglose.Sujeta.Exenta.CausaExencion
-                    });
+                        Lines.Add(new QueryAeatInvoiceLine()
+                        {
+                            BaseImponible = SIIParser.ToDecimal(Desglose.Sujeta.Exenta.BaseImponible),
+                            Tipo = Desglose.Sujeta.Exenta.CausaExencion
+                        });
+                    }
+                    else
+                    {
+                        foreach (var exenta in Desglose.Sujeta.Exenta.DetalleExenta)
+                        {
+                            Lines.Add(new QueryAeatInvoiceLine()
+                            {
+                                BaseImponible = SIIParser.ToDecimal(exenta.BaseImponible),
+                                Tipo = exenta.CausaExencion
+                            });
+                        }
+                    }
                 }
 
                 if (Desglose.Sujeta.NoExenta != null)
