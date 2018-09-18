@@ -308,8 +308,8 @@ namespace EasySII
 				_Current.OutboxPath = Path + $"Outbox{_PathSep}";
 				_Current.CertificateSerial = "";
                 _Current.CertificateThumbprint = "";
-                _Current.CertificatePath = @"C:\Users\Manuel\Google Drive\CODE ASESORES\CERTIFICADOS\19006851L.pfx";
-                _Current.CertificatePassword = "elefante090376";
+                _Current.CertificatePath = "";
+                _Current.CertificatePassword = "";
                 _Current.SiiEndPointPrefix = SiiEndPointPrefixes.Test; 
                 _Current.VNifV2EndPointPrefix = SiiEndPointPrefixes.VNifV2EndPointPrefix;
             }
