@@ -260,7 +260,7 @@ namespace EasySII
 
             CheckDirectories();
 
-            string FullPath = Path + $"{_PathSep}" + FileName;
+            string FullPath = $"{Path}{_PathSep}" + FileName;
 
             XmlSerializer serializer = new XmlSerializer(Current.GetType());
 
@@ -291,7 +291,7 @@ namespace EasySII
             _Current = new Settings();
       
 
-            string FullPath = Path + $"{_PathSep}" + FileName;
+            string FullPath = $"{Path}{_PathSep}" + FileName;
 
             XmlSerializer serializer = new XmlSerializer(_Current.GetType());
             if (File.Exists(FullPath))
@@ -304,8 +304,8 @@ namespace EasySII
             else
             {
                 _Current.IDVersionSii = "1.1"; 
-                _Current.InboxPath = Path + $"Inbox{_PathSep}";
-				_Current.OutboxPath = Path + $"Outbox{_PathSep}";
+                _Current.InboxPath = $"{Path}Inbox{_PathSep}";
+				_Current.OutboxPath = $"{Path}Outbox{_PathSep}";
 				_Current.CertificateSerial = "";
                 _Current.CertificateThumbprint = "";
                 _Current.CertificatePath = "";
