@@ -1288,7 +1288,7 @@ namespace EasySII.Net
             X509Store storeLM = new X509Store(StoreLocation.LocalMachine);
             storeLM.Open(OpenFlags.ReadOnly);
             foreach (X509Certificate2 cert in storeLM.Certificates)
-                if (cert.SerialNumber.ToUpper() == Settings.Current.CertificateThumbprint.ToUpper())
+                if (cert.Thumbprint.ToUpper() == Settings.Current.CertificateThumbprint.ToUpper())
                     return cert;
 
             return null;
