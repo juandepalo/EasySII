@@ -1221,11 +1221,37 @@ namespace EasySII.Net
         }
 
         /// <summary>
-        /// Devuelve el certificado configurado.
+        /// Devuelve el certificado configurado siguiendo la siguiente
+        /// jerarquía de llamadas: En primer lugar prueba a cargar el
+        /// certificado desde un archivo, si no prueba por el hash y en
+        /// último lugar prueba por el número de serie.
         /// </summary>
         /// <returns>Devuelve el certificado de la 
         /// configuración para las comunicaciones.</returns>
         public static X509Certificate2 GetCertificate()
+        {
+            var cert = GetCertificateByFile();
+
+            if (cert != null)
+                return cert;
+
+            cert = GetCertificateByThumbprint();
+
+            if (cert != null)
+                return cert;
+
+            return GetCertificateBySerial();
+    
+        }
+
+        /// <summary>
+        /// Devuelve el certificado establecido en la configuración
+        /// por su número de serie..
+        /// </summary>
+        /// <returns>Devuelve el certificado de la 
+        /// configuración por número de serie para las comunicaciones.
+        /// Si no existe devuelve null.</returns>
+        public static X509Certificate2 GetCertificateBySerial()
         {
             X509Store store = new X509Store();
             store.Open(OpenFlags.ReadOnly);
@@ -1233,14 +1259,60 @@ namespace EasySII.Net
                 if (cert.SerialNumber == Settings.Current.CertificateSerial)
                     return cert;
 
-			// Probamos en LocalMachine
-			X509Store storeLM = new X509Store(StoreLocation.LocalMachine);
-			storeLM.Open(OpenFlags.ReadOnly);
-			foreach (X509Certificate2 cert in storeLM.Certificates)
-				if (cert.SerialNumber == Settings.Current.CertificateSerial)
-					return cert;
+            // Probamos en LocalMachine
+            X509Store storeLM = new X509Store(StoreLocation.LocalMachine);
+            storeLM.Open(OpenFlags.ReadOnly);
+            foreach (X509Certificate2 cert in storeLM.Certificates)
+                if (cert.SerialNumber == Settings.Current.CertificateSerial)
+                    return cert;
 
-			return null;
+            return null;
+        }
+
+        /// <summary>
+        /// Devuelve el certificado establecido en la configuración por su
+        /// hash o huella digital. 
+        /// </summary>
+        /// <returns>Devuelve el certificado de la 
+        /// configuración por hash para las comunicaciones.
+        /// Si no existe devuelve null.</returns>
+        public static X509Certificate2 GetCertificateByThumbprint()
+        {
+            X509Store store = new X509Store();
+            store.Open(OpenFlags.ReadOnly);
+            foreach (X509Certificate2 cert in store.Certificates)
+                if (cert.Thumbprint.ToUpper() == Settings.Current.CertificateThumbprint.ToUpper())
+                    return cert;
+
+            // Probamos en LocalMachine
+            X509Store storeLM = new X509Store(StoreLocation.LocalMachine);
+            storeLM.Open(OpenFlags.ReadOnly);
+            foreach (X509Certificate2 cert in storeLM.Certificates)
+                if (cert.SerialNumber.ToUpper() == Settings.Current.CertificateThumbprint.ToUpper())
+                    return cert;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Devuelve el certificado establecido en la configuración
+        /// mediante una ruta a un fichero de certificado.
+        /// </summary>
+        /// <returns>Devuelve el certificado de la 
+        /// configuración para las comunicaciones.</returns>
+        public static X509Certificate2 GetCertificateByFile()
+        {
+
+            if (!string.IsNullOrEmpty(Settings.Current.CertificatePath) && 
+                File.Exists(Settings.Current.CertificatePath))
+                if (string.IsNullOrEmpty(Settings.Current.CertificatePassword))
+                    return new X509Certificate2(Settings.Current.CertificatePath);
+                else
+                    return new X509Certificate2(Settings.Current.CertificatePath, 
+                        Settings.Current.CertificatePassword); 
+
+            return null;
+
         }
 
         /// <summary>

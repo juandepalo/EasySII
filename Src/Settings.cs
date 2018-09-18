@@ -37,7 +37,6 @@
     address: info@irenesolutions.com
  */
 
-using EasySII.Net;
 using System;
 using System.Globalization;
 using System.IO;
@@ -52,6 +51,12 @@ namespace EasySII
     [XmlRoot("EasySIISettings")]
     public class Settings
     {
+
+        /// <summary>
+        /// Path separator win="\" and linux ="/".
+        /// </summary>
+        static char _PathSep = System.IO.Path.DirectorySeparatorChar;
+
         /// <summary>
         /// Configuración actual.
         /// </summary>
@@ -68,7 +73,7 @@ namespace EasySII
         /// Ruta al directorio de configuración.
         /// </summary>
         internal static string Path = System.Environment.GetFolderPath(
-            Environment.SpecialFolder.CommonApplicationData) + "\\EasySII\\";
+            Environment.SpecialFolder.CommonApplicationData) + $"{_PathSep}EasySII{_PathSep}";
 
         /// <summary>
         /// Espacio de nombres servicio web
@@ -205,6 +210,24 @@ namespace EasySII
         public string CertificateSerial { get; set; }
 
         /// <summary>
+        /// Hash o Huella digital del certificado a utilizar.
+        /// </summary>
+        [XmlElement("CertificateThumbprint")]
+        public string CertificateThumbprint { get; set; }
+
+        /// <summary>
+        /// Ruta al archivo del certificado a utilizar.
+        /// </summary>
+        [XmlElement("CertificatePath")]
+        public string CertificatePath { get; set; }
+
+        /// <summary>
+        /// Password del certificado.
+        /// </summary>
+        [XmlElement("CertificatePassword")]
+        public string CertificatePassword { get; set; }
+
+        /// <summary>
         /// EndPoint del web service de la AEAT.
         /// </summary>
         [XmlElement("SiiEndPointPrefix")]
@@ -237,7 +260,7 @@ namespace EasySII
 
             CheckDirectories();
 
-            string FullPath = Path + "\\" + FileName;
+            string FullPath = Path + $"{_PathSep}" + FileName;
 
             XmlSerializer serializer = new XmlSerializer(Current.GetType());
 
@@ -268,7 +291,7 @@ namespace EasySII
             _Current = new Settings();
       
 
-            string FullPath = Path + "\\" + FileName;
+            string FullPath = Path + $"{_PathSep}" + FileName;
 
             XmlSerializer serializer = new XmlSerializer(_Current.GetType());
             if (File.Exists(FullPath))
@@ -280,12 +303,15 @@ namespace EasySII
             }
             else
             {
-                _Current.IDVersionSii = "1.0"; 
-                _Current.InboxPath = Path + "Inbox\\";
-				_Current.OutboxPath = Path + "Outbox\\";
-				_Current.CertificateSerial = "3D327B0B";
-				_Current.SiiEndPointPrefix = "https://www1.agenciatributaria.gob.es/wlpl/SSII-FACT/ws";
-                _Current.VNifV2EndPointPrefix = "https://www1.agenciatributaria.gob.es/wlpl/BURT-JDIT/ws";
+                _Current.IDVersionSii = "1.1"; 
+                _Current.InboxPath = Path + $"Inbox{_PathSep}";
+				_Current.OutboxPath = Path + $"Outbox{_PathSep}";
+				_Current.CertificateSerial = "";
+                _Current.CertificateThumbprint = "";
+                _Current.CertificatePath = @"C:\Users\Manuel\Google Drive\CODE ASESORES\CERTIFICADOS\19006851L.pfx";
+                _Current.CertificatePassword = "elefante090376";
+                _Current.SiiEndPointPrefix = SiiEndPointPrefixes.Test; 
+                _Current.VNifV2EndPointPrefix = SiiEndPointPrefixes.VNifV2EndPointPrefix;
             }
 
             CheckDirectories();

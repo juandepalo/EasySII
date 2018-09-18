@@ -373,7 +373,7 @@ namespace EasySII.Business.Queries
         /// columna generadas.
         /// </summary>
         /// <returns>Tabla LR vacía con columnas.</returns>
-        private static DataTable GetTableLR()
+        public static DataTable GetTableLR()
         {
 
             DataTable result = new DataTable();

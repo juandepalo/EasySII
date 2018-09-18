@@ -34,5 +34,10 @@ namespace EasySII
         /// </summary>
         public const string ProdBizkaia = "https://sii.bizkaia.eus/SSII-FACT/ws";
 
+        /// <summary>
+        /// Prefijo del endpoint de validación de NIFs.
+        /// </summary>
+        public const string VNifV2EndPointPrefix = "https://www1.agenciatributaria.gob.es/wlpl/BURT-JDIT/ws";
+
     }
 }
