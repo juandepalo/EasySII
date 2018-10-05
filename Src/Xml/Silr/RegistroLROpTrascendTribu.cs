@@ -76,7 +76,7 @@ namespace EasySII.Xml.Silr
         /// <para>A: Indemnizaciones o prestaciones satisfechas superiores a 3005,06</para>
         /// <para>B: Primas o contraprestaciones percibidas superiores a 3005,06</para>
         /// </summary>
-        [XmlElement("ClaveOperacion", Namespace = Settings.NamespaceSii)]
+        [XmlElement("ClaveOperacion", Namespace = Settings.NamespaceSiiLR)]
         public string ClaveOperacion { get; set; }
 
 

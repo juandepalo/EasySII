@@ -1281,14 +1281,14 @@ namespace EasySII.Net
             X509Store store = new X509Store();
             store.Open(OpenFlags.ReadOnly);
             foreach (X509Certificate2 cert in store.Certificates)
-                if (cert.Thumbprint.ToUpper() == Settings.Current.CertificateThumbprint.ToUpper())
+                if (cert.Thumbprint.ToUpper() == $"{Settings.Current?.CertificateThumbprint}".ToUpper())
                     return cert;
 
             // Probamos en LocalMachine
             X509Store storeLM = new X509Store(StoreLocation.LocalMachine);
             storeLM.Open(OpenFlags.ReadOnly);
             foreach (X509Certificate2 cert in storeLM.Certificates)
-                if (cert.Thumbprint.ToUpper() == Settings.Current.CertificateThumbprint.ToUpper())
+                if (cert.Thumbprint.ToUpper() == $"{Settings.Current?.CertificateThumbprint}".ToUpper())
                     return cert;
 
             return null;

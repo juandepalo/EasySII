@@ -78,6 +78,9 @@ namespace EasySII.Net
 
             var respuesta = envelopeRespuesta.Body.GetRespuestaLRF();
 
+            if (respuesta == null && envelopeRespuesta.Body.RespuestaError != null)
+                throw new Exception(envelopeRespuesta.Body.RespuestaError.FaultDescription);
+
             foreach (var lin in respuesta.RespuestaLinea)
             {
                 if (lin.IDFactura != null)

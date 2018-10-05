@@ -73,6 +73,9 @@ namespace EasySII.Business
 
         /// <summary>
         /// Clave de la operación (para las operaciones de seguros).
+        /// Clave que identificará el tipo de operación. Lista L21.
+        /// <para>A: Indemnizaciones o prestaciones satisfechas superiores a 3005,06</para>
+        /// <para>B: Primas o contraprestaciones percibidas superiores a 3005,06</para>
         /// </summary>
         public string ClaveOperacion { get; set; }
 
