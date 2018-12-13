@@ -767,6 +767,7 @@ namespace EasySII.Business
                         }
 
                         sujeta.NoExenta.DesgloseIVA.DetalleIVA.Add(detalleIVA);
+
                     }
                 }
 

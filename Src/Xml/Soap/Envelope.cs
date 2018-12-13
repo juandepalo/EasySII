@@ -39,6 +39,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace EasySII.Xml.Soap
@@ -140,6 +141,63 @@ namespace EasySII.Xml.Soap
             streamResponse.Position = 0;
 
             return new Envelope(streamResponse);
+        }
+
+        /// <summary>
+        /// Devuelve una cadena con el envelope representado
+        /// en xml.
+        /// </summary>
+        /// <returns>Envelope en xml.</returns>
+        public override string ToString()
+        {
+            return ToString(SIINamespaces.siiLR, SIINamespaces.sii);
+        }
+
+        /// <summary>
+        /// Devuelve una cadena con el envelope representado
+        /// en xml.
+        /// </summary>
+        /// <returns>Envelope en xml.</returns>
+        public string ToString(SIINamespaces ns = SIINamespaces.siiLR, SIINamespaces nsSum = SIINamespaces.sii)
+        {
+
+            byte[] buffXml = ToArray(ns, nsSum);
+
+            if (buffXml == null)
+                return null;
+
+            return Encoding.UTF8.GetString(buffXml);
+
+        }
+
+        /// <summary>
+        /// Devuelve una cadena con el envelope representado
+        /// en xml en formato binario con codificaión UTF8.
+        /// </summary>
+        /// <returns>Envelope en xml en binario con codificaión UTF8.</returns>
+        public byte[] ToArray(SIINamespaces ns = SIINamespaces.siiLR, SIINamespaces nsSum = SIINamespaces.sii)
+        {
+            byte[] result = null;
+
+            SIIParser.ClearNulls(this); // Limpia nulos
+
+            XmlSerializer xmlSerializer = new XmlSerializer(GetType());
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+
+            namespaces.Add("soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
+            namespaces.Add(ns.ToString(), SIIParser.Namespaces[ns]);
+            namespaces.Add(nsSum.ToString(), SIIParser.Namespaces[nsSum]);
+
+            var ms = new MemoryStream();
+
+            using (StreamWriter sw = new StreamWriter(ms, Encoding.GetEncoding("UTF-8")))
+            {
+                xmlSerializer.Serialize(sw, this, namespaces);
+                result = ms.ToArray();
+            }
+
+            return result;
+
         }
 
     }

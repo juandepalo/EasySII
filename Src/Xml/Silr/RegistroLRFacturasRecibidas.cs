@@ -59,7 +59,7 @@ namespace EasySII.Xml.Silr
         public PeriodoImpositivo PeriodoImpositivo { get; set; }
 
         /// <summary>
-        /// Datos del perkiodo impositivo. 
+        /// Datos del periodo impositivo. 
         /// Nombre para versiones a partir 
         /// de la versión a la 1.1.
         /// </summary>

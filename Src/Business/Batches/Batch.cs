@@ -95,7 +95,7 @@ namespace EasySII.Business.Batches
         /// <param name="batchActionKey">Clave de la acción que realiza el lote.</param>
         /// <param name="batchActionPrefix">Prefijo que se le da en el SII a 
         /// este tipo de lote.</param>
-        /// <param name="batchType"></param>
+        /// <param name="batchType">Tipo de lote.</param>
         public Batch(BatchActionKeys batchActionKey,
             BatchActionPrefixes batchActionPrefix, BatchTypes batchType)
         {
