@@ -384,7 +384,7 @@ namespace EasySII.Xml.Soap
         public RespuestaConsultaPagos RespuestaConsultaPagos { get; set; }
 
         /// <summary>
-        /// Respuesta AEAT ConsultaLRDetOperIntracomunitarias.
+        /// Respuesta error.
         /// </summary>
         [XmlElement("Fault", Namespace = "http://schemas.xmlsoap.org/soap/envelope/")]
         public SoapFault RespuestaError { get; set; }

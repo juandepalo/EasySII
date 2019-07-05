@@ -81,4 +81,5 @@ namespace EasySII.Xml.SiiR
         [XmlElement(Form = XmlSchemaForm.Unqualified, ElementName = "message")]
         public String Message { get; set; }
     }
+
 }

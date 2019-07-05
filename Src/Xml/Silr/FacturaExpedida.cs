@@ -233,8 +233,7 @@ namespace EasySII.Xml.Silr
 
         /// <summary>
         /// Indicador de si ha sido emitida por terceros. L10: Emitidas por Terceros.
-        /// Para versiones anteriores 
-        /// a la versión 1.1
+        /// Para versiones anteriores a la versión 1.1
         /// <para>S: Si</para>
         /// <para>N: No</para>
         /// </summary>
@@ -243,7 +242,7 @@ namespace EasySII.Xml.Silr
 
         /// <summary>
         /// Indicador de si ha sido emitida por terceros. L10: Emitidas por Terceros.
-        ///   Nombre para versiones a partir 
+        /// Nombre para versiones a partir 
         /// de la versión a la 1.1.
         /// <para>S: Si</para>
         /// <para>N: No</para>
