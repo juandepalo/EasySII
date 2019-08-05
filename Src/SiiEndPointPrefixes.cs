@@ -9,7 +9,7 @@
     {
 
         /// <summary>
-        /// Prefijo del endpoint de purebas.
+        /// Prefijo del endpoint de pruebas.
         /// </summary>
         public const string Test = "https://www7.aeat.es/wlpl/SSII-FACT/ws";
 
@@ -19,7 +19,7 @@
         public const string Prod = "https://www1.agenciatributaria.gob.es/wlpl/SSII-FACT/ws";
 
         /// <summary>
-        /// Prefijo del endpoint de purebas diputación Bizkaia.
+        /// Prefijo del endpoint de pruebas diputación Bizkaia.
         /// </summary>
         public const string TestBizkaia = "https://pruapps.bizkaia.eus/SSII-FACT/ws";
 
