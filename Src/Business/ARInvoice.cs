@@ -708,16 +708,25 @@ namespace EasySII.Business
                         int causaIn = -Convert.ToInt32(taxOut.Key);
                         CausaExencion causaExencion = (CausaExencion)causaIn;
 
-                        exenta.CausaExencion = CausaExencion.ToString();
+                        exenta.CausaExencion = causaExencion.ToString();
                         exenta.BaseImponible = SIIParser.FromDecimal(taxOut.Value[0]);
-                        
+
                         if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
+                        {
                             sujeta.Exenta = exenta;
+                        }
                         else
-                            sujeta.Exenta.DetalleExenta = new List<Exenta>()
-                            {
-                                exenta
-                            };               
+                        {
+
+                            if(sujeta.Exenta == null)
+                                sujeta.Exenta = new Exenta()
+                                {
+                                    DetalleExenta = new List<Exenta>()
+                                };
+
+                            sujeta.Exenta.DetalleExenta.Add(exenta);                          
+
+                        }
 
                     }
                     else if (taxOut.Key == 0)
