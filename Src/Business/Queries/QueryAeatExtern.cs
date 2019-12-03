@@ -213,33 +213,37 @@ namespace EasySII.Business.Queries
             {
                 var respuestasFE = GetByPeriodFE(periodStart, titular, cliente);
                 DataTable tableFR = GetTableLR();
-                foreach (var invoice in respuestasFE.RegistroRespuestaConsultaFactInformadasCliente)
+
+                if (respuestasFE.RegistroRespuestaConsultaFactInformadasCliente != null)
                 {
-                    foreach (var iva in invoice.DatosFacturaInformadaCliente.DesgloseFactura.DesgloseIVA.DetalleIVA)
+                    foreach (var invoice in respuestasFE.RegistroRespuestaConsultaFactInformadasCliente)
                     {
-                        tableFR.Rows.Add("FE",                                                                      // 0
-                        invoice.IDFactura.NumSerieFacturaEmisor,                                                    // 1
-                        invoice.IDFactura.FechaExpedicionFacturaEmisor,                                             // 2
-                        $"{invoice.Cliente.NIF}{invoice.Cliente?.IDOtro?.ID}",                                      // 3
-                        invoice.Cliente.NombreRazon,                                                                // 4
-                        invoice.PeriodoLiquidacion,                                                                 // 5
-                        invoice.DatosFacturaInformadaCliente.TipoFactura,                                           // 6
-                        invoice.DatosFacturaInformadaCliente.ClaveRegimenEspecialOTrascendencia,                    // 7
-                        "DesgloseFactura",                                                                          // 8
-                        null,                                                                                       // 9
-                        iva.BaseImponible,                                                                          // 10
-                        iva.TipoImpositivo,                                                                         // 11
-                        iva.CuotaSoportada,                                                                         // 12
-                        iva.TipoRecargoEquivalencia,                                                                // 13
-                        iva.CuotaRecargoEquivalencia,                                                               // 14
-                        iva.PorcentCompensacionREAGYP,                                                              // 15
-                        iva.ImporteCompensacionREAGYP,                                                              // 16
-                        0,                                                                                          // 17
-                        0,                                                                                          // 18
-                        null,                                                                                       // 19
-                        invoice.EstadoFactura.EstadoRegistro,                                                       // 20
-                        $"{(ExternStatus)Convert.ToInt32(invoice.EstadoFactura.EstadoCuadre)}"                      // 21
-                        );                                                                
+                        foreach (var iva in invoice.DatosFacturaInformadaCliente.DesgloseFactura.DesgloseIVA.DetalleIVA)
+                        {
+                            tableFR.Rows.Add("FE",                                                                      // 0
+                            invoice.IDFactura.NumSerieFacturaEmisor,                                                    // 1
+                            invoice.IDFactura.FechaExpedicionFacturaEmisor,                                             // 2
+                            $"{invoice.Cliente.NIF}{invoice.Cliente?.IDOtro?.ID}",                                      // 3
+                            invoice.Cliente.NombreRazon,                                                                // 4
+                            invoice.PeriodoLiquidacion,                                                                 // 5
+                            invoice.DatosFacturaInformadaCliente.TipoFactura,                                           // 6
+                            invoice.DatosFacturaInformadaCliente.ClaveRegimenEspecialOTrascendencia,                    // 7
+                            "DesgloseFactura",                                                                          // 8
+                            null,                                                                                       // 9
+                            iva.BaseImponible,                                                                          // 10
+                            iva.TipoImpositivo,                                                                         // 11
+                            iva.CuotaSoportada,                                                                         // 12
+                            iva.TipoRecargoEquivalencia,                                                                // 13
+                            iva.CuotaRecargoEquivalencia,                                                               // 14
+                            iva.PorcentCompensacionREAGYP,                                                              // 15
+                            iva.ImporteCompensacionREAGYP,                                                              // 16
+                            0,                                                                                          // 17
+                            0,                                                                                          // 18
+                            null,                                                                                       // 19
+                            invoice.EstadoFactura.EstadoRegistro,                                                       // 20
+                            $"{(ExternStatus)Convert.ToInt32(invoice.EstadoFactura.EstadoCuadre)}"                      // 21
+                            );
+                        }
                     }
                 }
 
@@ -289,152 +293,159 @@ namespace EasySII.Business.Queries
 
                 var respuestaFR = GetByPeriodFR(start.ToString("yyyy.MM"), titular, proveedor);
                 DataTable tableFR = GetTableLR();
-                foreach (var invoice in respuestaFR.RegistroRespuestaConsultaLRFactInformadasProveedor)
+
+                if (respuestaFR.RegistroRespuestaConsultaLRFactInformadasProveedor != null)
                 {
 
-                    string tipoDesglose = (invoice.DatosFacturaInformadaProveedor.TipoDesglose.DesgloseFactura != null) ? 
-                        "DesgloseFactura" : null;
-
-                    if(string.IsNullOrEmpty(tipoDesglose))
-                        tipoDesglose = (invoice.DatosFacturaInformadaProveedor.TipoDesglose.DesgloseTipoOperacion != null) ?
-                        "DesgloseTipoOperacion" : null;
-
-                    DesgloseF desglose = invoice.DatosFacturaInformadaProveedor?.TipoDesglose?.DesgloseFactura;
-
-                    if(desglose==null)
-                        desglose = invoice.DatosFacturaInformadaProveedor?.TipoDesglose?.DesgloseTipoOperacion?.Entrega;
-
-                    if (desglose == null)
-                        desglose = invoice.DatosFacturaInformadaProveedor?.TipoDesglose?.DesgloseTipoOperacion?.PrestacionServicios;
-
-                                      
-
-                    decimal noSujArt7_14 = 0;
-                    decimal noSujTAI = 0;
-
-                    if (desglose.NoSujeta != null)
-                    {
-                        tableFR.Rows.Add("FR",                                                                  // 0
-                        invoice.IDFactura.NumSerieFacturaEmisor,                                                // 1
-                        invoice.IDFactura.FechaExpedicionFacturaEmisor,                                         // 2
-                        invoice.IDFactura.GetIDEmisorFactura(),                                                 // 3
-                        invoice.Proveedor.NombreRazon,                                                          // 4
-                        invoice.PeriodoLiquidacion,                                                             // 5
-                        invoice.DatosFacturaInformadaProveedor.TipoFactura,                                     // 6
-                        invoice.DatosFacturaInformadaProveedor.ClaveRegimenEspecialOTrascendencia,              // 7
-                        tipoDesglose,                                                                           // 8
-                        0,                                                                                      // 9
-                        0,                                                                                      // 10
-                        0,                                                                                      // 11
-                        0,                                                                                      // 12
-                        0,                                                                                      // 13
-                        0,                                                                                      // 14
-                        0,                                                                                      // 15
-                        0,                                                                                      // 16
-                        noSujArt7_14,                                                                           // 17
-                        noSujTAI,                                                                               // 18
-                        null,                                                                                   // 19
-                        invoice.EstadoFactura.EstadoRegistro,                                                   // 20
-                        $"{(ExternStatus)Convert.ToInt32(invoice.EstadoFactura.EstadoCuadre)}"                  // 21 
-                        );                                                           
-                    }
-                    else
+                    foreach (var invoice in respuestaFR.RegistroRespuestaConsultaLRFactInformadasProveedor)
                     {
 
-                        if (desglose?.Sujeta.Exenta != null)
+                        string tipoDesglose = (invoice.DatosFacturaInformadaProveedor.TipoDesglose.DesgloseFactura != null) ?
+                            "DesgloseFactura" : null;
+
+                        if (string.IsNullOrEmpty(tipoDesglose))
+                            tipoDesglose = (invoice.DatosFacturaInformadaProveedor.TipoDesglose.DesgloseTipoOperacion != null) ?
+                            "DesgloseTipoOperacion" : null;
+
+                        DesgloseF desglose = invoice.DatosFacturaInformadaProveedor?.TipoDesglose?.DesgloseFactura;
+
+                        if (desglose == null)
+                            desglose = invoice.DatosFacturaInformadaProveedor?.TipoDesglose?.DesgloseTipoOperacion?.Entrega;
+
+                        if (desglose == null)
+                            desglose = invoice.DatosFacturaInformadaProveedor?.TipoDesglose?.DesgloseTipoOperacion?.PrestacionServicios;
+
+
+
+                        decimal noSujArt7_14 = 0;
+                        decimal noSujTAI = 0;
+
+                        if (desglose.NoSujeta != null)
                         {
-                            if (desglose.Sujeta.Exenta.DetalleExenta != null)
-                            {
-                                foreach (var iva in desglose.Sujeta.Exenta.DetalleExenta)
-                                {
-                                    tableFR.Rows.Add("FR",                                                                  // 0
-                                    invoice.IDFactura.NumSerieFacturaEmisor,                                                // 1
-                                    invoice.IDFactura.FechaExpedicionFacturaEmisor,                                         // 2
-                                    invoice.IDFactura.GetIDEmisorFactura(),                                                 // 3
-                                    invoice.Proveedor.NombreRazon,                                                          // 4
-                                    invoice.PeriodoLiquidacion,                                                             // 5
-                                    invoice.DatosFacturaInformadaProveedor.TipoFactura,                                     // 6
-                                    invoice.DatosFacturaInformadaProveedor.ClaveRegimenEspecialOTrascendencia,              // 7
-                                    tipoDesglose,                                                                           // 8
-                                    iva.CausaExencion,                                                                      // 9
-                                    iva.BaseImponible,                                                                      // 10
-                                    0,                                                                                      // 11
-                                    0,                                                                                      // 12
-                                    0,                                                                                      // 13
-                                    0,                                                                                      // 14
-                                    0,                                                                                      // 15
-                                    0,                                                                                      // 16
-                                    0,                                                                                      // 17
-                                    0,                                                                                      // 18
-                                    null,                                                                                   // 19
-                                    invoice.EstadoFactura.EstadoRegistro,                                                   // 20
-                                    $"{(ExternStatus)Convert.ToInt32(invoice.EstadoFactura.EstadoCuadre)}"                  // 21
-                                    );                                                           
-                                }
-                            }
-                            else
-                            {
-                                tableFR.Rows.Add("FR",                                                                      // 0
-                                 invoice.IDFactura.NumSerieFacturaEmisor,                                                   // 1
-                                 invoice.IDFactura.FechaExpedicionFacturaEmisor,                                            // 2
-                                 invoice.IDFactura.GetIDEmisorFactura(),                                                    // 3
-                                 invoice.Proveedor.NombreRazon,                                                             // 4
-                                 invoice.PeriodoLiquidacion,                                                                // 5
-                                 invoice.DatosFacturaInformadaProveedor.TipoFactura,                                        // 6
-                                 invoice.DatosFacturaInformadaProveedor.ClaveRegimenEspecialOTrascendencia,                 // 7
-                                 tipoDesglose,                                                                              // 8
-                                 desglose.Sujeta.Exenta.CausaExencion,                                                                                         // 9
-                                 desglose.Sujeta.Exenta.BaseImponible,                                                      // 10
-                                 0,                                                                                         // 11
-                                 0,                                                                                         // 12
-                                 0,                                                                                         // 13
-                                 0,                                                                                         // 14
-                                 0,                                                                                         // 15
-                                 0,                                                                                         // 16
-                                 0,                                                                                         // 17
-                                 0,                                                                                         // 18
-                                 null,                                                                                      // 19
-                                 invoice.EstadoFactura.EstadoRegistro,                                                      // 20
-                                 $"{(ExternStatus)Convert.ToInt32(invoice.EstadoFactura.EstadoCuadre)}"                     // 21 
-                                 );
-                            }
-                          
+                            tableFR.Rows.Add("FR",                                                                  // 0
+                            invoice.IDFactura.NumSerieFacturaEmisor,                                                // 1
+                            invoice.IDFactura.FechaExpedicionFacturaEmisor,                                         // 2
+                            invoice.IDFactura.GetIDEmisorFactura(),                                                 // 3
+                            invoice.Proveedor.NombreRazon,                                                          // 4
+                            invoice.PeriodoLiquidacion,                                                             // 5
+                            invoice.DatosFacturaInformadaProveedor.TipoFactura,                                     // 6
+                            invoice.DatosFacturaInformadaProveedor.ClaveRegimenEspecialOTrascendencia,              // 7
+                            tipoDesglose,                                                                           // 8
+                            0,                                                                                      // 9
+                            0,                                                                                      // 10
+                            0,                                                                                      // 11
+                            0,                                                                                      // 12
+                            0,                                                                                      // 13
+                            0,                                                                                      // 14
+                            0,                                                                                      // 15
+                            0,                                                                                      // 16
+                            noSujArt7_14,                                                                           // 17
+                            noSujTAI,                                                                               // 18
+                            null,                                                                                   // 19
+                            invoice.EstadoFactura.EstadoRegistro,                                                   // 20
+                            $"{(ExternStatus)Convert.ToInt32(invoice.EstadoFactura.EstadoCuadre)}"                  // 21 
+                            );
                         }
                         else
                         {
-                            foreach (var iva in desglose.Sujeta.NoExenta.DesgloseIVA.DetalleIVA)
-                            {
-                                tableFR.Rows.Add("FR",                                                                      // 0
-                                invoice.IDFactura.NumSerieFacturaEmisor,                                                    // 1
-                                invoice.IDFactura.FechaExpedicionFacturaEmisor,                                             // 2
-                                invoice.IDFactura.GetIDEmisorFactura(),                                                     // 3
-                                invoice.Proveedor.NombreRazon,                                                              // 4
-                                invoice.PeriodoLiquidacion,                                                                 // 5
-                                invoice.DatosFacturaInformadaProveedor.TipoFactura,                                         // 6
-                                invoice.DatosFacturaInformadaProveedor.ClaveRegimenEspecialOTrascendencia,                  // 7
-                                tipoDesglose,                                                                               // 8
-                                desglose.Sujeta.NoExenta.TipoNoExenta,                                                      // 9
-                                iva.BaseImponible,                                                                          // 10
-                                iva.TipoImpositivo,                                                                         // 11
-                                iva.CuotaSoportada,                                                                         // 12
-                                iva.TipoRecargoEquivalencia,                                                                // 13
-                                iva.CuotaRecargoEquivalencia,                                                               // 14
-                                iva.PorcentCompensacionREAGYP,                                                              // 15
-                                iva.ImporteCompensacionREAGYP,                                                              // 16
-                                noSujArt7_14,                                                                               // 17
-                                noSujTAI,                                                                                   // 18
-                                null,                                                                                       // 19
-                                invoice.EstadoFactura.EstadoRegistro,                                                       // 20
-                                $"{(ExternStatus)Convert.ToInt32(invoice.EstadoFactura.EstadoCuadre)}"                      // 21
-                                );
-                            }
-                        }
 
-                        
-                    }                
+                            if (desglose?.Sujeta.Exenta != null)
+                            {
+                                if (desglose.Sujeta.Exenta.DetalleExenta != null)
+                                {
+                                    foreach (var iva in desglose.Sujeta.Exenta.DetalleExenta)
+                                    {
+                                        tableFR.Rows.Add("FR",                                                                  // 0
+                                        invoice.IDFactura.NumSerieFacturaEmisor,                                                // 1
+                                        invoice.IDFactura.FechaExpedicionFacturaEmisor,                                         // 2
+                                        invoice.IDFactura.GetIDEmisorFactura(),                                                 // 3
+                                        invoice.Proveedor.NombreRazon,                                                          // 4
+                                        invoice.PeriodoLiquidacion,                                                             // 5
+                                        invoice.DatosFacturaInformadaProveedor.TipoFactura,                                     // 6
+                                        invoice.DatosFacturaInformadaProveedor.ClaveRegimenEspecialOTrascendencia,              // 7
+                                        tipoDesglose,                                                                           // 8
+                                        iva.CausaExencion,                                                                      // 9
+                                        iva.BaseImponible,                                                                      // 10
+                                        0,                                                                                      // 11
+                                        0,                                                                                      // 12
+                                        0,                                                                                      // 13
+                                        0,                                                                                      // 14
+                                        0,                                                                                      // 15
+                                        0,                                                                                      // 16
+                                        0,                                                                                      // 17
+                                        0,                                                                                      // 18
+                                        null,                                                                                   // 19
+                                        invoice.EstadoFactura.EstadoRegistro,                                                   // 20
+                                        $"{(ExternStatus)Convert.ToInt32(invoice.EstadoFactura.EstadoCuadre)}"                  // 21
+                                        );
+                                    }
+                                }
+                                else
+                                {
+                                    tableFR.Rows.Add("FR",                                                                      // 0
+                                     invoice.IDFactura.NumSerieFacturaEmisor,                                                   // 1
+                                     invoice.IDFactura.FechaExpedicionFacturaEmisor,                                            // 2
+                                     invoice.IDFactura.GetIDEmisorFactura(),                                                    // 3
+                                     invoice.Proveedor.NombreRazon,                                                             // 4
+                                     invoice.PeriodoLiquidacion,                                                                // 5
+                                     invoice.DatosFacturaInformadaProveedor.TipoFactura,                                        // 6
+                                     invoice.DatosFacturaInformadaProveedor.ClaveRegimenEspecialOTrascendencia,                 // 7
+                                     tipoDesglose,                                                                              // 8
+                                     desglose.Sujeta.Exenta.CausaExencion,                                                                                         // 9
+                                     desglose.Sujeta.Exenta.BaseImponible,                                                      // 10
+                                     0,                                                                                         // 11
+                                     0,                                                                                         // 12
+                                     0,                                                                                         // 13
+                                     0,                                                                                         // 14
+                                     0,                                                                                         // 15
+                                     0,                                                                                         // 16
+                                     0,                                                                                         // 17
+                                     0,                                                                                         // 18
+                                     null,                                                                                      // 19
+                                     invoice.EstadoFactura.EstadoRegistro,                                                      // 20
+                                     $"{(ExternStatus)Convert.ToInt32(invoice.EstadoFactura.EstadoCuadre)}"                     // 21 
+                                     );
+                                }
+
+                            }
+                            else
+                            {
+                                foreach (var iva in desglose.Sujeta.NoExenta.DesgloseIVA.DetalleIVA)
+                                {
+                                    tableFR.Rows.Add("FR",                                                                      // 0
+                                    invoice.IDFactura.NumSerieFacturaEmisor,                                                    // 1
+                                    invoice.IDFactura.FechaExpedicionFacturaEmisor,                                             // 2
+                                    invoice.IDFactura.GetIDEmisorFactura(),                                                     // 3
+                                    invoice.Proveedor.NombreRazon,                                                              // 4
+                                    invoice.PeriodoLiquidacion,                                                                 // 5
+                                    invoice.DatosFacturaInformadaProveedor.TipoFactura,                                         // 6
+                                    invoice.DatosFacturaInformadaProveedor.ClaveRegimenEspecialOTrascendencia,                  // 7
+                                    tipoDesglose,                                                                               // 8
+                                    desglose.Sujeta.NoExenta.TipoNoExenta,                                                      // 9
+                                    iva.BaseImponible,                                                                          // 10
+                                    iva.TipoImpositivo,                                                                         // 11
+                                    iva.CuotaSoportada,                                                                         // 12
+                                    iva.TipoRecargoEquivalencia,                                                                // 13
+                                    iva.CuotaRecargoEquivalencia,                                                               // 14
+                                    iva.PorcentCompensacionREAGYP,                                                              // 15
+                                    iva.ImporteCompensacionREAGYP,                                                              // 16
+                                    noSujArt7_14,                                                                               // 17
+                                    noSujTAI,                                                                                   // 18
+                                    null,                                                                                       // 19
+                                    invoice.EstadoFactura.EstadoRegistro,                                                       // 20
+                                    $"{(ExternStatus)Convert.ToInt32(invoice.EstadoFactura.EstadoCuadre)}"                      // 21
+                                    );
+                                }
+                            }
+
+                        }
+                    }
+
                 }
+
                 tableResult.Merge(tableFR);
                 start = start.AddMonths(1);
+
             }
 
 
