@@ -322,7 +322,7 @@ namespace EasySII.Business
             else
             {
                 siiDelete.PeriodoLiquidacion.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiDelete.PeriodoImpositivo.Periodo = "0A"; // anual
+                siiDelete.PeriodoLiquidacion.Periodo = "0A"; // anual
             }
 
 
