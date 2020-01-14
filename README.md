@@ -2,14 +2,12 @@
 EasySII la biblioteca .net para el SII de la AEAT creada por [Irene Solutions](http://www.irenesolutions.com) . La finalidad de esta herramienta es simplificar los trabajos de serialización xml, envío y recepción de lotes para los libros registros.
 Si necesita soporte o tiene alguna sugerencia, por favor, nos lo puede hacer saber en support@irenesolutions.com.
 
-
+## Resumen
 
 Bienvenido a la herramienta de EasySII! Gestiona con facilidad tu comunicación con el SII de la AEAT, por ejemplo, enviar un lote de facturas recibidas es tan fácil como esto:
 
-# Lotes facturas recibidas
-
-## Ejemplo del envío de un lote de facturas recibidas
-### Se crean dos facturas emitidas (APInvoice) y se envían al SII de la AEAT
+### Ejemplo del envío de un lote de facturas recibidas
+#### Se crean dos facturas emitidas (APInvoice) y se envían al SII de la AEAT
 
 ```C#
 // A incluir:           
@@ -96,6 +94,7 @@ foreach (var factura in LoteFacturasRecibidas.BatchItems)
 }
 
 ```
+## Indice de contenidos
 
 ![Irene Solutions SL](http://www.irenesolutions.com/archive/img/logo-irene-solutions-transparent-sm.png)
 
