@@ -4,7 +4,98 @@ Si necesita soporte o tiene alguna sugerencia, por favor, nos lo puede hacer sab
 
 
 
-Bienvenido a la herramienta de EasySII!
+Bienvenido a la herramienta de EasySII! Gestiona con facilidad tu comunicación con el SII de la AEAT, por ejemplo, enviar un lote de facturas recibidas es tan fácil como esto:
+
+# Lotes facturas recibidas
+
+## Ejemplo del envío de un lote de facturas recibidas
+### Se crean dos facturas emitidas (APInvoice) y se envían al SII de la AEAT
+
+```C#
+// A incluir:           
+//using EasySII;
+//using EasySII.Business;
+//using EasySII.Business.Batches;
+//using EasySII.Net;
+
+// Creamos al titular del lote.
+Party titular = new Party()
+{
+   TaxIdentificationNumber = "B12959755",
+   PartyName = "IRENE SOLUTIONS SL"
+};
+
+// Lote de factura recibidas a enviar la AEAT al SII
+var LoteFacturasRecibidas = new Batch(BatchActionKeys.LR, BatchActionPrefixes.SuministroLR, BatchTypes.FacturasRecibidas); 
+LoteFacturasRecibidas.Titular = titular;
+LoteFacturasRecibidas.CommunicationType = CommunicationType.A0; // Alta de facturas:
+// utilizando el tipo de comunicación podemos modificar datos de facturas envíadas
+// anteriormente. En lugar de alta de facturas, podemos elegir modificación.
+            
+Party comprador = titular; // El titular es el comprador en este caso
+
+APInvoice facturaRecibidaPrimera = new APInvoice(); // Primera factura 
+
+facturaRecibidaPrimera.IssueDate = new DateTime(2018, 1, 10); // Fecha de emisión factura
+facturaRecibidaPrimera.PostingDate = new DateTime(2018, 1, 31); // Fecha de contabilización: Se utiliza para serializar el periodo (2018.01)
+facturaRecibidaPrimera.RegisterDate = new DateTime(2018, 2, 5); // Fecha de registro: Se utiliza para serializar la fecha de registro
+
+facturaRecibidaPrimera.SellerParty = new Party() // Acreedor (Emisor factura)
+{
+   TaxIdentificationNumber = "B12756474",
+   PartyName = "MAC ORGANIZACION SL"
+};
+
+facturaRecibidaPrimera.BuyerParty = comprador; // Comprador
+facturaRecibidaPrimera.InvoiceNumber = "FR/00003"; // Número de factura
+facturaRecibidaPrimera.InvoiceType = InvoiceType.F1; // Tipo de factura
+facturaRecibidaPrimera.ClaveRegimenEspecialOTrascendencia =
+ClaveRegimenEspecialOTrascendencia.RegimenComun;
+facturaRecibidaPrimera.GrossAmount = 121m; // Importe bruto
+facturaRecibidaPrimera.InvoiceText = "Licencia software"; // Descripción     
+
+facturaRecibidaPrimera.AddTaxOtuput(21, 100, 21);
+LoteFacturasRecibidas.BatchItems.Add(facturaRecibidaPrimera); // Añadimos la segunda factura al lote
+
+APInvoice facturaRecibidaSegunda = new APInvoice(); // Segunda factura (Exenta)
+
+facturaRecibidaSegunda.IssueDate = new DateTime(2018, 1, 15); // Fecha de emisión factura
+facturaRecibidaSegunda.PostingDate = new DateTime(2018, 1, 31); // Fecha de contabilización: Se utiliza para serializar el periodo (2017.01)
+facturaRecibidaSegunda.RegisterDate = new DateTime(2018, 2, 6); // Fecha de registro: Se utiliza para serializar la fecha de registro
+
+facturaRecibidaSegunda.SellerParty = new Party() // Acreedor (Emisor factura)
+{
+   TaxIdentificationNumber = "B12756474",
+   PartyName = "MAC ORGANIZACION SL"
+};
+facturaRecibidaSegunda.BuyerParty = comprador; // Comprador
+facturaRecibidaSegunda.InvoiceNumber = "FRA/00004"; // Número de factura
+facturaRecibidaSegunda.InvoiceType = InvoiceType.F1; // Tipo de factura
+facturaRecibidaSegunda.ClaveRegimenEspecialOTrascendencia =
+ClaveRegimenEspecialOTrascendencia.RegimenComun;
+facturaRecibidaSegunda.GrossAmount = 100m; // Importe bruto
+facturaRecibidaSegunda.InvoiceText = "Intereses préstamo"; // Descripción  
+            
+// Si no se incluyen líneas de IVA considera GrossAmount como exenta
+         
+LoteFacturasRecibidas.BatchItems.Add(facturaRecibidaSegunda); // Añadimos la segunda factura al lote
+
+// Realizamos el envío del lote a la AEAT
+string response = BatchDispatcher.SendSiiLote(LoteFacturasRecibidas);
+
+foreach (var factura in LoteFacturasRecibidas.BatchItems)
+{
+    string msg = "";
+    if (factura.Status == "Correcto" || factura.Status == "AceptadoConErrores")
+        msg = $"El estado del envío es: {factura.Status} y el código CSV: {factura.CSV}";
+    else
+        msg = $"El estado del envío es: {factura.Status}, error: {factura.ErrorCode} '{factura.ErrorMessage}'";
+
+    // Continuar según resultado
+
+}
+
+```
 
 ![Irene Solutions SL](http://www.irenesolutions.com/archive/img/logo-irene-solutions-transparent-sm.png)
 
