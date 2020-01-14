@@ -16,6 +16,9 @@ Bienvenido a la herramienta de EasySII!
    * [Configuración del certificado para la comunicación con la AEAT](https://github.com/mdiago/EasySII/wiki/001---Ejemplo:-Configuraci%C3%B3n-del-certificado-para-la-comunicaci%C3%B3n-con-la-AEAT)
 
    * [Creación de lotes de facturas recibidas](https://github.com/mdiago/EasySII/wiki/002---Ejemplo:-Creaci%C3%B3n-de-lotes-de-facturas-recibidas)
+   
+      * [Creación de lotes de facturas emitidas](https://github.com/mdiago/EasySII/wiki/003---Ejemplo:-Creaci%C3%B3n-de-lotes-de-facturas-emitidas)
+
 
    * [Creación de lotes de bienes de inversión](https://github.com/mdiago/EasySII/wiki/004---Ejemplo:-Creaci%C3%B3n-de-lotes-de-bienes-de-inversi%C3%B3n)
 
