@@ -4,7 +4,7 @@ Si necesita soporte o tiene alguna sugerencia, por favor, nos lo puede hacer sab
 
 
 
-Bienvenido a la wiki de EasySII!
+Bienvenido a la herramienta de EasySII!
 
 ![Irene Solutions SL](http://www.irenesolutions.com/archive/img/logo-irene-solutions-transparent-sm.png)
 
