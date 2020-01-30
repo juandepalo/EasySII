@@ -58,7 +58,7 @@ namespace EasySII.Business
         /// </summary>
         E3,
         /// <summary>
-        ///  Exenta por el artículo 24: Exenciones ralativas a regímenes aduaneros y fiscales.
+        ///  Exenta por el artículo 24: Exenciones relativas a regímenes aduaneros y fiscales.
 		///  Depositos aduaneros...
         /// </summary>
         E4,
