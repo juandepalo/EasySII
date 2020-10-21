@@ -240,6 +240,48 @@ namespace EasySII.Xml.Silr
         public string CuotaDeducible { get; set; }
 
         /// <summary>
+        /// Identificador que especifica si la factura se deduce en un periodo posterior. 
+        /// Si no se informa este campo se entenderá que tiene valor “N”.
+        /// Valores permitidos 'S' o 'N':
+        /// <para>'S': Si</para>
+        /// <para>'N': No</para> 
+        /// </summary>
+        [XmlElement("ADeducirEnPeriodoPosterior", Namespace = Settings.NamespaceSii)]
+        public string ADeducirEnPeriodoPosterior { get; set; }
+
+        /// <summary>
+        /// Ejercicio de deducción.
+        /// </summary>
+        [XmlElement("EjercicioDeduccion", Namespace = Settings.NamespaceSii)]
+        public string EjercicioDeduccion { get; set; }
+
+        /// <summary>
+        /// Periodo de deducción.
+        /// Valores permitidos:
+        /// <para>'01': Enero</para>
+        /// <para>'02': Febrero</para> 
+        /// <para>'03': Marzo</para> 
+        /// <para>'04': Abril</para>
+        /// <para>'05': Mayo</para>
+        /// <para>'06': Junio</para>
+        /// <para>'07': Julio</para>
+        /// <para>'08': Agosto</para>
+        /// <para>'09': Septiembre</para>
+        /// <para>'10': Octubre</para>
+        /// <para>'11': Noviembre</para>
+        /// <para>'12': Diciembre</para>
+        /// <para>'0A': Anual</para>
+        /// <para>'1T': 1º Trimestre</para>
+        /// <para>'2T': 2º Trimestre</para>
+        /// <para>'3T': 3º Trimestre</para>
+        /// <para>'4T': 4º Trimestre</para>
+        /// 
+        /// </summary>
+        [XmlElement("PeriodoDeduccion", Namespace = Settings.NamespaceSii)]
+        public string PeriodoDeduccion { get; set; }
+
+
+        /// <summary>
         /// Constructor clase FacturaExpedida.
         /// </summary>
         public FacturaRecibida()

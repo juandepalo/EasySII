@@ -72,10 +72,16 @@ namespace EasySII.Business
 		/// </summary>
 		public DateTime? RegisterDate { get; set; }
 
-		/// <summary>
-		/// Cuando el identificador es distinto del NIF establece el tipo de identificador utilizado.
-		/// </summary>
-		public IDOtroType IDOtroType { get; set; }
+        /// <summary>
+        /// Se indica cuando queremos señalar como 'S' el valor de ADeducirEnPeriodoPosterior
+        /// Indicando la fecha en la que queremos realizar la deducción.
+        /// </summary>
+        public DateTime? TaxDate { get; set; }
+
+        /// <summary>
+        /// Cuando el identificador es distinto del NIF establece el tipo de identificador utilizado.
+        /// </summary>
+        public IDOtroType IDOtroType { get; set; }
 
         /// <summary>
         /// Código ISO del pais cuando el NIF no es español.
@@ -138,7 +144,12 @@ namespace EasySII.Business
             IssueDate = Convert.ToDateTime(siiInvoice.IDFactura.FechaExpedicionFacturaEmisor);
             PostingDate = Convert.ToDateTime(siiInvoice.FacturaRecibida.FechaRegContable);
 
-            if(siiInvoice.FacturaRecibida.FechaOperacion!=null)
+            if (Settings.Current.IDVersionSii.CompareTo("1.1") >= 0 && siiInvoice.FacturaRecibida.ADeducirEnPeriodoPosterior == "S")
+                TaxDate = new DateTime(Convert.ToInt32(siiInvoice.FacturaRecibida.EjercicioDeduccion), 
+                    Convert.ToInt32(siiInvoice.FacturaRecibida.PeriodoDeduccion), 1);
+
+
+            if (siiInvoice.FacturaRecibida.FechaOperacion!=null)
                 OperationIssueDate = Convert.ToDateTime(siiInvoice.FacturaRecibida.FechaOperacion);
 
             SellerParty = new Party()
@@ -348,7 +359,15 @@ namespace EasySII.Business
 			if (OperationIssueDate != null)
 				siiInvoice.FacturaRecibida.FechaOperacion = SIIParser.FromDate(OperationIssueDate);
 
-			siiInvoice.FacturaRecibida.TipoFactura = InvoiceType.ToString();
+
+            if (Settings.Current.IDVersionSii.CompareTo("1.1") >= 0 && TaxDate != null) 
+            {
+                siiInvoice.FacturaRecibida.ADeducirEnPeriodoPosterior = "S";
+                siiInvoice.FacturaRecibida.EjercicioDeduccion = TaxDate?.ToString("yyyy");
+                siiInvoice.FacturaRecibida.PeriodoDeduccion = TaxDate?.ToString("MM"); ;
+            }
+
+            siiInvoice.FacturaRecibida.TipoFactura = InvoiceType.ToString();
             siiInvoice.FacturaRecibida.ClaveRegimenEspecialOTrascendencia = 
                 ((int)ClaveRegimenEspecialOTrascendencia).ToString().PadLeft(2, '0');
 
