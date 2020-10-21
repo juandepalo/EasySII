@@ -84,5 +84,14 @@ namespace EasySII.Xml.Sii
         /// </summary>
         public string ImporteCompensacionREAGYP { get; set; }
 
+        /// <summary>
+        /// Identificador que especifica bien de inversión. 
+        /// Si no se informa este campo se entenderá que tiene valor “N”.
+        /// Valores permitidos 'S' o 'N':
+        /// <para>'S': Si</para>
+        /// <para>'N': No</para> 
+        /// </summary>
+        public string BienInversion { get; set; }
+
     }
 }

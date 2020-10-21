@@ -88,6 +88,11 @@ namespace EasySII.Business
         public bool IsInversionSujetoPasivo { get; set; }
 
         /// <summary>
+        /// Indica si se trata de un bien de inversión.
+        /// </summary>
+        public bool IsAsset { get; set; }
+
+        /// <summary>
         /// Desde Fecha de presentación de las facturas en la AEAT.
         /// </summary>
         public DateTime? SinceDate { get; set; }
@@ -245,6 +250,9 @@ namespace EasySII.Business
                     taxAmount = SIIParser.ToDecimal(iva.CuotaSoportada); 
                     taxRateRE = SIIParser.ToDecimal(iva.TipoRecargoEquivalencia);
                     taxAmountRE = SIIParser.ToDecimal(iva.CuotaRecargoEquivalencia);
+
+                    if (Settings.Current.IDVersionSii.CompareTo("1.1") >= 0)
+                        IsAsset = (iva.BienInversion == "S");
 
                     TaxesOutputs.Add(taxRate, new decimal[] { taxBase, taxAmount, taxRateRE, taxAmountRE });
 
@@ -557,10 +565,13 @@ namespace EasySII.Business
 					{
 						TipoImpositivo = (taxOut.Value[2] == 0 && taxOut.Value[3] == 0) ? SIIParser.FromDecimal(taxOut.Key) : "0",
 						BaseImponible = SIIParser.FromDecimal(taxOut.Value[0]),
-						CuotaSoportada = SIIParser.FromDecimal(taxOut.Value[1])
+						CuotaSoportada = SIIParser.FromDecimal(taxOut.Value[1]),
 					};
 
-					if (taxOut.Value[2] != 0)
+                    if (Settings.Current.IDVersionSii.CompareTo("1.1") >= 0)
+                        detalleIVA.BienInversion = (IsAsset ? "S" : "N");                   
+
+                    if (taxOut.Value[2] != 0)
 					{
 						detalleIVA.TipoRecargoEquivalencia = SIIParser.FromDecimal(taxOut.Key);
 						detalleIVA.CuotaRecargoEquivalencia = SIIParser.FromDecimal(taxOut.Value[2]);
