@@ -587,8 +587,8 @@ namespace EasySII.Business
 						CuotaSoportada = SIIParser.FromDecimal(taxOut.Value[1]),
 					};
 
-                    if (Settings.Current.IDVersionSii.CompareTo("1.1") >= 0)
-                        detalleIVA.BienInversion = (IsAsset ? "S" : "N");                   
+                    if (Settings.Current.IDVersionSii.CompareTo("1.1") >= 0 && IsAsset)
+                        detalleIVA.BienInversion = "S";                   
 
                     if (taxOut.Value[2] != 0)
 					{

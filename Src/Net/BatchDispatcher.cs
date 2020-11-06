@@ -88,17 +88,14 @@ namespace EasySII.Net
                     IBatchItem it = GetBatchItem(batch, lin.IDFactura);
 
                     it.Status = lin.EstadoRegistro;
+                    it.CSV = respuesta.CSV;
 
-                    if (it.Status == "Incorrecto")
+                    if (it.Status == "Incorrecto" || it.Status == "AceptadoConErrores")
                     {
-                        it.CSV = lin.CSV;
                         it.ErrorCode = lin.CodigoErrorRegistro;
                         it.ErrorMessage = lin.DescripcionErrorRegistro;
                     }
-                    else
-                    {
-                        it.CSV = respuesta.CSV;
-                    }
+                   
                 }
 
             }
