@@ -37,36 +37,20 @@
     address: info@irenesolutions.com
  */
 
-using System.Collections.Generic;
-
-namespace EasySII.Business.Batches
+namespace EasySII.Business
 {
-
     /// <summary>
-    /// EndPoints por tipo de documentos.
+    /// Tipo de venta consigna. Lista L31.
     /// </summary>
-    public class EndPoints
+    public enum ClaveDeclarante
     {
-
         /// <summary>
-        /// Prefijo de todos los endpoints del SII.
+        /// Vendedor
         /// </summary>
-        public static string EndPointPrefix = Settings.Current.SiiEndPointPrefix;
-
+        V,
         /// <summary>
-        /// Mapeo entre tipos de lote del SII y objetos de negocio.
+        /// Adquirente
         /// </summary>
-        public static Dictionary<BatchTypes, string> BusinessTypesOfSii = new Dictionary<BatchTypes, string>() {
-            {BatchTypes.FacturasRecibidas,                                      $"{EndPointPrefix}/fr/SiiFactFRV1SOAP" },
-            {BatchTypes.PagosRecibidas,                                         $"{EndPointPrefix}/fr/SiiFactPAGV1SOAP" },
-            {BatchTypes.FacturasEmitidas,                                       $"{EndPointPrefix}/fe/SiiFactFEV1SOAP" },
-            {BatchTypes.CobrosEmitidas,                                         $"{EndPointPrefix}/fe/SiiFactCOBV1SOAP" },
-            {BatchTypes.BienesInversion,                                        $"{EndPointPrefix}/bi/SiiFactBIV1SOAP" },
-            {BatchTypes.CobrosMetalico,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.OperacionesSeguros,                                     $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.DetOperacionIntracomunitaria,                           $"{EndPointPrefix}/oi/SiiFactOIV1SOAP" },
-            {BatchTypes.AgenciasViajes,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.VentaBienesConsigna,                                    $"{EndPointPrefix}/vb/SiiFactVBV1SOAP" }
-        };
+        A
     }
 }

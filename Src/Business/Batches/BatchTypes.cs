@@ -89,7 +89,13 @@ namespace EasySII.Business.Batches
         /// <summary>
         /// Agencias viajes.
         /// </summary>
-        AgenciasViajes
+        AgenciasViajes,
+
+        /// <summary>
+        /// Venta bienes en consigna.
+        /// </summary>
+        VentaBienesConsigna,
+
 
     }
 }

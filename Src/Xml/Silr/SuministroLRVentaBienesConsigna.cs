@@ -37,36 +37,51 @@
     address: info@irenesolutions.com
  */
 
+using EasySII.Business.Batches;
+using EasySII.Xml.Sii;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
-namespace EasySII.Business.Batches
+namespace EasySII.Xml.Silr
 {
 
     /// <summary>
-    /// EndPoints por tipo de documentos.
+    /// Libro registro de Determinadas Operaciones Intracomunitarias. Venta de
+    /// bienes en consigna. El objetivo de este Libro registro es reflejar la 
+    /// situación de los bienes a que se refieren determinadas operaciones 
+    /// intracomunitarias en tanto no tenga lugar el devengo de las entregas 
+    /// o de las adquisiciones.
+    /// <para>El envío o recepción de bienes muebles corporales para la realización 
+    /// de informes periciales, valoraciones y dictámenes sobre los mismos.</para>
+    /// <para>Las transferencias que realice el sujeto pasivo de bienes corporales 
+    /// de su empresa con destino a otro Estado miembro, para afectarlos a las 
+    /// necesidades de aquélla en este último.</para>  
+    /// <para>https://www.agenciatributaria.es/AEAT.internet/Inicio/_Segmentos_/Empresas_y_profesionales/Empresas/IVA/Obligaciones_contables_y_registrales_en_el_IVA/Libro_registro_de_determinadas_operaciones_intracomunitarias_.shtml</para>    
     /// </summary>
-    public class EndPoints
+    public class SuministroLRVentaBienesConsigna : ISiiLote
     {
 
         /// <summary>
-        /// Prefijo de todos los endpoints del SII.
+        /// Datos de cabecera.
         /// </summary>
-        public static string EndPointPrefix = Settings.Current.SiiEndPointPrefix;
+        [XmlElement("Cabecera", Order = 1, Namespace = Settings.NamespaceSii)]
+        public Cabecera Cabecera { get; set; }
 
         /// <summary>
-        /// Mapeo entre tipos de lote del SII y objetos de negocio.
+        /// Lista de facturas con un límite de 10.000.
         /// </summary>
-        public static Dictionary<BatchTypes, string> BusinessTypesOfSii = new Dictionary<BatchTypes, string>() {
-            {BatchTypes.FacturasRecibidas,                                      $"{EndPointPrefix}/fr/SiiFactFRV1SOAP" },
-            {BatchTypes.PagosRecibidas,                                         $"{EndPointPrefix}/fr/SiiFactPAGV1SOAP" },
-            {BatchTypes.FacturasEmitidas,                                       $"{EndPointPrefix}/fe/SiiFactFEV1SOAP" },
-            {BatchTypes.CobrosEmitidas,                                         $"{EndPointPrefix}/fe/SiiFactCOBV1SOAP" },
-            {BatchTypes.BienesInversion,                                        $"{EndPointPrefix}/bi/SiiFactBIV1SOAP" },
-            {BatchTypes.CobrosMetalico,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.OperacionesSeguros,                                     $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.DetOperacionIntracomunitaria,                           $"{EndPointPrefix}/oi/SiiFactOIV1SOAP" },
-            {BatchTypes.AgenciasViajes,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.VentaBienesConsigna,                                    $"{EndPointPrefix}/vb/SiiFactVBV1SOAP" }
-        };
+        [XmlElement("RegistroLRDetOperacionIntracomunitariaVentasEnConsigna", Order = 2)]
+        public List<RegistroLRDetOperacionIntracomunitariaVentasEnConsigna> RegistroLRDetOperacionIntracomunitariaVentasEnConsigna { get; set; }
+
+        /// <summary>
+        /// Constructor de la clase SuministroLRVentaBienesConsigna.
+        /// </summary>
+        public SuministroLRVentaBienesConsigna()
+        {
+            Cabecera = new Cabecera();
+            RegistroLRDetOperacionIntracomunitariaVentasEnConsigna = new List<RegistroLRDetOperacionIntracomunitariaVentasEnConsigna>();
+        }
+
+
     }
 }

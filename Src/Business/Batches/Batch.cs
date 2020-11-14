@@ -144,11 +144,13 @@ namespace EasySII.Business.Batches
             {
                 siiType = siiType.Replace("Suministro", "Registro");
 
-                if(batchType.StartsWith("Pagos"))
+                if (batchType.StartsWith("Pagos"))
                     batchType = "Pagos";
-                else if (!batchType.StartsWith("CobrosMetalico") && 
+                else if (!batchType.StartsWith("CobrosMetalico") &&
                     batchType.StartsWith("Cobros"))
                     batchType = "Cobros";
+                else if (batchType == "VentaBienesConsigna")
+                    batchType = "DetOperacionIntracomunitariaVentasEnConsigna";
 
                 return $"{siiType}{batchType}";
             }

@@ -37,36 +37,48 @@
     address: info@irenesolutions.com
  */
 
-using System.Collections.Generic;
+using System;
+using System.Xml.Serialization;
 
-namespace EasySII.Business.Batches
+namespace EasySII.Xml.Silr
 {
-
     /// <summary>
-    /// EndPoints por tipo de documentos.
+    /// Perido impositivo
     /// </summary>
-    public class EndPoints
+    [Serializable]
+    [XmlRoot("IdRegistroDeclarado", Namespace = Settings.NamespaceSii)]
+    public class IdRegistroDeclarado
     {
 
         /// <summary>
-        /// Prefijo de todos los endpoints del SII.
+        /// Ejercicio impositivo de la factura.
+        /// Numérico(4).
         /// </summary>
-        public static string EndPointPrefix = Settings.Current.SiiEndPointPrefix;
+        public string Ejercicio { get; set; }
 
         /// <summary>
-        /// Mapeo entre tipos de lote del SII y objetos de negocio.
+        /// Periodo impositivo de la factura. Alfanumérico(2). L1:
+        /// <para>01: Enero</para>
+        /// <para>02: Febrero</para>
+        /// <para>03: Marzo</para>
+        /// <para>04: Abril</para>
+        /// <para>05: Mayo</para>
+        /// <para>06: Junio</para>
+        /// <para>07: Julio</para>
+        /// <para>08: Agosto</para>
+        /// <para>09: Septiembre</para>
+        /// <para>10: Octubre</para>
+        /// <para>11: Noviembre</para>
+        /// <para>12: Diciembre</para>
+        /// <para>0A: Anual</para>
         /// </summary>
-        public static Dictionary<BatchTypes, string> BusinessTypesOfSii = new Dictionary<BatchTypes, string>() {
-            {BatchTypes.FacturasRecibidas,                                      $"{EndPointPrefix}/fr/SiiFactFRV1SOAP" },
-            {BatchTypes.PagosRecibidas,                                         $"{EndPointPrefix}/fr/SiiFactPAGV1SOAP" },
-            {BatchTypes.FacturasEmitidas,                                       $"{EndPointPrefix}/fe/SiiFactFEV1SOAP" },
-            {BatchTypes.CobrosEmitidas,                                         $"{EndPointPrefix}/fe/SiiFactCOBV1SOAP" },
-            {BatchTypes.BienesInversion,                                        $"{EndPointPrefix}/bi/SiiFactBIV1SOAP" },
-            {BatchTypes.CobrosMetalico,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.OperacionesSeguros,                                     $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.DetOperacionIntracomunitaria,                           $"{EndPointPrefix}/oi/SiiFactOIV1SOAP" },
-            {BatchTypes.AgenciasViajes,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.VentaBienesConsigna,                                    $"{EndPointPrefix}/vb/SiiFactVBV1SOAP" }
-        };
+        public string Periodo { get; set; }
+
+        /// <summary>
+        /// Identificador del registro.
+        /// Alfanumerico(60)
+        /// </summary>
+        public string IdRegistro { get; set; }
+
     }
 }

@@ -155,6 +155,17 @@ namespace EasySII.Net
         private static string WsdConsultaLRAgenciasViajesAction { get { return WsdSuministroLROperTributariasUrl + "?op=ConsultaLRAgenciasViajes"; } }
         private static string WsdAnulacionLRAgenciasViajesAction { get { return WsdSuministroLROperTributariasUrl + "?op=AnulacionLRAgenciasViajes"; } }
 
+
+        /// <summary>
+        /// Url del web service 'SuministroVentaBienesConsigna' con sus respectivas acciones para
+        ///     el suministro, consulta y baja de Operaciones Intracomunitarias Venta Bienes en Consigna.
+        /// </summary>   
+        private static string WsdSuministroLRVentaBienesConsignaUrl { get { return EndPointPrefix + "/vb/SiiFactVBV1SOAP"; } }
+
+        private static string WsdSuministroLRVentaBienesConsignaAction { get { return WsdSuministroLROperIntracomUrl + "?op=SuministroLRVentaBienesConsigna"; } }
+        private static string WsdConsultaLRVentaBienesConsignaAction { get { return WsdSuministroLROperIntracomUrl + "?op=ConsultaLRVentaBienesConsigna"; } }
+        private static string WsdAnulacionLRVentaBienesConsignaAction { get { return WsdSuministroLROperIntracomUrl + "?op=AnulacionLRVentaBienesConsigna"; } }
+
         /// <summary>
         /// Constructor estático de la clase Wsd.
         /// </summary>
@@ -427,6 +438,28 @@ namespace EasySII.Net
                 fileNameReceived = AssetsBatch.GetNameReceived(numFirstInvoiceNumber,
                     numLastInvoiceNumber, taxIdentificationNumber);
 
+            }
+
+            if (envelope.Body.SuministroLRVentaBienesConsigna != null)
+            {
+                url = Wsd.WsdSuministroLRVentaBienesConsignaUrl;
+                action = Wsd.WsdSuministroLRVentaBienesConsignaAction;
+
+                string numFirstInvoiceNumber =
+                    envelope.Body.SuministroLRVentaBienesConsigna.RegistroLRDetOperacionIntracomunitariaVentasEnConsigna[0].IdRegistroDeclarado.IdRegistro;
+
+                int last = envelope.Body.SuministroLRVentaBienesConsigna.RegistroLRDetOperacionIntracomunitariaVentasEnConsigna.Count - 1;
+
+                string numLastInvoiceNumber =
+                    envelope.Body.SuministroLRVentaBienesConsigna.RegistroLRDetOperacionIntracomunitariaVentasEnConsigna[last].IdRegistroDeclarado.IdRegistro;
+
+                string taxIdentificationNumber = envelope.Body.SuministroLRVentaBienesConsigna.Cabecera.Titular.NIF;
+
+                fileNameSent = ITInvoicesBatch.GetNameSent(numFirstInvoiceNumber,
+                    numLastInvoiceNumber, taxIdentificationNumber);
+
+                fileNameReceived = ITInvoicesBatch.GetNameReceived(numFirstInvoiceNumber,
+                    numLastInvoiceNumber, taxIdentificationNumber);
             }
 
 

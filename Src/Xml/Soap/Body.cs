@@ -126,6 +126,12 @@ namespace EasySII.Xml.Soap
         [XmlElement("SuministroLRPagosRecibidas", Namespace = Settings.NamespaceSiiLR)]
         public SuministroLRPagosRecibidas SuministroLRPagosRecibidas { get; set; }
 
+        /// <summary>
+        /// Suministro de información al SII de Venta bienes en consigna.
+        /// </summary>
+        [XmlElement("SuministroLRVentaBienesConsigna", Namespace = Settings.NamespaceSiiLR)]
+        public SuministroLRVentaBienesConsigna SuministroLRVentaBienesConsigna { get; set; }
+
         /*--------------------------- Tratamiento de las consultas --------------------------------------*/
         /// <summary>
         /// Consulta de información al SII de Bienes de Inversión.
@@ -321,6 +327,12 @@ namespace EasySII.Xml.Soap
         [XmlElement("RespuestaLRPagosRecibidas", Namespace = Settings.NamespaceSiiR)]
         public RespuestaLRF RespuestaLRPagosRecibidas { get; set; }
 
+        /// <summary>
+        /// Respuesta AEAT RespuestaLRVentaBienesConsigna.
+        /// </summary>
+        [XmlElement("RespuestaLRVentaBienesConsigna", Namespace = Settings.NamespaceSiiR)]
+        public RespuestaLRF RespuestaLRVentaBienesConsigna { get; set; }
+
         /*---------------------------------- Respuestas de consultas --------------------------------------*/
 
         /// <summary>
@@ -491,6 +503,10 @@ namespace EasySII.Xml.Soap
 
             if (respuesta == null)
                 respuesta = RespuestaLRPagosRecibidas;
+
+            if (respuesta == null)
+                respuesta = RespuestaLRVentaBienesConsigna;
+
 
             return respuesta;
 

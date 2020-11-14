@@ -95,7 +95,12 @@ namespace EasySII.Net
                         it.ErrorCode = lin.CodigoErrorRegistro;
                         it.ErrorMessage = lin.DescripcionErrorRegistro;
                     }
-                   
+
+                }
+                else 
+                {
+                    string error = $"{lin.CodigoErrorRegistro}: {lin.DescripcionErrorRegistro}";
+                    // Procesar error
                 }
 
             }

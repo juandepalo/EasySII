@@ -37,36 +37,53 @@
     address: info@irenesolutions.com
  */
 
-using System.Collections.Generic;
+using EasySII.Xml.Sii;
+using System.Xml.Serialization;
 
-namespace EasySII.Business.Batches
+namespace EasySII.Xml.Silr
 {
 
     /// <summary>
-    /// EndPoints por tipo de documentos.
+    /// Destinatario final.
     /// </summary>
-    public class EndPoints
+    public class DestinoFinalExpedRecep
     {
 
         /// <summary>
-        /// Prefijo de todos los endpoints del SII.
+        /// Descrpción de bienes. Alfanumérico(120).
         /// </summary>
-        public static string EndPointPrefix = Settings.Current.SiiEndPointPrefix;
+        public string DescripBienes { get; set; }
 
         /// <summary>
-        /// Mapeo entre tipos de lote del SII y objetos de negocio.
+        /// Cantidad. Alfanumérico(120).
         /// </summary>
-        public static Dictionary<BatchTypes, string> BusinessTypesOfSii = new Dictionary<BatchTypes, string>() {
-            {BatchTypes.FacturasRecibidas,                                      $"{EndPointPrefix}/fr/SiiFactFRV1SOAP" },
-            {BatchTypes.PagosRecibidas,                                         $"{EndPointPrefix}/fr/SiiFactPAGV1SOAP" },
-            {BatchTypes.FacturasEmitidas,                                       $"{EndPointPrefix}/fe/SiiFactFEV1SOAP" },
-            {BatchTypes.CobrosEmitidas,                                         $"{EndPointPrefix}/fe/SiiFactCOBV1SOAP" },
-            {BatchTypes.BienesInversion,                                        $"{EndPointPrefix}/bi/SiiFactBIV1SOAP" },
-            {BatchTypes.CobrosMetalico,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.OperacionesSeguros,                                     $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.DetOperacionIntracomunitaria,                           $"{EndPointPrefix}/oi/SiiFactOIV1SOAP" },
-            {BatchTypes.AgenciasViajes,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.VentaBienesConsigna,                                    $"{EndPointPrefix}/vb/SiiFactVBV1SOAP" }
-        };
+        [XmlElement("Cantidad", Namespace = Settings.NamespaceSii)]
+        public string Cantidad { get; set; }
+
+        /// <summary>
+        /// FechaExpedicion. Fecha(dd-mm-yyyy).
+        /// </summary>
+        [XmlElement("FechaOpDeclarada", Namespace = Settings.NamespaceSii)]
+        public string FechaOpDeclarada { get; set; }
+
+        /// <summary>
+        ///  Destinatario final de la
+        /// operación.
+        /// </summary>
+        [XmlElement("DestinatarioFinal", Namespace = Settings.NamespaceSiiLR)]
+        public Contraparte DestinatarioFinal { get; set; }
+
+
+        /// <summary>
+        /// Base Imponible o valor. Decimal(12,2).
+        /// </summary>
+        public string BaseImponibleValor { get; set; }
+
+        /// <summary>
+        /// Precio Unitario. Decimal(12,2).
+        /// </summary>
+        public string PrecioUnitario { get; set; }      
+
+
     }
 }

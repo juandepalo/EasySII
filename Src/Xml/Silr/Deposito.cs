@@ -37,36 +37,31 @@
     address: info@irenesolutions.com
  */
 
-using System.Collections.Generic;
+using EasySII.Xml.Sii;
+using System.Xml.Serialization;
 
-namespace EasySII.Business.Batches
+namespace EasySII.Xml.Silr
 {
 
     /// <summary>
-    /// EndPoints por tipo de documentos.
+    /// Depósito.
     /// </summary>
-    public class EndPoints
+    public class Deposito
     {
 
         /// <summary>
-        /// Prefijo de todos los endpoints del SII.
+        /// Comprador.
         /// </summary>
-        public static string EndPointPrefix = Settings.Current.SiiEndPointPrefix;
+        [XmlElement("Depositario", Order = 1, Namespace = Settings.NamespaceSiiLR)]
+        public Contraparte Depositario { get; set; }
 
         /// <summary>
-        /// Mapeo entre tipos de lote del SII y objetos de negocio.
+        /// Direccion del almacén del deposito.
+        /// Alfanumérico(120).
         /// </summary>
-        public static Dictionary<BatchTypes, string> BusinessTypesOfSii = new Dictionary<BatchTypes, string>() {
-            {BatchTypes.FacturasRecibidas,                                      $"{EndPointPrefix}/fr/SiiFactFRV1SOAP" },
-            {BatchTypes.PagosRecibidas,                                         $"{EndPointPrefix}/fr/SiiFactPAGV1SOAP" },
-            {BatchTypes.FacturasEmitidas,                                       $"{EndPointPrefix}/fe/SiiFactFEV1SOAP" },
-            {BatchTypes.CobrosEmitidas,                                         $"{EndPointPrefix}/fe/SiiFactCOBV1SOAP" },
-            {BatchTypes.BienesInversion,                                        $"{EndPointPrefix}/bi/SiiFactBIV1SOAP" },
-            {BatchTypes.CobrosMetalico,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.OperacionesSeguros,                                     $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.DetOperacionIntracomunitaria,                           $"{EndPointPrefix}/oi/SiiFactOIV1SOAP" },
-            {BatchTypes.AgenciasViajes,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.VentaBienesConsigna,                                    $"{EndPointPrefix}/vb/SiiFactVBV1SOAP" }
-        };
+        [XmlElement("DireccionAlmacen", Order = 2, Namespace = Settings.NamespaceSii)]
+        public string DireccionAlmacen { get; set; }
+
+
     }
 }

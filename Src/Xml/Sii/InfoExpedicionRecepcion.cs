@@ -37,36 +37,67 @@
     address: info@irenesolutions.com
  */
 
-using System.Collections.Generic;
+using System.Xml.Serialization;
 
-namespace EasySII.Business.Batches
+namespace EasySII.Xml.Sii
 {
 
     /// <summary>
-    /// EndPoints por tipo de documentos.
+    /// Información recepción.
     /// </summary>
-    public class EndPoints
+    public class InfoExpedicionRecepcion
     {
 
         /// <summary>
-        /// Prefijo de todos los endpoints del SII.
+        /// Valor de los bienes. Decimal(12,2).
         /// </summary>
-        public static string EndPointPrefix = Settings.Current.SiiEndPointPrefix;
+        public string ValorBienes { get; set; }
 
         /// <summary>
-        /// Mapeo entre tipos de lote del SII y objetos de negocio.
+        /// Código país del estado miembro de partida según lista L18:
+        /// <para>DE: Alemania</para>
+        /// <para>AT: Austria</para>
         /// </summary>
-        public static Dictionary<BatchTypes, string> BusinessTypesOfSii = new Dictionary<BatchTypes, string>() {
-            {BatchTypes.FacturasRecibidas,                                      $"{EndPointPrefix}/fr/SiiFactFRV1SOAP" },
-            {BatchTypes.PagosRecibidas,                                         $"{EndPointPrefix}/fr/SiiFactPAGV1SOAP" },
-            {BatchTypes.FacturasEmitidas,                                       $"{EndPointPrefix}/fe/SiiFactFEV1SOAP" },
-            {BatchTypes.CobrosEmitidas,                                         $"{EndPointPrefix}/fe/SiiFactCOBV1SOAP" },
-            {BatchTypes.BienesInversion,                                        $"{EndPointPrefix}/bi/SiiFactBIV1SOAP" },
-            {BatchTypes.CobrosMetalico,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.OperacionesSeguros,                                     $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.DetOperacionIntracomunitaria,                           $"{EndPointPrefix}/oi/SiiFactOIV1SOAP" },
-            {BatchTypes.AgenciasViajes,                                         $"{EndPointPrefix}/pm/SiiFactCMV1SOAP" },
-            {BatchTypes.VentaBienesConsigna,                                    $"{EndPointPrefix}/vb/SiiFactVBV1SOAP" }
-        };
+        [XmlElement("EmPartida", Namespace = Settings.NamespaceSii)]
+        public string EmPartida { get; set; }
+
+        /// <summary>
+        /// Código país del estado miembro de llegada según lista L18:
+        /// <para>DE: Alemania</para>
+        /// <para>AT: Austria</para>
+        /// </summary>
+        [XmlElement("EmLlegada", Namespace = Settings.NamespaceSii)]
+        public string EmLlegada { get; set; }
+
+        /// <summary>
+        /// FechaExpedicion. Fecha(dd-mm-yyyy).
+        /// </summary>
+        [XmlElement("FechaExpedicion", Namespace = Settings.NamespaceSii)]
+        public string FechaExpedicion { get; set; }
+
+
+        /// <summary>
+        /// FechaExpedicion. Fecha(dd-mm-yyyy).
+        /// </summary>
+        [XmlElement("FechaLlegada", Namespace = Settings.NamespaceSii)]
+        public string FechaLlegada { get; set; }
+
+        /// <summary>
+        /// Cantidad. Alfanumérico(120).
+        /// </summary>
+        public string Cantidad { get; set; }
+
+        /// <summary>
+        /// Descripción de bienes. Alfanumérico(120).
+        /// </summary>
+        public string DescripBienes { get; set; }
+
+        /// <summary>
+        /// Fecha de sustitución. Fecha(dd-mm-yyyy).
+        /// </summary>
+        [XmlElement("FechaSustitucion", Namespace = Settings.NamespaceSii)]
+        public string FechaSustitucion { get; set; }
+
+
     }
 }
