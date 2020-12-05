@@ -37,48 +37,53 @@
     address: info@irenesolutions.com
  */
 
-using System;
+using EasySII.Xml.Sii;
 using System.Xml.Serialization;
 
-namespace EasySII.Xml.Silr
+namespace EasySII.Xml.Sii
 {
+
     /// <summary>
-    /// Perido impositivo
+    /// Destinatario final.
     /// </summary>
-    [Serializable]
-    [XmlRoot("IdRegistroExpInicial", Namespace = Settings.NamespaceSii)]
-    public class IdRegistroExpInicial
+    public class DestinoFinalExpedRecep
     {
 
         /// <summary>
-        /// Ejercicio impositivo de la factura.
-        /// Numérico(4).
+        /// Descrpción de bienes. Alfanumérico(120).
         /// </summary>
-        public string Ejercicio { get; set; }
+        public string DescripBienes { get; set; }
 
         /// <summary>
-        /// Periodo impositivo de la factura. Alfanumérico(2). L1:
-        /// <para>01: Enero</para>
-        /// <para>02: Febrero</para>
-        /// <para>03: Marzo</para>
-        /// <para>04: Abril</para>
-        /// <para>05: Mayo</para>
-        /// <para>06: Junio</para>
-        /// <para>07: Julio</para>
-        /// <para>08: Agosto</para>
-        /// <para>09: Septiembre</para>
-        /// <para>10: Octubre</para>
-        /// <para>11: Noviembre</para>
-        /// <para>12: Diciembre</para>
-        /// <para>0A: Anual</para>
+        /// Cantidad. Alfanumérico(120).
         /// </summary>
-        public string Periodo { get; set; }
+        [XmlElement("Cantidad", Namespace = Settings.NamespaceSii)]
+        public string Cantidad { get; set; }
 
         /// <summary>
-        /// Identificador del registro inicial .
-        /// Alfanumerico(60)
+        /// FechaExpedicion. Fecha(dd-mm-yyyy).
         /// </summary>
-        public string IdExpInicial { get; set; }
+        [XmlElement("FechaOpDeclarada", Namespace = Settings.NamespaceSii)]
+        public string FechaOpDeclarada { get; set; }
+
+        /// <summary>
+        ///  Destinatario final de la
+        /// operación.
+        /// </summary>
+        [XmlElement("DestinatarioFinal", Namespace = Settings.NamespaceSii)]
+        public Contraparte DestinatarioFinal { get; set; }
+
+
+        /// <summary>
+        /// Base Imponible o valor. Decimal(12,2).
+        /// </summary>
+        public string BaseImponibleValor { get; set; }
+
+        /// <summary>
+        /// Precio Unitario. Decimal(12,2).
+        /// </summary>
+        public string PrecioUnitario { get; set; }      
+
 
     }
 }

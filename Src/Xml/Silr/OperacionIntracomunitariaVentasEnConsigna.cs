@@ -61,13 +61,13 @@ namespace EasySII.Xml.Silr
         /// <summary>
         /// Comprador.
         /// </summary>
-        [XmlElement("IdRegistroExpInicial", Namespace = Settings.NamespaceSiiLR)]
+        [XmlElement("IdRegistroExpInicial", Namespace = Settings.NamespaceSii)]
         public IdRegistroExpInicial IdRegistroExpInicial { get; set; }
 
         /// <summary>
         /// DestinoFinalExpedRecep.
         /// </summary>
-        [XmlElement("DestinoFinalExpedRecep", Namespace = Settings.NamespaceSiiLR)]
+        [XmlElement("DestinoFinalExpedRecep", Namespace = Settings.NamespaceSii)]
         public DestinoFinalExpedRecep DestinoFinalExpedRecep { get; set; }
 
         /// <summary>

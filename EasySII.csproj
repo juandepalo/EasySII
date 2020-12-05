@@ -188,9 +188,9 @@
     <Compile Include="Src\Xml\Silr\FacturaRecibidaLRRC.cs" />
     <Compile Include="Src\Xml\Silr\FiltroConsultaInformadasCliPro.cs" />
     <Compile Include="Src\Xml\Silr\FiltroConsultaOTT.cs" />
-    <Compile Include="Src\Xml\Silr\IdRegistroExpInicial.cs" />
+    <Compile Include="Src\Xml\Sii\IdRegistroExpInicial.cs" />
     <Compile Include="Src\Xml\Silr\IdRegistroDeclarado.cs" />
-    <Compile Include="Src\Xml\Silr\DestinoFinalExpedRecep.cs" />
+    <Compile Include="Src\Xml\Sii\DestinoFinalExpedRecep.cs" />
     <Compile Include="Src\Xml\Sii\InfoExpedicionRecepcion.cs" />
     <Compile Include="Src\Xml\Silr\OperacionIntracomunitariaVentasEnConsigna.cs" />
     <Compile Include="Src\Xml\Silr\RangoFechaPresentacion.cs" />

@@ -38,7 +38,6 @@
  */
 
 using EasySII.Business.Batches;
-using EasySII.Xml.SiiR;
 using EasySII.Xml.Silr;
 using EasySII.Xml.Soap;
 using System;

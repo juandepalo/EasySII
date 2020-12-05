@@ -250,10 +250,12 @@ namespace EasySII.Business
             if (taxIdEs != null)
                 IsNotNifES = !taxIdEs.IsDCOK;
 
+            Contraparte contraparte = null;
+
             if (BuyerParty != null)
             {
 
-                siiInvoice.Contraparte = new Contraparte() 
+                contraparte = new Contraparte() 
                 { 
                     NombreRazon = BuyerParty.PartyName 
                 };
@@ -266,10 +268,10 @@ namespace EasySII.Business
                             "For foreign tax identificator number Country Code can't be null");
 
                     // Si no es un nif español
-                    siiInvoice.Contraparte.IDOtro = new IDOtro();
-                    siiInvoice.Contraparte.IDOtro.IDType = ((int)IDOtroType).ToString().PadLeft(2, '0');
-                    siiInvoice.Contraparte.IDOtro.CodigoPais = CountryCode;
-                    siiInvoice.Contraparte.IDOtro.ID = BuyerParty.TaxIdentificationNumber;
+                    contraparte.IDOtro = new IDOtro();
+                    contraparte.IDOtro.IDType = ((int)IDOtroType).ToString().PadLeft(2, '0');
+                    contraparte.IDOtro.CodigoPais = CountryCode;
+                    contraparte.IDOtro.ID = BuyerParty.TaxIdentificationNumber;
 
                 }
                 else
@@ -280,27 +282,67 @@ namespace EasySII.Business
 
             siiInvoice.IdRegistroDeclarado.IdRegistro = InvoiceNumber;
 
-            siiInvoice.OperacionIntracomunitaria= new OperacionIntracomunitariaVentasEnConsigna()
-            {
-                InfoExpedicionRecepcion = new InfoExpedicionRecepcion()
-                {
-                    FechaExpedicion = (IssueDate ?? new DateTime(1, 1, 1)).ToString("dd-MM-yyyy"),
-                    FechaLlegada = (ReceptionDate ?? new DateTime(1, 1, 1)).ToString("dd-MM-yyyy")
-                }
-            };
-            
+
+
             // Tratamos el resto de información de la factura intracomunitaria.
-            
             siiInvoice.ClaveDeclarante = ClaveDeclarante.ToString();
-            siiInvoice.OperacionIntracomunitaria.InfoExpedicionRecepcion.EmPartida = EstadoMiembroPartida;
-            siiInvoice.OperacionIntracomunitaria.InfoExpedicionRecepcion.EmLlegada = EstadoMiembroLlegada;
-            siiInvoice.OperacionIntracomunitaria.InfoExpedicionRecepcion.DescripBienes = DescripcionBienes;
-            siiInvoice.OperacionIntracomunitaria.InfoExpedicionRecepcion.Cantidad = $"{Quantity}";
-            siiInvoice.OperacionIntracomunitaria.InfoExpedicionRecepcion.ValorBienes = SIIParser.FromDecimal(GrossAmount);
-            siiInvoice.Deposito = new Deposito()
+
+            if (OperationType == "01")
             {
-                DireccionAlmacen = WarehouseAddress
-            };
+
+                siiInvoice.Contraparte = contraparte;
+
+                siiInvoice.OperacionIntracomunitaria = new OperacionIntracomunitariaVentasEnConsigna()
+                {
+                    InfoExpedicionRecepcion = new InfoExpedicionRecepcion()
+                    {
+                        FechaExpedicion = (IssueDate ?? new DateTime(1, 1, 1)).ToString("dd-MM-yyyy"),
+                        FechaLlegada = (ReceptionDate ?? new DateTime(1, 1, 1)).ToString("dd-MM-yyyy"),
+                        EmPartida = EstadoMiembroPartida,
+                        EmLlegada = EstadoMiembroLlegada,
+                        DescripBienes = DescripcionBienes,
+                        Cantidad = $"{Quantity}",
+                        ValorBienes = SIIParser.FromDecimal(GrossAmount)
+                    }
+                };
+               
+                siiInvoice.Deposito = new Deposito()
+                {
+                    DireccionAlmacen = WarehouseAddress
+                };
+
+            }
+            else if (OperationType == "03") 
+            {
+
+                siiInvoice.OperacionIntracomunitaria = new OperacionIntracomunitariaVentasEnConsigna()
+                {
+                    DestinoFinalExpedRecep = new DestinoFinalExpedRecep()
+                    {
+                        FechaOpDeclarada = (IssueDate ?? new DateTime(1, 1, 1)).ToString("dd-MM-yyyy"),
+                        DescripBienes = DescripcionBienes,
+                        Cantidad = $"{Quantity}",
+                        BaseImponibleValor = SIIParser.FromDecimal(GrossAmount),
+                        PrecioUnitario = SIIParser.FromDecimal(GrossAmount / Quantity),
+                        DestinatarioFinal = contraparte
+                    }
+                };
+
+            }
+
+            // Para las ventas de bienes envíados anteriormente en consigna hay que indicar la 
+            // información del envío original. Esta información se incluye en InvoicesRectified
+
+            if (InvoicesRectified != null && InvoicesRectified.Count > 0)
+            {
+                siiInvoice.OperacionIntracomunitaria.IdRegistroExpInicial = new IdRegistroExpInicial()
+                {
+                    Ejercicio = (InvoicesRectified[0].RectifiedIssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy"),
+                    Periodo = (InvoicesRectified[0].RectifiedIssueDate ?? new DateTime(1, 1, 1)).ToString("MM"),
+                    IdExpInicial = InvoicesRectified[0].RectifiedInvoiceNumber
+                };
+            }
+
 
             if (updateInnerSII)
                 InnerSII = siiInvoice;
