@@ -337,16 +337,18 @@ namespace EasySII.Business
                  !(Settings.Current.IDVersionSii.CompareTo("1.1") < 0))
                 siiInvoice.FacturaExpedida.RefExterna = ExternalReference;
 
+            DateTime? periodDate = OperationIssueDate ?? IssueDate; 
+
 
             if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
             {
-                siiInvoice.PeriodoImpositivo.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiInvoice.PeriodoImpositivo.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiInvoice.PeriodoImpositivo.Ejercicio = (periodDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
+                siiInvoice.PeriodoImpositivo.Periodo = (periodDate ?? new DateTime(1, 1, 1)).ToString("MM");
             }
             else
             {
-                siiInvoice.PeriodoLiquidacion.Ejercicio = (IssueDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
-                siiInvoice.PeriodoLiquidacion.Periodo = (IssueDate ?? new DateTime(1, 1, 1)).ToString("MM");
+                siiInvoice.PeriodoLiquidacion.Ejercicio = (periodDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
+                siiInvoice.PeriodoLiquidacion.Periodo = (periodDate ?? new DateTime(1, 1, 1)).ToString("MM");
             }
 
             if (SellerParty == null && !skipErrors)
