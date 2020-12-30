@@ -339,7 +339,6 @@ namespace EasySII.Business
 
             DateTime? periodDate = OperationIssueDate ?? IssueDate; 
 
-
             if (Settings.Current.IDVersionSii.CompareTo("1.1") < 0)
             {
                 siiInvoice.PeriodoImpositivo.Ejercicio = (periodDate ?? new DateTime(1, 1, 1)).ToString("yyyy");
