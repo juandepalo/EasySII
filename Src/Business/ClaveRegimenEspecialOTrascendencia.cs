@@ -118,7 +118,14 @@ namespace EasySII.Business
         /// <summary>
         /// Emitidas: Primer semestre 2017 y otras facturas anteriores a la inclusión en el SII
         /// </summary>
-        Emitidas2017Sem1
+        Emitidas2017Sem1,
+
+        /// <summary>
+        /// Operación acogida a alguno de los regímenes previstos en el Capítulo XI del Título IX (OSS e IOSS).
+        /// Ventanilla Única o One-Stop Shop.
+        /// </summary>
+        OperacionOssIoss
+
     };
 
 

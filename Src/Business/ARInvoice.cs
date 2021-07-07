@@ -434,7 +434,7 @@ namespace EasySII.Business
             try
             {
                 taxIdEs =
-                          new TaxIdEs(BuyerParty.TaxIdentificationNumber);
+                          new TaxIdEs(BuyerParty?.TaxIdentificationNumber);
             }
             catch
             {

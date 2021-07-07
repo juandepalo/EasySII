@@ -329,7 +329,16 @@ namespace EasySII.Tax
             {
                 try
                 {
+                    
+                    if (value == null) 
+                    {
+                        taxCode = null;
+                        LastError = TaxIdEsError.InvalidString;
+                        return;
+                    }
+
                     taxCode = value.ToUpper();
+
                     if (!rgxTaxIdentification.IsMatch(taxCode))
                     {
                         taxCode = null;
