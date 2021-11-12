@@ -89,6 +89,43 @@ namespace EasySII.Xml
         };
 
 		/// <summary>
+		/// Serializa un objeto Envelop en un xml.
+		/// </summary>
+		/// <param name="envelope">Sobre a enviar.</param>
+		/// <param name="ns">Espacio de nombres.</param> 
+		/// <param name="nsSum">Espacio de nombres para suministro de 
+		/// información (a veces prefijo sii, otras prefijo sum).</param> 
+		/// <returns>XML resultado de la serialización.</returns>
+		public static string GetXmlText(Envelope envelope, SIINamespaces ns = SIINamespaces.siiLR, SIINamespaces nsSum = SIINamespaces.sii)
+		{
+
+			ClearNulls(envelope); // Limpia nulos
+
+			XmlDocument xmlDocument = new XmlDocument();
+
+			XmlSerializer xmlSerializer = new XmlSerializer(envelope.GetType());
+			XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+
+			namespaces.Add("soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
+			namespaces.Add(ns.ToString(), Namespaces[ns]);
+			namespaces.Add(nsSum.ToString(), Namespaces[nsSum]);
+
+			byte[] buff = null;
+
+			using (var ms = new MemoryStream())
+			{
+				using (StreamWriter sw = new StreamWriter(ms, Encoding.GetEncoding("UTF-8")))
+				{
+					xmlSerializer.Serialize(sw, envelope, namespaces);
+					buff = ms.ToArray();
+				}
+			}
+
+			return Encoding.UTF8.GetString(buff);
+
+		}
+
+		/// <summary>
 		/// Serializa un objeto Envelop en un xml, y guarda el
 		/// resultado en la ruta especificada.
 		/// </summary>
@@ -97,7 +134,7 @@ namespace EasySII.Xml
 		/// <param name="ns">Espacio de nombres.</param> 
 		/// <param name="nsSum">Espacio de nombres para suministro de 
 		/// información (a veces prefijo sii, otras prefijo sum).</param> 
-		/// <returns></returns>
+		/// <returns>XmlDocument resultado de la serialización.</returns>
 		public static XmlDocument GetXml(Envelope envelope, string xmlPath, SIINamespaces ns = SIINamespaces.siiLR, SIINamespaces nsSum = SIINamespaces.sii)
         {
 
@@ -252,5 +289,6 @@ namespace EasySII.Xml
 			}
 
 		}
+
 	}
 }
