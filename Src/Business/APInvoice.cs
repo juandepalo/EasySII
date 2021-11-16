@@ -980,7 +980,7 @@ namespace EasySII.Business
                 if (IsNotNifES)
                 {
 
-                    if (CountryCode == null)
+                    if (CountryCode == null && IDOtroType != IDOtroType.NifIva)
                         throw new ArgumentNullException(
                             "For foreign tax identificator number Country Code can't be null");
 
